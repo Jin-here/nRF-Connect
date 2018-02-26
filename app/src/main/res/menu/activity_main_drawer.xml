@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single"
+        android:id="@+id/group0">
+        <item
+            android:id="@+id/nav_device"
+            android:title="@string/nav_device"
+            android:checked="true"/>
+        <item
+            android:id="@+id/nav_manage_favorite"
+            android:title="@string/nav_manage_favorite" />
+        <item
+            android:id="@+id/nav_definition"
+            android:title="@string/nav_definition" />
+    </group>
+
+    <group android:checkableBehavior="single"
+        android:id="@+id/group1">
+        <item
+            android:id="@+id/nav_device_information"
+            android:title="@string/nav_device_information" />
+        <item
+            android:id="@+id/nav_setting"
+            android:title="@string/nav_setting" />
+    </group>
+</menu>

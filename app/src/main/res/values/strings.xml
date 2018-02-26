@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">nRF Connect</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="nav_device">Devices</string>
+    <string name="nav_manage_favorite">Manage favorites</string>
+    <string name="nav_definition">Definitions</string>
+    <string name="nav_device_information">Device information</string>
+    <string name="nav_setting">Settings</string>
 </resources>
