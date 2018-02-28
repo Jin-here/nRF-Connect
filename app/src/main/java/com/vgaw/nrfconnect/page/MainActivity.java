@@ -13,6 +13,7 @@ import android.view.MenuItem;
 
 import com.vgaw.nrfconnect.R;
 import com.vgaw.nrfconnect.databinding.ActivityMainBinding;
+import com.vgaw.nrfconnect.page.scanner.ScannerFragment;
 
 /**
  * Created by caojin on 2018/2/26.
@@ -83,5 +84,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
 
         binding.navMain.setNavigationItemSelectedListener(this);
+
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.container_main, new ScannerFragment())
+                .commit();
     }
 }

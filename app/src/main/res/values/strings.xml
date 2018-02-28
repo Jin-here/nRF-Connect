@@ -9,4 +9,10 @@
     <string name="nav_definition">Definitions</string>
     <string name="nav_device_information">Device information</string>
     <string name="nav_setting">Settings</string>
+
+    <string name="scanner_filter_rssi">RSSI:</string>
+    <string name="scanner_filter_only_favorite">Only favorites</string>
+    <string name="scanner_filter_no_filter">No filter</string>
+    <string name="scanner_filter_name_hint">Filter by name or address</string>
+    <string name="scanner_filter_data_hint">Filter by raw advertising data</string>
 </resources>

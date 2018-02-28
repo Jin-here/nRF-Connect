@@ -19,3 +19,7 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-keep class com.github.florent37.expansionpanel.** {*;}
+-keep interface com.github.florent37.expansionpanel.** {*;}
+-keep enum com.github.florent37.expansionpanel.** {*;}
