@@ -13,10 +13,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
-import android.widget.SeekBar;
 
 import com.vgaw.nrfconnect.R;
+import com.vgaw.nrfconnect.bean.ScannerFilter;
+import com.vgaw.nrfconnect.data.PreferenceManager;
 import com.vgaw.nrfconnect.databinding.FragmentScannerBinding;
+import com.vgaw.nrfconnect.util.HexTransform;
 import com.vgaw.nrfconnect.util.Utils;
 import com.vgaw.nrfconnect.view.HexInputFilter;
 import com.vgaw.nrfconnect.view.SBWithTV;
@@ -44,20 +46,10 @@ public class ScannerFragment extends Fragment implements View.OnClickListener, C
         initView();
     }
 
-    private void initView() {
-        binding.includeScanner.ivClearAll.setOnClickListener(this);
-        binding.includeScanner.ivNameAddressMore.setOnClickListener(this);
-        binding.includeScanner.ivNameAddressClear.setOnClickListener(this);
-        binding.includeScanner.ivDataMore.setOnClickListener(this);
-        binding.includeScanner.ivDataClear.setOnClickListener(this);
-        binding.includeScanner.sbRSSI.init(getString(R.string.scanner_filter_rssi), RSSI_MIN, RSSI_MAX, 1);
-        binding.includeScanner.sbRSSI.setShowValueListener(this);
-        clearRSSI();
-        binding.includeScanner.cbFavorite.setOnCheckedChangeListener(this);
-        clearFavorite();
-        binding.includeScanner.etData.setFilters(new InputFilter[]{new HexInputFilter()});
-        binding.includeScanner.etNameAddress.addTextChangedListener(this);
-        binding.includeScanner.etData.addTextChangedListener(this);
+    @Override
+    public void onStop() {
+        super.onStop();
+        setFilterToPreference();
     }
 
     @Override
@@ -150,5 +142,42 @@ public class ScannerFragment extends Fragment implements View.OnClickListener, C
     @Override
     public void onProgressChanged(View view, float currentValue, boolean fromUser) {
         updateDescription();
+    }
+
+    private void getFilterFromPreference() {
+        ScannerFilter scannerFilter = PreferenceManager.getScannerFilter();
+        if (scannerFilter != null) {
+            binding.includeScanner.etNameAddress.setText(Utils.nullToEmpty(scannerFilter.getNameAddress()));
+            binding.includeScanner.etData.setText(Utils.nullToEmpty(scannerFilter.getData()));
+            binding.includeScanner.sbRSSI.setProgress(scannerFilter.getRssi());
+            binding.includeScanner.cbFavorite.setChecked(scannerFilter.isFavorite());
+        } else {
+            clearRSSI();
+        }
+    }
+
+    private void setFilterToPreference() {
+        ScannerFilter scannerFilter = new ScannerFilter();
+        scannerFilter.setNameAddress(binding.includeScanner.etNameAddress.getText().toString());
+        scannerFilter.setData(binding.includeScanner.etData.getText().toString());
+        scannerFilter.setRssi((int) binding.includeScanner.sbRSSI.getProgress());
+        scannerFilter.setFavorite(binding.includeScanner.cbFavorite.isChecked());
+        PreferenceManager.setScannerFilter(scannerFilter);
+    }
+
+    private void initView() {
+        binding.includeScanner.ivClearAll.setOnClickListener(this);
+        binding.includeScanner.ivNameAddressMore.setOnClickListener(this);
+        binding.includeScanner.ivNameAddressClear.setOnClickListener(this);
+        binding.includeScanner.ivDataMore.setOnClickListener(this);
+        binding.includeScanner.ivDataClear.setOnClickListener(this);
+        binding.includeScanner.sbRSSI.setShowValueListener(this);
+        binding.includeScanner.sbRSSI.init(getString(R.string.scanner_filter_rssi), RSSI_MIN, RSSI_MAX, 1);
+        binding.includeScanner.cbFavorite.setOnCheckedChangeListener(this);
+        binding.includeScanner.etData.setFilters(new InputFilter[]{new HexInputFilter()});
+        binding.includeScanner.etNameAddress.addTextChangedListener(this);
+        binding.includeScanner.etData.addTextChangedListener(this);
+
+        getFilterFromPreference();
     }
 }

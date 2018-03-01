@@ -2,10 +2,8 @@ package com.vgaw.nrfconnect.view;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.GridLayout;
@@ -18,17 +16,6 @@ import com.vgaw.nrfconnect.R;
 
 /**
  * Created by caojin on 2017/1/12.
- *
- * 功能：
- * 1.设置最大值，最小值
- * 2.设置间隔
- * 3.设置初始值
- * 4.获取结果
- *
- * 使用顺序：
- * 1.设置{@link #init(String, float, float, float)}或者在xml中进行配置
- * 1.设置{@link #setShowValueListener(ShowValueListener)}
- * 2.设置初始值{@link #setProgress(float)}
  */
 
 public class SBWithTV extends GridLayout implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
@@ -89,7 +76,6 @@ public class SBWithTV extends GridLayout implements View.OnClickListener, SeekBa
     public void setProgress(float value){
         currentValue = value;
         sb.setProgress((int) ((value - minValue) / interval));
-        showValue();
     }
 
     public void init(String label, float min, float max, float interval){
@@ -98,6 +84,8 @@ public class SBWithTV extends GridLayout implements View.OnClickListener, SeekBa
         this.interval = interval;
         configure();
         tv_label.setText(label);
+        this.currentValue = minValue;
+        showValue();
     }
 
     /**
@@ -135,19 +123,13 @@ public class SBWithTV extends GridLayout implements View.OnClickListener, SeekBa
             currentValue += interval;
         }
         setProgress(currentValue);
-        onProgressChanged(null, -1, false);
     }
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        if (fromUser){
-            currentValue = minValue + (float) progress * interval;
-            showValue();
-        }
+        currentValue = minValue + (float) progress * interval;
+        showValue();
         listener.onProgressChanged(SBWithTV.this, currentValue, fromUser);
-        if (seekBar == null) {
-            listener.onProgressChanged(SBWithTV.this, currentValue, fromUser);
-        }
     }
 
     @Override
@@ -161,7 +143,6 @@ public class SBWithTV extends GridLayout implements View.OnClickListener, SeekBa
     }
 
     public interface ShowValueListener{
-        // 对结果进行包装显示
         String onShowValue(View view, float raw);
 
         void onProgressChanged(View view, float currentValue, boolean fromUser);

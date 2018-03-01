@@ -33,4 +33,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
     implementation 'com.github.florent37:expansionpanel:1.1.0'
+    // fastjson
+    implementation 'com.alibaba:fastjson:1.1.67.android'
 }
