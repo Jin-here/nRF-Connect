@@ -5,7 +5,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@android:color/white"
         android:elevation="2dp">
 
         <com.github.florent37.expansionpanel.ExpansionHeader
@@ -14,7 +13,8 @@
             android:layout_height="wrap_content"
             app:expansion_headerIndicator="@id/headerIndicator"
             app:expansion_layout="@id/expansionLayout"
-            app:expansion_toggleOnClick="true">
+            app:expansion_toggleOnClick="true"
+            android:background="@android:color/white">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -54,7 +54,8 @@
             android:id="@+id/expansionLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:expansion_expanded="false">
+            app:expansion_expanded="false"
+            android:background="@android:color/white">
 
             <LinearLayout
                 android:layout_width="match_parent"
