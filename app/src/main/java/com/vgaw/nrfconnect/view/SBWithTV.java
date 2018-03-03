@@ -3,6 +3,7 @@ package com.vgaw.nrfconnect.view;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Build;
+import android.support.v7.widget.AppCompatImageButton;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -42,7 +43,7 @@ public class SBWithTV extends GridLayout implements View.OnClickListener, SeekBa
         LinearLayout container = new LinearLayout(getContext());
         container.setGravity(Gravity.CENTER_VERTICAL);
         container.setOrientation(LinearLayout.HORIZONTAL);
-        ImageButton btnMinus = new ImageButton(getContext());
+        ImageButton btnMinus = new AppCompatImageButton(getContext());
         btnMinus.setTag(0);
         btnMinus.setOnClickListener(this);
         btnMinus.setBackgroundColor(getResources().getColor(R.color.icon_light_2));
@@ -56,7 +57,7 @@ public class SBWithTV extends GridLayout implements View.OnClickListener, SeekBa
         sb = (SeekBar) View.inflate(getContext(), R.layout.view_seekbar, null);
         container.addView(sb, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
 
-        ImageButton btnAdd = new ImageButton(getContext());
+        ImageButton btnAdd = new AppCompatImageButton(getContext());
         btnAdd.setTag(1);
         btnAdd.setOnClickListener(this);
         btnAdd.setBackgroundColor(getResources().getColor(R.color.icon_light_2));
