@@ -79,7 +79,7 @@ public class ScannerFilterController implements View.OnClickListener, CompoundBu
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.v_scanner_container:
+            case R.id.vScannerContainer:
                 if (binding.includeScanner.expansionLayout.isExpanded()) {
                     binding.includeScanner.expansionLayout.collapse(true);
                 }

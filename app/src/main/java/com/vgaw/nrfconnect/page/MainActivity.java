@@ -1,10 +1,13 @@
 package com.vgaw.nrfconnect.page;
 
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -85,8 +88,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         binding.navMain.setNavigationItemSelectedListener(this);
 
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.container_main, new ScannerFragment())
-                .commit();
+        binding.vpMain.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
+            @Override
+            public Fragment getItem(int position) {
+                return new ScannerFragment();
+            }
+
+            @Override
+            public int getCount() {
+                return 2;
+            }
+
+            @Override
+            public CharSequence getPageTitle(int position) {
+                return String.valueOf(position);
+            }
+        });
+        binding.stbMain.setDividerColors(Color.TRANSPARENT);
+        binding.stbMain.setViewPager(binding.vpMain);
     }
 }
