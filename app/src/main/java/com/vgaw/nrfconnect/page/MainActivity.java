@@ -1,5 +1,6 @@
 package com.vgaw.nrfconnect.page;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -13,10 +14,17 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.vgaw.nrfconnect.R;
 import com.vgaw.nrfconnect.databinding.ActivityMainBinding;
 import com.vgaw.nrfconnect.page.scanner.ScannerFragment;
+import com.vgaw.nrfconnect.view.tab.TabAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by caojin on 2018/2/26.
@@ -25,6 +33,8 @@ import com.vgaw.nrfconnect.page.scanner.ScannerFragment;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "MainActivity";
     private ActivityMainBinding binding;
+
+    private MainTabController mMainTabController;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -88,23 +98,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         binding.navMain.setNavigationItemSelectedListener(this);
 
-        binding.vpMain.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
-            @Override
-            public Fragment getItem(int position) {
-                return new ScannerFragment();
-            }
-
-            @Override
-            public int getCount() {
-                return 2;
-            }
-
-            @Override
-            public CharSequence getPageTitle(int position) {
-                return String.valueOf(position);
-            }
-        });
-        binding.stbMain.setDividerColors(Color.TRANSPARENT);
-        binding.stbMain.setViewPager(binding.vpMain);
+        mMainTabController = new MainTabController(this, binding);
+        mMainTabController.onCreate();
     }
 }

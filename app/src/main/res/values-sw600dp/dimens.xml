@@ -1,6 +1,7 @@
 <resources>
     <dimen name="design_fab_size_normal">75.60dp</dimen>
 
+    <dimen name="txt_10">12.60sp</dimen>
     <dimen name="txt_14">17.64sp</dimen>
     <dimen name="txt_16">20.16sp</dimen>
     <dimen name="txt_18">22.68sp</dimen>

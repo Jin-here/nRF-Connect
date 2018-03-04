@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvMainTabTitle"
+            android:layout_width="@dimen/space_90"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textAllCaps="true"
+            android:textSize="@dimen/txt_14"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvMainTabSubTitle"
+            android:layout_width="@dimen/space_90"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textAllCaps="true"
+            android:textSize="@dimen/txt_10" />
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/ivMainTabClear"
+        android:layout_width="@dimen/space_24"
+        android:layout_height="@dimen/space_24"
+        android:layout_gravity="center_vertical"
+        android:background="@android:color/transparent"
+        app:srcCompat="@drawable/ic_clear_black_24dp" />
+</LinearLayout>

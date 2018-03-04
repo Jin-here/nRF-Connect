@@ -15,4 +15,8 @@
     <string name="scanner_filter_no_filter">No filter</string>
     <string name="scanner_filter_name_hint">Filter by name or address</string>
     <string name="scanner_filter_data_hint">Filter by raw advertising data</string>
+
+    <string name="main_tab_scanner">Scanner</string>
+    <string name="main_tab_bonded">Bonded</string>
+    <string name="main_tab_advertiser">Advertiser</string>
 </resources>
