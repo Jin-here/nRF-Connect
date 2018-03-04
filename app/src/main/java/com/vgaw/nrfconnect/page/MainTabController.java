@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.vgaw.nrfconnect.R;
 import com.vgaw.nrfconnect.databinding.ActivityMainBinding;
+import com.vgaw.nrfconnect.page.scanner.ScannerFragment;
 import com.vgaw.nrfconnect.view.tab.TabAdapter;
 
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class MainTabController {
         fragmentPagerAdapter = new FragmentPagerAdapter(activity.getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
-                return new Fragment();
+                return new ScannerFragment();
             }
 
             @Override

@@ -19,4 +19,9 @@
     <string name="main_tab_scanner">Scanner</string>
     <string name="main_tab_bonded">Bonded</string>
     <string name="main_tab_advertiser">Advertiser</string>
+
+    <string name="main_tab_scanner_menu_start_scan">Scan</string>
+    <string name="main_tab_scanner_menu_stop_scan">Stop Scanning</string>
+    <string name="main_tab_scanner_menu_refresh">Refresh</string>
+    <string name="main_tab_scanner_menu_show_rssi_graph">Show RSSI graph</string>
 </resources>

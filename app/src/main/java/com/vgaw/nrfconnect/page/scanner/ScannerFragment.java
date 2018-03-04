@@ -10,12 +10,13 @@ import android.view.ViewGroup;
 
 import com.vgaw.nrfconnect.R;
 import com.vgaw.nrfconnect.databinding.FragmentDeviceScannerBinding;
+import com.vgaw.nrfconnect.page.MainBaseTabFragment;
 
 /**
  * Created by caojin on 2018/2/27.
  */
 
-public class ScannerFragment extends Fragment {
+public class ScannerFragment extends MainBaseTabFragment {
     public static final String TAG = "ScannerFragment";
     private FragmentDeviceScannerBinding binding;
     private ScannerFilterController mScannerFilterController;
