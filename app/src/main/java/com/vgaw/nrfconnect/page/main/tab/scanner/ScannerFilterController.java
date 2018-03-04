@@ -1,4 +1,4 @@
-package com.vgaw.nrfconnect.page.scanner;
+package com.vgaw.nrfconnect.page.main.tab.scanner;
 
 import android.app.Activity;
 import android.text.Editable;
@@ -8,7 +8,6 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.CompoundButton;
 
-import com.github.florent37.expansionpanel.ExpansionLayout;
 import com.vgaw.nrfconnect.R;
 import com.vgaw.nrfconnect.bean.ScannerFilter;
 import com.vgaw.nrfconnect.data.PreferenceManager;
@@ -21,7 +20,7 @@ import com.vgaw.nrfconnect.view.SBWithTV;
  * Created by caojin on 2018/3/2.
  */
 
-public class ScannerFilterController implements View.OnClickListener, CompoundButton.OnCheckedChangeListener, TextWatcher, SBWithTV.ShowValueListener, ExpansionLayout.IndicatorListener {
+public class ScannerFilterController implements View.OnClickListener, CompoundButton.OnCheckedChangeListener, TextWatcher, SBWithTV.ShowValueListener {
     private static final int RSSI_MIN = -100;
     private static final int RSSI_MAX = -40;
 
@@ -34,8 +33,6 @@ public class ScannerFilterController implements View.OnClickListener, CompoundBu
     }
 
     public void onActivityCreated() {
-        binding.vScannerContainer.setOnClickListener(this);
-        binding.includeScanner.expansionLayout.addIndicatorListener(this);
         binding.includeScanner.ivClearAll.setOnClickListener(this);
         binding.includeScanner.ivNameAddressMore.setOnClickListener(this);
         binding.includeScanner.ivNameAddressClear.setOnClickListener(this);
@@ -56,9 +53,7 @@ public class ScannerFilterController implements View.OnClickListener, CompoundBu
         setFilterToPreference();
     }
 
-    public void onDestroy() {
-        binding.includeScanner.expansionLayout.removeIndicatorListener(this);
-    }
+    public void onDestroy() {}
 
     private void clearFavorite() {
         binding.includeScanner.cbFavorite.setChecked(false);
@@ -79,11 +74,6 @@ public class ScannerFilterController implements View.OnClickListener, CompoundBu
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.vScannerContainer:
-                if (binding.includeScanner.expansionLayout.isExpanded()) {
-                    binding.includeScanner.expansionLayout.collapse(true);
-                }
-                break;
             case R.id.ivClearAll:
                 clearNameAddress();
                 clearData();
@@ -176,14 +166,5 @@ public class ScannerFilterController implements View.OnClickListener, CompoundBu
         scannerFilter.setRssi((int) binding.includeScanner.sbRSSI.getProgress());
         scannerFilter.setFavorite(binding.includeScanner.cbFavorite.isChecked());
         PreferenceManager.setScannerFilter(scannerFilter);
-    }
-
-    @Override
-    public void onStartedExpand(ExpansionLayout expansionLayout, boolean willExpand) {
-        if (willExpand) {
-            binding.vScannerContainer.setBackgroundResource(android.R.drawable.screen_background_dark_transparent);
-        } else {
-            binding.vScannerContainer.setBackgroundColor(activity.getResources().getColor(android.R.color.transparent));
-        }
     }
 }

@@ -1,4 +1,4 @@
-package com.vgaw.nrfconnect.page;
+package com.vgaw.nrfconnect.page.main;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -18,21 +18,9 @@ public class MainBaseTabFragment extends Fragment {
     protected MainActivity mActivity;
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.main_tab_scanner, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         mActivity = (MainActivity) getActivity();
-        setHasOptionsMenu(true);
     }
 
     @Override

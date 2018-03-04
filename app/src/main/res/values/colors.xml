@@ -23,6 +23,9 @@
     <!--Inactive-->
     <color name="icon_dark_3">@color/txt_dark_3</color>
 
+    <color name="bg_dark_transparent">#80000000</color>
+    <color name="bg_dark">#111111</color>
+
     <color name="txt_light_1">#FFFFFF</color>
     <color name="txt_light_2">#B3FFFFFF</color>
     <color name="txt_light_3">#80FFFFFF</color>
@@ -30,4 +33,6 @@
     <color name="icon_light_1">@color/txt_light_1</color>
     <color name="icon_light_2">@color/txt_light_2</color>
     <color name="icon_light_3">@color/txt_light_3</color>
+    <color name="bg_light_transparent">#80ffffff</color>
+    <color name="bg_light">#EEEEEE</color>
 </resources>

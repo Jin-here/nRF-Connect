@@ -1,4 +1,4 @@
-package com.vgaw.nrfconnect.page;
+package com.vgaw.nrfconnect.page.main;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -9,7 +9,9 @@ import android.widget.TextView;
 
 import com.vgaw.nrfconnect.R;
 import com.vgaw.nrfconnect.databinding.ActivityMainBinding;
-import com.vgaw.nrfconnect.page.scanner.ScannerFragment;
+import com.vgaw.nrfconnect.page.main.tab.advertiser.AdvertiserFragment;
+import com.vgaw.nrfconnect.page.main.tab.bonded.BondedFragment;
+import com.vgaw.nrfconnect.page.main.tab.scanner.ScannerFragment;
 import com.vgaw.nrfconnect.view.tab.TabAdapter;
 
 import java.util.ArrayList;
@@ -26,6 +28,7 @@ public class MainTabController {
     private ActivityMainBinding binding;
 
     private List<MainTabBean> tabList;
+    private List<MainBaseTabFragment> fragmentList;
     private FragmentPagerAdapter fragmentPagerAdapter;
 
     public MainTabController(MainActivity activity, ActivityMainBinding binding) {
@@ -38,11 +41,14 @@ public class MainTabController {
         tabList.add(new MainTabBean(getString(R.string.main_tab_scanner)));
         tabList.add(new MainTabBean(getString(R.string.main_tab_bonded)));
         tabList.add(new MainTabBean(getString(R.string.main_tab_advertiser)));
-        tabList.add(new MainTabBean("N/A", "22:11:22:22:34:21"));
+        fragmentList = new ArrayList<>();
+        fragmentList.add(new ScannerFragment());
+        fragmentList.add(new BondedFragment());
+        fragmentList.add(new AdvertiserFragment());
         fragmentPagerAdapter = new FragmentPagerAdapter(activity.getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
-                return new ScannerFragment();
+                return fragmentList.get(position);
             }
 
             @Override

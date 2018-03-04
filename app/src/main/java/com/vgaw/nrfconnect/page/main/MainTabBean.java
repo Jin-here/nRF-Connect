@@ -1,4 +1,4 @@
-package com.vgaw.nrfconnect.page;
+package com.vgaw.nrfconnect.page.main;
 
 /**
  * Created by dell on 2018/3/4.

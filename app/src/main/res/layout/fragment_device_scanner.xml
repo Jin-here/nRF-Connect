@@ -1,12 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <FrameLayout
-        android:id="@+id/vScannerContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include
-            android:id="@+id/includeScanner"
-            layout="@layout/include_device_scanner_filter"/>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/bg_light_transparent"></FrameLayout>
+
+        <com.vgaw.nrfconnect.view.SwipeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="@color/bg_light">
+
+                <include
+                    android:id="@+id/includeScanner"
+                    layout="@layout/include_device_scanner_filter"/>
+            </LinearLayout>
+        </com.vgaw.nrfconnect.view.SwipeLayout>
     </FrameLayout>
 </layout>
