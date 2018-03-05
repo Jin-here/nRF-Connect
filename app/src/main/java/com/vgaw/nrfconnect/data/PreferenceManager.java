@@ -11,6 +11,10 @@ import com.vgaw.nrfconnect.util.ContextUtil;
  */
 
 public class PreferenceManager {
+    private static SharedPreferences getDefault() {
+        return android.preference.PreferenceManager.getDefaultSharedPreferences(ContextUtil.getApplicationContext());
+    }
+
     public static void setScannerFilter(ScannerFilter scannerFilter) {
         getDefault().edit().putString("scannerFilter", JsonUtil.toJson(scannerFilter)).commit();
     }
@@ -19,7 +23,11 @@ public class PreferenceManager {
         return JsonUtil.fromJson(getDefault().getString("scannerFilter", null), ScannerFilter.class);
     }
 
-    private static SharedPreferences getDefault() {
-        return android.preference.PreferenceManager.getDefaultSharedPreferences(ContextUtil.getApplicationContext());
+    public static int getScannerPeriod() {
+        return getDefault().getInt("scanner_period", 5000);
+    }
+
+    public static void setScannerPeriod(int period) {
+        getDefault().edit().putInt("scanner_period", period).apply();
     }
 }

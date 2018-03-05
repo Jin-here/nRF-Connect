@@ -15,4 +15,10 @@
         android:id="@+id/main_tab_scanner_menu_show_rssi_graph"
         android:title="@string/main_tab_scanner_menu_show_rssi_graph"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/main_tab_scanner_menu_show_legend"
+        android:title="@string/main_tab_scanner_menu_show_legend"
+        android:checkable="true"
+        app:showAsAction="never" />
 </menu>

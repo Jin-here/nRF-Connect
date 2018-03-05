@@ -8,6 +8,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import com.vgaw.nrfconnect.R;
@@ -22,6 +23,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ActivityMainBinding binding;
 
     private MainTabController mMainTabController;
+
+    public Menu getMenu() {
+        return binding.toolbar.getMenu();
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

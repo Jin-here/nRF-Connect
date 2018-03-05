@@ -27,4 +27,8 @@ public class MainBaseTabFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
+    public Menu getActivityMenu() {
+        return mActivity.getMenu();
+    }
 }

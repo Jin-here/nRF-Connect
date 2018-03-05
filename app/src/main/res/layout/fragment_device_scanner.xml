@@ -10,19 +10,32 @@
             android:background="@color/bg_light_transparent"></FrameLayout>
 
         <com.vgaw.nrfconnect.view.SwipeLayout
+            android:id="@+id/swipeLayoutScanner"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <LinearLayout
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swipeRefreshScanner"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:background="@color/bg_light">
+                android:layout_height="match_parent">
 
-                <include
-                    android:id="@+id/includeScanner"
-                    layout="@layout/include_device_scanner_filter"/>
-            </LinearLayout>
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:background="@color/bg_light">
+
+                    <com.vgaw.nrfconnect.view.MyListView
+                        android:id="@+id/lvScanner"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/space_48"></com.vgaw.nrfconnect.view.MyListView>
+
+                    <include
+                        android:id="@+id/includeScanner"
+                        layout="@layout/include_device_scanner_filter"/>
+                </FrameLayout>
+            </android.support.v4.widget.SwipeRefreshLayout>
         </com.vgaw.nrfconnect.view.SwipeLayout>
     </FrameLayout>
 </layout>

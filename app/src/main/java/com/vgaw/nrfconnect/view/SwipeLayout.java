@@ -29,11 +29,9 @@ public class SwipeLayout extends FrameLayout {
             @Override
             public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
                 if (velocityX > 0) {
-                    SwipeLayout.this.scrollTo(-getRightPosition(), 0);
-                    setExpand(true);
+                    expand();
                 } else {
-                    SwipeLayout.this.scrollTo(0, 0);
-                    setExpand(false);
+                    fold();
                 }
                 return true;
             }
@@ -49,6 +47,16 @@ public class SwipeLayout extends FrameLayout {
 
     public void setSwipeListener(SwipeListener listener) {
         this.listener = listener;
+    }
+
+    public void expand() {
+        SwipeLayout.this.scrollTo(-getRightPosition(), 0);
+        setExpand(true);
+    }
+
+    public void fold() {
+        SwipeLayout.this.scrollTo(0, 0);
+        setExpand(false);
     }
 
     @Override

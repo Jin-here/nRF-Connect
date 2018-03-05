@@ -24,6 +24,7 @@
     <string name="main_tab_scanner_menu_stop_scan">Stop Scanning</string>
     <string name="main_tab_scanner_menu_refresh">Refresh</string>
     <string name="main_tab_scanner_menu_show_rssi_graph">Show RSSI graph</string>
+    <string name="main_tab_scanner_menu_show_legend">Show legend</string>
 
     <string name="main_tab_advertiser_menu_switch_all_off">Switch all OFF</string>
     <string name="main_tab_advertiser_menu_restore_timeout_dialog">Restore timeout dialogs</string>
