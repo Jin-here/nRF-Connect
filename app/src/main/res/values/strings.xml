@@ -28,4 +28,9 @@
 
     <string name="main_tab_advertiser_menu_switch_all_off">Switch all OFF</string>
     <string name="main_tab_advertiser_menu_restore_timeout_dialog">Restore timeout dialogs</string>
+
+    <string name="main_permission_bluetooth_disabled">Bluetooth adapter is disabled.</string>
+    <string name="main_hint_bluetooth_not_supported">No Bluetooth Adapter Found</string>
+
+    <string name="action_enable">Enable</string>
 </resources>

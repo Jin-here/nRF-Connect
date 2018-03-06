@@ -5,7 +5,6 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -39,7 +38,7 @@ public class ScannerFragment extends MainBaseTabFragment implements BLEManager.B
         switch (item.getItemId()) {
             // 开始/停止扫描
             case R.id.main_tab_scanner_menu_scan:
-                if (mBLEManager.isDiscovering()) {
+                if (mBLEManager.scanning()) {
                     mBLEManager.stopScan(mActivity);
                 } else {
                     mBLEManager.startScan(mActivity);
@@ -47,13 +46,17 @@ public class ScannerFragment extends MainBaseTabFragment implements BLEManager.B
                 break;
             // 刷新
             case R.id.main_tab_scanner_menu_refresh:
-                if (!mBLEManager.isDiscovering()) {
+                if (!mBLEManager.scanning()) {
                     mBLEManager.startScan(mActivity);
                 }
                 break;
             // show rssi
             case R.id.main_tab_scanner_menu_show_rssi_graph:
                 binding.swipeLayoutScanner.expand();
+                break;
+            // show legend
+            case R.id.main_tab_scanner_menu_show_legend:
+                item.setChecked(!item.isChecked());
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -64,7 +67,7 @@ public class ScannerFragment extends MainBaseTabFragment implements BLEManager.B
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         mScannerFilterController = new ScannerFilterController();
-        mBLEManager = new BLEManager(getContext());
+        mBLEManager = new BLEManager(this);
         mBLEManager.setBLEListener(this);
     }
 
@@ -104,7 +107,6 @@ public class ScannerFragment extends MainBaseTabFragment implements BLEManager.B
         mScannerFilterController.onActivityCreated();
 
         mBLEManager.setListView(binding.lvScanner);
-        mBLEManager.check(this);
 
         binding.swipeRefreshScanner.setColorSchemeResources(android.R.color.black,
                 android.R.color.holo_red_light,
@@ -127,6 +129,8 @@ public class ScannerFragment extends MainBaseTabFragment implements BLEManager.B
 
     @Override
     public void onRefresh() {
-        mBLEManager.startScan(mActivity);
+        if (!mBLEManager.startScan(mActivity)) {
+            binding.swipeRefreshScanner.setRefreshing(false);
+        }
     }
 }
