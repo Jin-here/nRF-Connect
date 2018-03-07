@@ -3,17 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:elevation="2dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <com.github.florent37.expansionpanel.ExpansionHeader
+        <com.vgaw.nrfconnect.view.expansion.ExpansionHeader
             android:id="@+id/sampleHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:expansion_headerIndicator="@id/headerIndicator"
-            app:expansion_layout="@id/expansionLayout"
-            app:expansion_toggleOnClick="true"
+            app:headerIndicatorId="@id/headerIndicator"
+            app:expansionLayoutId="@id/expansionLayout"
             android:background="@android:color/white">
 
             <LinearLayout
@@ -38,32 +36,33 @@
                     android:layout_width="@dimen/space_24"
                     android:layout_height="@dimen/space_24"
                     android:layout_marginLeft="@dimen/space_16"
-                    app:srcCompat="@drawable/ic_expansion_header_indicator_grey_24dp" />
+                    app:srcCompat="@drawable/ic_keyboard_arrow_down_black_24dp" />
 
                 <ImageButton
                     android:id="@+id/ivClearAll"
-                    android:layout_width="@dimen/space_24"
-                    android:layout_height="@dimen/space_24"
+                    android:layout_width="@dimen/space_32"
+                    android:layout_height="@dimen/space_32"
                     android:layout_marginLeft="@dimen/space_16"
                     app:srcCompat="@drawable/ic_clear_black_24dp"
                     android:background="@android:color/transparent"
                     android:visibility="gone"/>
             </LinearLayout>
-        </com.github.florent37.expansionpanel.ExpansionHeader>
+        </com.vgaw.nrfconnect.view.expansion.ExpansionHeader>
 
-        <com.github.florent37.expansionpanel.ExpansionLayout
+        <com.vgaw.nrfconnect.view.expansion.ExpansionLayout
             android:id="@+id/expansionLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:expansion_expanded="false"
-            android:background="@android:color/white">
+            android:layout_height="match_parent"
+            app:expanded="false">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingLeft="@dimen/space_10"
-                android:paddingRight="@dimen/space_10">
+                android:paddingRight="@dimen/space_10"
+                android:background="@android:color/white"
+                android:clickable="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -87,15 +86,15 @@
 
                     <ImageButton
                         android:id="@+id/ivNameAddressMore"
-                        android:layout_width="@dimen/space_24"
-                        android:layout_height="@dimen/space_24"
+                        android:layout_width="@dimen/space_32"
+                        android:layout_height="@dimen/space_32"
                         app:srcCompat="@drawable/ic_more_vert_black_24dp"
                         android:background="@android:color/transparent"/>
 
                     <ImageButton
                         android:id="@+id/ivNameAddressClear"
-                        android:layout_width="@dimen/space_24"
-                        android:layout_height="@dimen/space_24"
+                        android:layout_width="@dimen/space_32"
+                        android:layout_height="@dimen/space_32"
                         app:srcCompat="@drawable/ic_clear_black_24dp"
                         android:background="@android:color/transparent"/>
                 </LinearLayout>
@@ -129,15 +128,15 @@
 
                     <ImageButton
                         android:id="@+id/ivDataMore"
-                        android:layout_width="@dimen/space_24"
-                        android:layout_height="@dimen/space_24"
+                        android:layout_width="@dimen/space_32"
+                        android:layout_height="@dimen/space_32"
                         app:srcCompat="@drawable/ic_more_vert_black_24dp"
                         android:background="@android:color/transparent"/>
 
                     <ImageButton
                         android:id="@+id/ivDataClear"
-                        android:layout_width="@dimen/space_24"
-                        android:layout_height="@dimen/space_24"
+                        android:layout_width="@dimen/space_32"
+                        android:layout_height="@dimen/space_32"
                         app:srcCompat="@drawable/ic_clear_black_24dp"
                         android:background="@android:color/transparent"/>
                 </LinearLayout>
@@ -190,6 +189,6 @@
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
             </LinearLayout>
-        </com.github.florent37.expansionpanel.ExpansionLayout>
+        </com.vgaw.nrfconnect.view.expansion.ExpansionLayout>
     </LinearLayout>
 </layout>

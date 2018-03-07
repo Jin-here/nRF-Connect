@@ -20,10 +20,6 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
-#expansionpanel
--keep class com.github.florent37.expansionpanel.** {*;}
--keep interface com.github.florent37.expansionpanel.** {*;}
--keep enum com.github.florent37.expansionpanel.** {*;}
 #fastjson
 -dontwarn com.alibaba.fastjson.**
 -keepattributes Singature
