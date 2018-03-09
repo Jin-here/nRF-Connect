@@ -98,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         binding.drawerMain.addDrawerListener(toggle);
         toggle.syncState();
 
+        setTitle(R.string.nav_device);
         binding.navMain.setNavigationItemSelectedListener(this);
 
         mMainTabController = new MainTabController(this, binding);

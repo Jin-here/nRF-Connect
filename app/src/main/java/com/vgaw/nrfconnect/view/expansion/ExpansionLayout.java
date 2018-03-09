@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -32,7 +33,8 @@ public class ExpansionLayout extends FrameLayout implements View.OnClickListener
     private boolean expanded;
 
     private ValueAnimator animator;
-    private int maxHeight;
+
+    private int contentLayoutHeight;
 
     private List<IndicatorListener> mIndicatorListenerList = new ArrayList<>();
 
@@ -73,7 +75,23 @@ public class ExpansionLayout extends FrameLayout implements View.OnClickListener
     protected void onFinishInflate() {
         super.onFinishInflate();
         contentLayout = getChildAt(1);
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        calculateExpansionLayoutHeight();
+
         proNoAnimation(false, expanded);
+    }
+
+    @Override
+    public void onClick(View v) {
+        toggle(true);
+    }
+
+    private void calculateExpansionLayoutHeight() {
+        contentLayoutHeight = contentLayout.getMeasuredHeight();
     }
 
     private void expand(boolean animate) {
@@ -98,7 +116,7 @@ public class ExpansionLayout extends FrameLayout implements View.OnClickListener
         }
 
         if (expand) {
-            updateContentLayoutHeight(maxHeight);
+            updateContentLayoutHeight(contentLayoutHeight);
             backgroundView.setBackgroundColor(BACKGROUND_EXPANDED);
             setVisibility(VISIBLE);
 
@@ -125,7 +143,7 @@ public class ExpansionLayout extends FrameLayout implements View.OnClickListener
                     animatedValue = 1 - animatedValue;
                 }
                 backgroundView.setBackgroundColor(blendColors(BACKGROUND_COLLAPSE, BACKGROUND_EXPANDED, animatedValue));
-                updateContentLayoutHeight((int) (maxHeight * animatedValue));
+                updateContentLayoutHeight((int) (contentLayoutHeight * animatedValue));
             }
         });
         animator.addListener(new AnimatorListenerAdapter() {
@@ -169,7 +187,6 @@ public class ExpansionLayout extends FrameLayout implements View.OnClickListener
     }
 
     private void init(@NonNull Context context, @Nullable AttributeSet attrs) {
-        maxHeight = getResources().getDimensionPixelOffset(R.dimen.space_200);
         if (attrs != null) {
             final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ExpansionHeader);
             if (a != null) {
@@ -177,6 +194,7 @@ public class ExpansionLayout extends FrameLayout implements View.OnClickListener
                 a.recycle();
             }
         }
+
         backgroundView = new View(getContext());
         addView(backgroundView, new LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
         backgroundView.setOnClickListener(this);
@@ -191,11 +209,6 @@ public class ExpansionLayout extends FrameLayout implements View.OnClickListener
         while (iterator.hasNext()) {
             iterator.next().onStartedExpand(this, willExpand);
         }
-    }
-
-    @Override
-    public void onClick(View v) {
-        toggle(true);
     }
 
     public interface IndicatorListener {

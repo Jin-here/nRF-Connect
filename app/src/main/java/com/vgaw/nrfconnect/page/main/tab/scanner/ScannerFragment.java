@@ -52,7 +52,7 @@ public class ScannerFragment extends MainBaseTabFragment implements BLEManager.B
                 break;
             // show rssi
             case R.id.main_tab_scanner_menu_show_rssi_graph:
-                binding.swipeLayoutScanner.expand();
+                binding.horizontalSwipeLayoutScanner.expand();
                 break;
             // show legend
             case R.id.main_tab_scanner_menu_show_legend:

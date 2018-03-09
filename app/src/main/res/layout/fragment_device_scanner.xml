@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -10,8 +11,8 @@
             android:layout_height="match_parent"
             android:background="@color/bg_light_transparent"></FrameLayout>
 
-        <com.vgaw.nrfconnect.view.SwipeLayout
-            android:id="@+id/swipeLayoutScanner"
+        <com.vgaw.nrfconnect.view.HorizontalSwipeLayout
+            android:id="@+id/horizontalSwipeLayoutScanner"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -20,23 +21,208 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <FrameLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:background="@color/bg_light">
 
-                    <com.vgaw.nrfconnect.view.MyListView
-                        android:id="@+id/lvScanner"
+                    <com.vgaw.nrfconnect.view.expansion.ExpansionHeader
+                        android:id="@+id/sampleHeader"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="@dimen/space_48"></com.vgaw.nrfconnect.view.MyListView>
+                        android:layout_height="wrap_content"
+                        app:headerIndicatorId="@id/headerIndicator"
+                        app:expansionLayoutId="@id/expansionLayout"
+                        android:background="@android:color/white">
 
-                    <include
-                        android:id="@+id/includeScanner"
-                        layout="@layout/include_device_scanner_filter"/>
-                </FrameLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/space_48"
+                            android:orientation="horizontal"
+                            android:paddingLeft="@dimen/space_10"
+                            android:paddingRight="@dimen/space_10"
+                            android:gravity="center_vertical"
+                            android:animateLayoutChanges="true">
+
+                            <TextView
+                                android:id="@+id/tvDescription"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/txt_dark_1"
+                                android:textSize="@dimen/txt_16"/>
+
+                            <ImageView
+                                android:id="@+id/headerIndicator"
+                                android:layout_width="@dimen/space_24"
+                                android:layout_height="@dimen/space_24"
+                                android:layout_marginLeft="@dimen/space_16"
+                                app:srcCompat="@drawable/ic_keyboard_arrow_down_black_24dp" />
+
+                            <ImageButton
+                                android:id="@+id/ivClearAll"
+                                android:layout_width="@dimen/space_32"
+                                android:layout_height="@dimen/space_32"
+                                android:layout_marginLeft="@dimen/space_16"
+                                app:srcCompat="@drawable/ic_clear_black_24dp"
+                                android:background="@android:color/transparent"
+                                android:visibility="gone"/>
+                        </LinearLayout>
+                    </com.vgaw.nrfconnect.view.expansion.ExpansionHeader>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <com.vgaw.nrfconnect.view.MyListView
+                            android:id="@+id/lvScanner"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"></com.vgaw.nrfconnect.view.MyListView>
+
+                        <com.vgaw.nrfconnect.view.expansion.ExpansionLayout
+                            android:id="@+id/expansionLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:expanded="false">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:paddingLeft="@dimen/space_10"
+                                android:paddingRight="@dimen/space_10"
+                                android:background="@android:color/white"
+                                android:clickable="true">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:gravity="center_vertical">
+
+                                    <ImageView
+                                        android:layout_width="@dimen/space_24"
+                                        android:layout_height="@dimen/space_24"
+                                        app:srcCompat="@drawable/ic_search_black_24dp"
+                                        android:layout_marginRight="@dimen/space_10"/>
+
+                                    <EditText
+                                        android:id="@+id/etNameAddress"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:inputType="text"
+                                        android:hint="@string/scanner_filter_name_hint"/>
+
+                                    <ImageButton
+                                        android:id="@+id/ivNameAddressMore"
+                                        android:layout_width="@dimen/space_32"
+                                        android:layout_height="@dimen/space_32"
+                                        app:srcCompat="@drawable/ic_more_vert_black_24dp"
+                                        android:background="@android:color/transparent"/>
+
+                                    <ImageButton
+                                        android:id="@+id/ivNameAddressClear"
+                                        android:layout_width="@dimen/space_32"
+                                        android:layout_height="@dimen/space_32"
+                                        app:srcCompat="@drawable/ic_clear_black_24dp"
+                                        android:background="@android:color/transparent"/>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:gravity="center_vertical">
+
+                                    <ImageView
+                                        android:layout_width="@dimen/space_24"
+                                        android:layout_height="@dimen/space_24"
+                                        app:srcCompat="@drawable/ic_rss_feed_black_24dp"
+                                        android:layout_marginRight="@dimen/space_10"/>
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="0x"
+                                        android:textColor="@color/txt_dark_1"
+                                        android:textSize="@dimen/txt_14"/>
+
+                                    <EditText
+                                        android:id="@+id/etData"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:inputType="text"
+                                        android:hint="@string/scanner_filter_data_hint"/>
+
+                                    <ImageButton
+                                        android:id="@+id/ivDataMore"
+                                        android:layout_width="@dimen/space_32"
+                                        android:layout_height="@dimen/space_32"
+                                        app:srcCompat="@drawable/ic_more_vert_black_24dp"
+                                        android:background="@android:color/transparent"/>
+
+                                    <ImageButton
+                                        android:id="@+id/ivDataClear"
+                                        android:layout_width="@dimen/space_32"
+                                        android:layout_height="@dimen/space_32"
+                                        app:srcCompat="@drawable/ic_clear_black_24dp"
+                                        android:background="@android:color/transparent"/>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:gravity="center_vertical"
+                                    android:layout_marginTop="@dimen/space_10"
+                                    android:layout_marginBottom="@dimen/space_10">
+
+                                    <ImageView
+                                        android:layout_width="@dimen/space_24"
+                                        android:layout_height="@dimen/space_24"
+                                        app:srcCompat="@drawable/ic_signal_wifi_3_bar_black_24dp"
+                                        android:layout_marginRight="@dimen/space_10"/>
+
+                                    <com.vgaw.nrfconnect.view.SBWithTV
+                                        android:id="@+id/sbRSSI"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"/>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:gravity="center_vertical"
+                                    android:layout_marginTop="@dimen/space_10"
+                                    android:layout_marginBottom="@dimen/space_10">
+
+                                    <ImageView
+                                        android:layout_width="@dimen/space_24"
+                                        android:layout_height="@dimen/space_24"
+                                        app:srcCompat="@drawable/ic_favorite_black_24dp"
+                                        android:layout_marginRight="@dimen/space_10"/>
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:text="@string/scanner_filter_only_favorite"
+                                        android:textColor="@color/txt_dark_1"
+                                        android:textSize="@dimen/txt_16"/>
+
+                                    <CheckBox
+                                        android:id="@+id/cbFavorite"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"/>
+                                </LinearLayout>
+                            </LinearLayout>
+                        </com.vgaw.nrfconnect.view.expansion.ExpansionLayout>
+                    </FrameLayout>
+                </LinearLayout>
             </android.support.v4.widget.SwipeRefreshLayout>
-        </com.vgaw.nrfconnect.view.SwipeLayout>
+        </com.vgaw.nrfconnect.view.HorizontalSwipeLayout>
     </FrameLayout>
 </layout>

@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.widget.FrameLayout;
 import android.widget.Scroller;
 
@@ -13,7 +14,7 @@ import android.widget.Scroller;
  * Created by dell on 2018/3/4.
  */
 
-public class SwipeLayout extends FrameLayout {
+public class HorizontalSwipeLayout extends FrameLayout {
     private static final String TAG = "SwipeLayout";
     private Scroller mScroller;
 
@@ -21,7 +22,7 @@ public class SwipeLayout extends FrameLayout {
     private boolean expand;
     private SwipeListener listener;
 
-    public SwipeLayout(Context context, @Nullable AttributeSet attrs) {
+    public HorizontalSwipeLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         mScroller = new Scroller(getContext());
 
@@ -50,13 +51,41 @@ public class SwipeLayout extends FrameLayout {
     }
 
     public void expand() {
-        SwipeLayout.this.scrollTo(-getRightPosition(), 0);
+        HorizontalSwipeLayout.this.scrollTo(-getRightPosition(), 0);
         setExpand(true);
     }
 
     public void fold() {
-        SwipeLayout.this.scrollTo(0, 0);
+        HorizontalSwipeLayout.this.scrollTo(0, 0);
         setExpand(false);
+    }
+
+    private float startY;
+    private float startX;
+
+    private final int mTouchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        switch (ev.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                startY = ev.getY();
+                startX = ev.getX();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                float endY = ev.getY();
+                float endX = ev.getX();
+                float distanceX = Math.abs(endX - startX);
+                float distanceY = Math.abs(endY - startY);
+                if (distanceX > mTouchSlop) {
+                    // 水平方向
+                    if (distanceX > distanceY) {
+                        return true;
+                    }
+                }
+                break;
+        }
+        return super.onInterceptTouchEvent(ev);
     }
 
     @Override
