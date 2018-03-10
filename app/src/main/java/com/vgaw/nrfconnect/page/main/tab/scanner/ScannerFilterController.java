@@ -15,12 +15,14 @@ import com.vgaw.nrfconnect.databinding.FragmentDeviceScannerBinding;
 import com.vgaw.nrfconnect.util.Utils;
 import com.vgaw.nrfconnect.view.HexInputFilter;
 import com.vgaw.nrfconnect.view.SBWithTV;
+import com.vgaw.nrfconnect.view.expansion.ExpansionLayout;
 
 /**
  * Created by caojin on 2018/3/2.
  */
 
-public class ScannerFilterController implements View.OnClickListener, CompoundButton.OnCheckedChangeListener, TextWatcher, SBWithTV.ShowValueListener {
+public class ScannerFilterController implements View.OnClickListener, CompoundButton.OnCheckedChangeListener, TextWatcher, SBWithTV.ShowValueListener, ExpansionLayout.IndicatorListener {
+    private static final String TAG = "ScannerFilterController";
     private static final int RSSI_MIN = -100;
     private static final int RSSI_MAX = -40;
 
@@ -44,6 +46,7 @@ public class ScannerFilterController implements View.OnClickListener, CompoundBu
         binding.etData.setFilters(new InputFilter[]{new HexInputFilter()});
         binding.etNameAddress.addTextChangedListener(this);
         binding.etData.addTextChangedListener(this);
+        binding.expansionLayout.addIndicatorListener(this);
 
         getFilterFromPreference();
         updateDescription();
@@ -53,7 +56,9 @@ public class ScannerFilterController implements View.OnClickListener, CompoundBu
         setFilterToPreference();
     }
 
-    public void onDestroy() {}
+    public void onDestroy() {
+        binding.expansionLayout.removeIndicatorListener(this);
+    }
 
     private void clearFavorite() {
         binding.cbFavorite.setChecked(false);
@@ -166,5 +171,11 @@ public class ScannerFilterController implements View.OnClickListener, CompoundBu
         scannerFilter.setRssi((int) binding.sbRSSI.getProgress());
         scannerFilter.setFavorite(binding.cbFavorite.isChecked());
         PreferenceManager.setScannerFilter(scannerFilter);
+    }
+
+    @Override
+    public void onStartedExpand(ExpansionLayout expansionLayout, boolean willExpand) {
+        binding.horizontalSwipeLayoutScanner.setHorizontalSwipeEnabled(!willExpand);
+        binding.swipeRefreshScanner.setEnabled(!willExpand);
     }
 }

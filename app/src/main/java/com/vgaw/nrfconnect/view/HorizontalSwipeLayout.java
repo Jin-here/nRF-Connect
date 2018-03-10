@@ -1,26 +1,35 @@
 package com.vgaw.nrfconnect.view;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.widget.FrameLayout;
 import android.widget.Scroller;
+
+import com.vgaw.nrfconnect.util.DensityUtil;
 
 /**
  * Created by dell on 2018/3/4.
  */
 
 public class HorizontalSwipeLayout extends FrameLayout {
-    private static final String TAG = "SwipeLayout";
-    private Scroller mScroller;
+    private static final String TAG = "HorizontalSwipeLayout";
+    private static final int DEFAULT_DURATION = 300;
 
+    private Scroller mScroller;
+    private float startY;
+    private float startX;
     private float downX;
+
     private boolean expand;
-    private SwipeListener listener;
+
+    private HorizontalListener listener;
+
+    private boolean horizontalSwipeDisabled;
 
     public HorizontalSwipeLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -46,7 +55,11 @@ public class HorizontalSwipeLayout extends FrameLayout {
         });
     }
 
-    public void setSwipeListener(SwipeListener listener) {
+    public void setHorizontalSwipeEnabled(boolean enabled) {
+        this.horizontalSwipeDisabled = !enabled;
+    }
+
+    public void setHorizontalSwipeListener(HorizontalListener listener) {
         this.listener = listener;
     }
 
@@ -60,45 +73,40 @@ public class HorizontalSwipeLayout extends FrameLayout {
         setExpand(false);
     }
 
-    private float startY;
-    private float startX;
-
-    private final int mTouchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
-
     @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
-        switch (ev.getAction()) {
+    public boolean onInterceptTouchEvent(MotionEvent event) {
+        if (horizontalSwipeDisabled) {
+            return false;
+        }
+        switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                startY = ev.getY();
-                startX = ev.getX();
+                startY = event.getY();
+                startX = event.getX();
+
+                downX = event.getRawX();
                 break;
             case MotionEvent.ACTION_MOVE:
-                float endY = ev.getY();
-                float endX = ev.getX();
+                float endY = event.getY();
+                float endX = event.getX();
                 float distanceX = Math.abs(endX - startX);
                 float distanceY = Math.abs(endY - startY);
-                if (distanceX > mTouchSlop) {
-                    // 水平方向
-                    if (distanceX > distanceY) {
-                        return true;
-                    }
+                // 水平方向
+                if (distanceX > distanceY) {
+                    return true;
                 }
                 break;
         }
-        return super.onInterceptTouchEvent(ev);
+        return super.onInterceptTouchEvent(event);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getActionMasked()) {
-            case MotionEvent.ACTION_DOWN:
-                downX = event.getRawX();
-                break;
             case MotionEvent.ACTION_MOVE:
                 int moveDX = (int) (downX - event.getRawX());
                 boolean toRight = (moveDX < 0);
-                boolean reachLimit = event.getRawX() > getRightPosition();
-                boolean reachRight = (getScrollX() == 0);
+                boolean reachLimit = (-getScrollX()) > getRightPosition();
+                boolean reachRight = (getScrollX() >= 0);
                 boolean canMove = ((toRight && !reachLimit) || (!toRight && !reachRight));
                 if (canMove) {
                     scrollBy(moveDX, 0);
@@ -120,14 +128,12 @@ public class HorizontalSwipeLayout extends FrameLayout {
                     setExpand(true);
                 }
                 mScroller.startScroll(getScrollX(), 0,
-                        dx, dy);
+                        dx, dy, DEFAULT_DURATION);
 
                 invalidate();
                 break;
-            default:
-                return super.onTouchEvent(event);
         }
-        return true;
+        return super.onTouchEvent(event);
     }
 
     @Override
@@ -157,7 +163,7 @@ public class HorizontalSwipeLayout extends FrameLayout {
         return getWidth() * 8 / 10;
     }
 
-    public interface SwipeListener {
+    public interface HorizontalListener {
         void onStateChanged(boolean expand);
     }
 }
