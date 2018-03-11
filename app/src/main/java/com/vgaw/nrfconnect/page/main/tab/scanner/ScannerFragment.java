@@ -1,5 +1,6 @@
 package com.vgaw.nrfconnect.page.main.tab.scanner;
 
+import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -16,6 +17,13 @@ import com.vgaw.nrfconnect.R;
 import com.vgaw.nrfconnect.common.BLEManager;
 import com.vgaw.nrfconnect.databinding.FragmentDeviceScannerBinding;
 import com.vgaw.nrfconnect.page.main.MainBaseTabFragment;
+import com.vgaw.nrfconnect.page.main.MainTabController;
+import com.vgaw.nrfconnect.util.ContextUtil;
+import com.vgaw.nrfconnect.view.adapter.EasyAdapter;
+import com.vgaw.nrfconnect.view.adapter.EasyHolder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by caojin on 2018/2/27.
@@ -26,6 +34,9 @@ public class ScannerFragment extends MainBaseTabFragment implements BLEManager.B
     private FragmentDeviceScannerBinding binding;
     private ScannerFilterController mScannerFilterController;
     private BLEManager mBLEManager;
+
+    private EasyAdapter mAdapter;
+    private List<BluetoothDevice> dataList = new ArrayList<>();
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -106,13 +117,24 @@ public class ScannerFragment extends MainBaseTabFragment implements BLEManager.B
     private void initView() {
         mScannerFilterController.onActivityCreated();
 
-        mBLEManager.setListView(binding.lvScanner);
-
         binding.swipeRefreshScanner.setColorSchemeResources(android.R.color.black,
                 android.R.color.holo_red_light,
                 android.R.color.holo_blue_dark,
                 android.R.color.holo_orange_dark);
         binding.swipeRefreshScanner.setOnRefreshListener(this);
+
+        mAdapter = new EasyAdapter(mActivity, dataList) {
+            @Override
+            public EasyHolder getHolder(int type) {
+                return new DeviceListHolder() {
+                    @Override
+                    protected void askedForConnect(BluetoothDevice device) {
+                        getMainTabController().addDeviceDetailFragment(device);
+                    }
+                };
+            }
+        };
+        binding.lvScanner.setAdapter(mAdapter);
     }
 
     @Override
@@ -128,9 +150,31 @@ public class ScannerFragment extends MainBaseTabFragment implements BLEManager.B
     }
 
     @Override
+    public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
+        if (!this.dataList.contains(device)) {
+            this.dataList.add(device);
+
+            notifyListViewAdapterChanged();
+        }
+    }
+
+    @Override
     public void onRefresh() {
         if (!mBLEManager.startScan(mActivity)) {
             binding.swipeRefreshScanner.setRefreshing(false);
         }
+    }
+
+    private void notifyListViewAdapterChanged() {
+        ContextUtil.getHandler().post(new Runnable() {
+            @Override
+            public void run() {
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    private MainTabController getMainTabController() {
+        return mActivity.getMainTabController();
     }
 }

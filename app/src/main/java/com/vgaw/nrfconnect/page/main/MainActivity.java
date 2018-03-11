@@ -41,6 +41,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return binding.toolbar.getMenu();
     }
 
+    public MainTabController getMainTabController() {
+        return this.mMainTabController;
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onDestroy() {
         super.onDestroy();
         unregisterBluetoothRecevier();
+        mMainTabController.release();
     }
 
     @Override
@@ -102,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         binding.navMain.setNavigationItemSelectedListener(this);
 
         mMainTabController = new MainTabController(this, binding);
-        mMainTabController.onCreate();
+        mMainTabController.init();
 
         binding.btnEnableBluetooth.setOnClickListener(this);
         proBluetoothHint();

@@ -3,6 +3,7 @@ package com.vgaw.nrfconnect.common;
 import android.Manifest;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothClass;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
@@ -11,9 +12,9 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.widget.ListView;
 
 import com.vgaw.nrfconnect.data.PreferenceManager;
+import com.vgaw.nrfconnect.util.HexTransform;
 
 /**
  * Created by caojin on 2018/2/27.
@@ -24,7 +25,6 @@ public class BLEManager implements BluetoothAdapter.LeScanCallback {
 
     private static final int REQUEST_CODE_PERMISSION = 0x00;
     private BluetoothAdapter mBluetoothAdapter;
-    private ListView listView;
     private Handler mHandler;
     private BLEListener listener;
     private Activity mActivity;
@@ -47,10 +47,6 @@ public class BLEManager implements BluetoothAdapter.LeScanCallback {
         this.mFragment = fragment;
         this.mActivity = fragment.getActivity();
         mHandler = new Handler();
-    }
-
-    public void setListView(ListView listView) {
-        this.listView = listView;
     }
 
     public void setBLEListener(BLEListener listener) {
@@ -106,8 +102,37 @@ public class BLEManager implements BluetoothAdapter.LeScanCallback {
 
     }
 
+    private String proBondState(int state) {
+        switch (state) {
+            case BluetoothDevice.BOND_NONE:
+                return "BOND_NONE";
+            case BluetoothDevice.BOND_BONDING:
+                return "BOND_BONDING";
+            case BluetoothDevice.BOND_BONDED:
+                return "BOND_BONDED";
+        }
+        return null;
+    }
+
+    private String proDeviceType(int type) {
+        switch (type) {
+            case BluetoothDevice.DEVICE_TYPE_UNKNOWN:
+                return "DEVICE_TYPE_UNKNOWN";
+            case BluetoothDevice.DEVICE_TYPE_CLASSIC:
+                return "DEVICE_TYPE_CLASSIC";
+            case BluetoothDevice.DEVICE_TYPE_LE:
+                return "DEVICE_TYPE_LE";
+            case BluetoothDevice.DEVICE_TYPE_DUAL:
+                return "DEVICE_TYPE_DUAL";
+        }
+        return null;
+    }
+
     @Override
-    public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {}
+    public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
+        Log.d(TAG, "onLeScan: " + device.getName() + ":" + HexTransform.bytesToHexString(scanRecord));
+        notifyLeScan(device, rssi, scanRecord);
+    }
 
     private boolean checkPermission() {
         boolean gotPermission = ContextCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
@@ -115,6 +140,12 @@ public class BLEManager implements BluetoothAdapter.LeScanCallback {
             mFragment.requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_CODE_PERMISSION);
         }
         return gotPermission;
+    }
+
+    private void notifyLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
+        if (listener != null) {
+            listener.onLeScan(device, rssi, scanRecord);
+        }
     }
 
     private void notifyScanStarted() {
@@ -142,5 +173,7 @@ public class BLEManager implements BluetoothAdapter.LeScanCallback {
         void onScanStarted();
 
         void onScanStopped();
+
+        void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord);
     }
 }
