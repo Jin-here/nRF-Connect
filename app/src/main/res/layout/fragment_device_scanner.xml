@@ -83,8 +83,8 @@
                         <com.vgaw.nrfconnect.view.expansion.ExpansionLayout
                             android:id="@+id/expansionLayout"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            app:expanded="false">
+                            android:layout_height="wrap_content"
+                            app:maskEnabled="true">
 
                             <LinearLayout
                                 android:layout_width="match_parent"

@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -29,6 +28,7 @@ public class ExpansionLayout extends FrameLayout implements View.OnClickListener
     private static final int BACKGROUND_EXPANDED = Color.LTGRAY;
 
     private View backgroundView;
+    private boolean maskEnabled;
     private View contentLayout;
     private boolean expanded;
 
@@ -74,12 +74,11 @@ public class ExpansionLayout extends FrameLayout implements View.OnClickListener
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        contentLayout = getChildAt(1);
-    }
+        int childCount = getChildCount();
+        if (childCount > 0) {
+            contentLayout = getChildAt( - 1);
+        }
 
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
         calculateExpansionLayoutHeight();
 
         proNoAnimation(false, expanded);
@@ -91,7 +90,10 @@ public class ExpansionLayout extends FrameLayout implements View.OnClickListener
     }
 
     private void calculateExpansionLayoutHeight() {
-        contentLayoutHeight = contentLayout.getMeasuredHeight();
+        if (contentLayout != null) {
+            contentLayout.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
+            contentLayoutHeight = contentLayout.getMeasuredHeight();
+        }
     }
 
     private void expand(boolean animate) {
@@ -117,13 +119,13 @@ public class ExpansionLayout extends FrameLayout implements View.OnClickListener
 
         if (expand) {
             updateContentLayoutHeight(contentLayoutHeight);
-            backgroundView.setBackgroundColor(BACKGROUND_EXPANDED);
+            updateBackgroundColor(BACKGROUND_EXPANDED);
             setVisibility(VISIBLE);
 
             expanded = true;
         } else {
             updateContentLayoutHeight(0);
-            backgroundView.setBackgroundColor(BACKGROUND_COLLAPSE);
+            updateBackgroundColor(BACKGROUND_COLLAPSE);
             setVisibility(GONE);
 
             expanded = false;
@@ -142,7 +144,7 @@ public class ExpansionLayout extends FrameLayout implements View.OnClickListener
                 if (!expand) {
                     animatedValue = 1 - animatedValue;
                 }
-                backgroundView.setBackgroundColor(blendColors(BACKGROUND_COLLAPSE, BACKGROUND_EXPANDED, animatedValue));
+                updateBackgroundColor(blendColors(BACKGROUND_COLLAPSE, BACKGROUND_EXPANDED, animatedValue));
                 updateContentLayoutHeight((int) (contentLayoutHeight * animatedValue));
             }
         });
@@ -181,23 +183,46 @@ public class ExpansionLayout extends FrameLayout implements View.OnClickListener
     }
 
     private void updateContentLayoutHeight(int height) {
-        ViewGroup.LayoutParams layoutParams = contentLayout.getLayoutParams();
-        layoutParams.height = height;
-        contentLayout.setLayoutParams(layoutParams);
+        if (contentLayout != null) {
+            ViewGroup.LayoutParams layoutParams = contentLayout.getLayoutParams();
+            layoutParams.height = height;
+            contentLayout.setLayoutParams(layoutParams);
+        }
     }
 
     private void init(@NonNull Context context, @Nullable AttributeSet attrs) {
         if (attrs != null) {
-            final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ExpansionHeader);
+            final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ExpansionLayout);
             if (a != null) {
                 setExpanded(a.getBoolean(R.styleable.ExpansionLayout_expanded, false));
+                setMaskEnabled(a.getBoolean(R.styleable.ExpansionLayout_maskEnabled, false));
                 a.recycle();
             }
         }
 
-        backgroundView = new View(getContext());
-        addView(backgroundView, new LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
-        backgroundView.setOnClickListener(this);
+        initMask();
+    }
+
+    private void initMask() {
+        if (maskEnabled()) {
+            backgroundView = new View(getContext());
+            addView(backgroundView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+            backgroundView.setOnClickListener(this);
+        }
+    }
+
+    private boolean maskEnabled() {
+        return this.maskEnabled;
+    }
+
+    private void setMaskEnabled(boolean maskEnabled) {
+        this.maskEnabled = maskEnabled;
+    }
+
+    private void updateBackgroundColor(int color) {
+        if (maskEnabled()) {
+            backgroundView.setBackgroundColor(color);
+        }
     }
 
     private void setExpanded(boolean expanded) {

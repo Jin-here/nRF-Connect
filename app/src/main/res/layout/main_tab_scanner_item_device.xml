@@ -1,18 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tvMainTabScannerItemDeviceName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <Button
-        android:id="@+id/btnMainTabScannerItemDeviceConnect"
-        android:layout_width="wrap_content"
+    <com.vgaw.nrfconnect.view.expansion.ExpansionHeader
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:text="@string/action_connect"/>
-</RelativeLayout>
+        app:expansionLayoutId="@id/expansionLayoutMainTabScannerItemDevice">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tvMainTabScannerItemDeviceName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:text="TextView"
+                app:layout_constraintBottom_toTopOf="@+id/tvMainTabScannerItemDeviceAddress"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <TextView
+                android:id="@+id/tvMainTabScannerItemDeviceAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                app:layout_constraintBottom_toTopOf="@+id/tvMainTabScannerItemDeviceBoundState"
+                app:layout_constraintStart_toStartOf="@+id/tvMainTabScannerItemDeviceName"
+                app:layout_constraintTop_toBottomOf="@+id/tvMainTabScannerItemDeviceName" />
+
+            <TextView
+                android:id="@+id/tvMainTabScannerItemDeviceBoundState"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/tvMainTabScannerItemDeviceAddress"
+                app:layout_constraintTop_toBottomOf="@+id/tvMainTabScannerItemDeviceAddress" />
+
+            <Button
+                android:id="@+id/btnMainTabScannerItemDeviceConnect"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="@string/action_connect"
+                app:layout_constraintBottom_toTopOf="@+id/tvMainTabScannerItemDeviceBoundState"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <TextView
+                android:id="@+id/tvMainTabScannerItemDeviceRSSI"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:text="TextView"
+                app:layout_constraintEnd_toEndOf="@+id/btnMainTabScannerItemDeviceConnect"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tvMainTabScannerItemDeviceBoundState"
+                app:layout_constraintTop_toBottomOf="@+id/btnMainTabScannerItemDeviceConnect" />
+        </android.support.constraint.ConstraintLayout>
+    </com.vgaw.nrfconnect.view.expansion.ExpansionHeader>
+
+    <com.vgaw.nrfconnect.view.expansion.ExpansionLayout
+        android:id="@+id/expansionLayoutMainTabScannerItemDevice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></com.vgaw.nrfconnect.view.expansion.ExpansionLayout>
+</LinearLayout>

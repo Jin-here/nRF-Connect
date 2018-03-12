@@ -7,5 +7,6 @@
 
     <declare-styleable name="ExpansionLayout">
         <attr name="expanded" format="boolean"/>
+        <attr name="maskEnabled" format="boolean"/>
     </declare-styleable>
 </resources>
