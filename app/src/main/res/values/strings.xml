@@ -32,6 +32,17 @@
     <string name="main_permission_bluetooth_disabled">Bluetooth adapter is disabled.</string>
     <string name="main_hint_bluetooth_not_supported">No Bluetooth Adapter Found</string>
 
-    <string name="action_enable">Enable</string>
-    <string name="action_connect">Connect</string>
+    <string name="main_tab_scanner_action_enable">Enable</string>
+    <string name="main_tab_scanner_action_connect">Connect</string>
+
+    <string name="main_tab_scanner_bond_state_none">Not Bonded</string>
+    <string name="main_tab_scanner_bond_state_bonding">Bonding</string>
+    <string name="main_tab_scanner_bond_state_bonded">Bonded</string>
+
+    <string name="main_tab_scanner_device_type_unknown">Unknown</string>
+    <string name="main_tab_scanner_device_type_classic">Classic</string>
+    <string name="main_tab_scanner_device_type_le">LE</string>
+    <string name="main_tab_scanner_device_type_dual">Dual</string>
+
+    <string name="main_tab_scanner_device_name_unknown">N/A</string>
 </resources>

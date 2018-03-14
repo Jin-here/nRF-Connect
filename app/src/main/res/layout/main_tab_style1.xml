@@ -5,4 +5,5 @@
     android:textSize="@dimen/txt_14"
     android:textStyle="bold"
     android:padding="@dimen/space_16"
-    android:textAllCaps="true"/>
+    android:textAllCaps="true"
+    android:background="?android:selectableItemBackground"/>

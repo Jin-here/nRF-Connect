@@ -25,7 +25,7 @@ import java.util.List;
 
 public class ExpansionLayout extends FrameLayout implements View.OnClickListener {
     private static final int BACKGROUND_COLLAPSE = Color.TRANSPARENT;
-    private static final int BACKGROUND_EXPANDED = Color.LTGRAY;
+    private static final int BACKGROUND_EXPANDED = Color.parseColor("#55555555");
 
     private View backgroundView;
     private boolean maskEnabled;
@@ -76,7 +76,7 @@ public class ExpansionLayout extends FrameLayout implements View.OnClickListener
         super.onFinishInflate();
         int childCount = getChildCount();
         if (childCount > 0) {
-            contentLayout = getChildAt( - 1);
+            contentLayout = getChildAt( childCount - 1);
         }
 
         calculateExpansionLayoutHeight();

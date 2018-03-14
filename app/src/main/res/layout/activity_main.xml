@@ -55,7 +55,7 @@
                         android:textColor="@color/txt_light_1"
                         android:textAllCaps="true"
                         android:textStyle="bold"
-                        android:text="@string/action_enable"/>
+                        android:text="@string/main_tab_scanner_action_enable"/>
                 </RelativeLayout>
 
                 <com.vgaw.nrfconnect.view.tab.SlidingTabLayout

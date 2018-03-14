@@ -19,6 +19,7 @@ import com.vgaw.nrfconnect.databinding.FragmentDeviceScannerBinding;
 import com.vgaw.nrfconnect.page.main.MainBaseTabFragment;
 import com.vgaw.nrfconnect.page.main.MainTabController;
 import com.vgaw.nrfconnect.util.ContextUtil;
+import com.vgaw.nrfconnect.view.HorizontalSwipeLayout;
 import com.vgaw.nrfconnect.view.adapter.EasyAdapter;
 import com.vgaw.nrfconnect.view.adapter.EasyHolder;
 
@@ -29,14 +30,14 @@ import java.util.List;
  * Created by caojin on 2018/2/27.
  */
 
-public class ScannerFragment extends MainBaseTabFragment implements BLEManager.BLEListener, SwipeRefreshLayout.OnRefreshListener {
+public class ScannerFragment extends MainBaseTabFragment implements BLEManager.BLEListener, SwipeRefreshLayout.OnRefreshListener, HorizontalSwipeLayout.HorizontalListener {
     public static final String TAG = "ScannerFragment";
     private FragmentDeviceScannerBinding binding;
     private ScannerFilterController mScannerFilterController;
     private BLEManager mBLEManager;
 
     private EasyAdapter mAdapter;
-    private List<BluetoothDevice> dataList = new ArrayList<>();
+    private List<DeviceUIBean> dataList = new ArrayList<DeviceUIBean>();
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -122,10 +123,11 @@ public class ScannerFragment extends MainBaseTabFragment implements BLEManager.B
                 android.R.color.holo_blue_dark,
                 android.R.color.holo_orange_dark);
         binding.swipeRefreshScanner.setOnRefreshListener(this);
+        binding.horizontalSwipeLayoutScanner.setHorizontalSwipeListener(this);
 
-        mAdapter = new EasyAdapter(mActivity, dataList) {
+        mAdapter = new EasyAdapter<DeviceUIBean>(mActivity, dataList) {
             @Override
-            public EasyHolder getHolder(int type) {
+            public EasyHolder<DeviceUIBean> getHolder(int type) {
                 return new DeviceListHolder() {
                     @Override
                     protected void askedForConnect(BluetoothDevice device) {
@@ -151,11 +153,20 @@ public class ScannerFragment extends MainBaseTabFragment implements BLEManager.B
 
     @Override
     public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
-        if (!this.dataList.contains(device)) {
-            this.dataList.add(device);
+        if (!containDevice(device)) {
+            this.dataList.add(new DeviceUIBean(device, rssi, scanRecord));
 
             notifyListViewAdapterChanged();
         }
+    }
+
+    private boolean containDevice(BluetoothDevice device) {
+        for (DeviceUIBean item : dataList) {
+            if (item.equals(device)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -177,4 +188,7 @@ public class ScannerFragment extends MainBaseTabFragment implements BLEManager.B
     private MainTabController getMainTabController() {
         return mActivity.getMainTabController();
     }
+
+    @Override
+    public void onStateChanged(boolean expand) {}
 }

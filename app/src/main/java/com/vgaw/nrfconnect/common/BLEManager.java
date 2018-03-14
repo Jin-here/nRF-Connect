@@ -102,32 +102,6 @@ public class BLEManager implements BluetoothAdapter.LeScanCallback {
 
     }
 
-    private String proBondState(int state) {
-        switch (state) {
-            case BluetoothDevice.BOND_NONE:
-                return "BOND_NONE";
-            case BluetoothDevice.BOND_BONDING:
-                return "BOND_BONDING";
-            case BluetoothDevice.BOND_BONDED:
-                return "BOND_BONDED";
-        }
-        return null;
-    }
-
-    private String proDeviceType(int type) {
-        switch (type) {
-            case BluetoothDevice.DEVICE_TYPE_UNKNOWN:
-                return "DEVICE_TYPE_UNKNOWN";
-            case BluetoothDevice.DEVICE_TYPE_CLASSIC:
-                return "DEVICE_TYPE_CLASSIC";
-            case BluetoothDevice.DEVICE_TYPE_LE:
-                return "DEVICE_TYPE_LE";
-            case BluetoothDevice.DEVICE_TYPE_DUAL:
-                return "DEVICE_TYPE_DUAL";
-        }
-        return null;
-    }
-
     @Override
     public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
         Log.d(TAG, "onLeScan: " + device.getName() + ":" + HexTransform.bytesToHexString(scanRecord));

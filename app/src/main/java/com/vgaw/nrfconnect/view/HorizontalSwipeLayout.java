@@ -1,16 +1,14 @@
 package com.vgaw.nrfconnect.view;
 
 import android.content.Context;
-import android.os.Build;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.widget.FrameLayout;
 import android.widget.Scroller;
-
-import com.vgaw.nrfconnect.util.DensityUtil;
 
 /**
  * Created by dell on 2018/3/4.
@@ -21,9 +19,10 @@ public class HorizontalSwipeLayout extends FrameLayout {
     private static final int DEFAULT_DURATION = 300;
 
     private Scroller mScroller;
-    private float startY;
-    private float startX;
+    private float downY;
     private float downX;
+    private Boolean childAbsorbed;
+    private int mTouchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
 
     private boolean expand;
 
@@ -43,7 +42,7 @@ public class HorizontalSwipeLayout extends FrameLayout {
                 } else {
                     fold();
                 }
-                return true;
+                return false;
             }
         };
         final GestureDetector gd = new GestureDetector(getContext(), gestureListener);
@@ -78,21 +77,33 @@ public class HorizontalSwipeLayout extends FrameLayout {
         if (horizontalSwipeDisabled) {
             return false;
         }
-        switch (event.getAction()) {
+        switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
-                startY = event.getY();
-                startX = event.getX();
-
                 downX = event.getRawX();
+                downY = event.getRawY();
                 break;
             case MotionEvent.ACTION_MOVE:
-                float endY = event.getY();
-                float endX = event.getX();
-                float distanceX = Math.abs(endX - startX);
-                float distanceY = Math.abs(endY - startY);
-                // 水平方向
-                if (distanceX > distanceY) {
-                    return true;
+                float endX = event.getRawX();
+                float endY = event.getRawY();
+                if (childAbsorbed != null) {
+                    if (childAbsorbed) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+                float distanceX = Math.abs(endX - downX);
+                float distanceY = Math.abs(endY - downY);
+                // 防止影响点击事件触发
+                if (distanceX > mTouchSlop || distanceY > mTouchSlop) {
+                    childAbsorbed = distanceX < distanceY;
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                if (childAbsorbed != null) {
+                    boolean temp = childAbsorbed;
+                    childAbsorbed = null;
+                    return !temp;
                 }
                 break;
         }
@@ -114,6 +125,8 @@ public class HorizontalSwipeLayout extends FrameLayout {
                 downX = event.getRawX();
                 break;
             case MotionEvent.ACTION_UP:
+                childAbsorbed = null;
+
                 int dx;
                 int dy;
                 if (xLeft()) {

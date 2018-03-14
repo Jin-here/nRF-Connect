@@ -12,9 +12,9 @@ import java.util.List;
  * to : caojinmail@163.com
  * me : github.com/VolodymyrCj/
  */
-public abstract class EasyAdapter extends BaseAdapter {
+public abstract class EasyAdapter<T> extends BaseAdapter {
     protected Context context;
-    private List dataList;
+    private List<T> dataList;
 
     public EasyAdapter(Context context) {
         this(context, null);
@@ -25,7 +25,7 @@ public abstract class EasyAdapter extends BaseAdapter {
      * @param context
      * @param dataList
      */
-    public EasyAdapter(Context context, List dataList){
+    public EasyAdapter(Context context, List<T> dataList){
         this.context = context;
         this.dataList = dataList;
     }
@@ -36,7 +36,7 @@ public abstract class EasyAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public T getItem(int position) {
         return dataList == null ? null : dataList.get(position);
     }
 
@@ -50,6 +50,7 @@ public abstract class EasyAdapter extends BaseAdapter {
         EasyHolder holder = null;
         if (convertView == null){
             holder = getHolder(getItemViewType(position));
+            holder.setDataList(this.dataList);
             holder.init(context);
             convertView = holder.createView(position);
             convertView.setTag(holder);
@@ -60,6 +61,5 @@ public abstract class EasyAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public abstract EasyHolder getHolder(int type);
-
+    public abstract EasyHolder<T> getHolder(int type);
 }

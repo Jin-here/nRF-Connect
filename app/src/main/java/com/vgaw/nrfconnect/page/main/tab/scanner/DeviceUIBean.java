@@ -10,6 +10,7 @@ public class DeviceUIBean {
     public BluetoothDevice device;
     public int rssi;
     public byte[] scanRecord;
+    public boolean expanded;
 
     public DeviceUIBean() {}
 
@@ -24,10 +25,13 @@ public class DeviceUIBean {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (o == null || (getClass() != o.getClass()) && o.getClass() != BluetoothDevice.class) {
             return false;
         }
 
+        if (o.getClass() == BluetoothDevice.class) {
+            return device.equals(o);
+        }
         DeviceUIBean that = (DeviceUIBean) o;
 
         return device.equals(that.device);
