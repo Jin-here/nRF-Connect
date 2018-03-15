@@ -1,7 +1,5 @@
 package com.vgaw.nrfconnect.util.bluetooth.flags;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +32,6 @@ public class FlagsResolver {
             resultList.add(new FlagsItem(i, i, descriptionList.get(i), enabled == 1));
         }
         resultList.add(new FlagsItem(5, 7, descriptionList.get(5), false));
-        Log.d("BLE", "resolve: " + resultList);
         return new FlagsValue(resultList);
     }
 }

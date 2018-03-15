@@ -1,6 +1,6 @@
 package com.vgaw.nrfconnect.util.bluetooth.manufacturer;
 
-import java.util.Arrays;
+import com.vgaw.nrfconnect.util.HexTransform;
 
 /**
  * Created by dell on 2018/3/15.
@@ -45,6 +45,8 @@ public class ManufacturerValue {
 
     @Override
     public String toString() {
-        return manufactureName;
+        return manufactureName +
+                "<0x" + HexTransform.byteToHexString(manufactureId[1]) + HexTransform.byteToHexString(manufactureId[0]) + "> 0x" +
+                HexTransform.bytesToHexString(specificData);
     }
 }

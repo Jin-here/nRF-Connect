@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.vgaw.nrfconnect.util.HexTransform;
 import com.vgaw.nrfconnect.util.bluetooth.flags.FlagsResolver;
+import com.vgaw.nrfconnect.util.bluetooth.localname.LocalNameResolver;
 import com.vgaw.nrfconnect.util.bluetooth.manufacturer.ManufacturerResolver;
 
 import java.io.ByteArrayInputStream;
@@ -13,10 +14,10 @@ import java.util.List;
 
 /**
  * Created by dell on 2018/3/15.
- *
+ * <p>
  * 1. 获取所有列表，可显示
- *    1. type和value
- *    2. value可以切换处理过的结果和原始数据
+ * 1. type和value
+ * 2. value可以切换处理过的结果和原始数据
  * 2. 获取所有的flags和services
  */
 
@@ -25,7 +26,7 @@ public class BLEDataResolver {
         Log.d("BLE", "group: " + HexTransform.bytesToHexString(raw));
         List<BLEData> resultList = new ArrayList<>();
         ByteArrayInputStream in = new ByteArrayInputStream(raw);
-        for (;;) {
+        for (; ; ) {
             BLEData bleData = readOneGroup(in);
             if (bleData != null) {
                 resultList.add(bleData);
@@ -61,11 +62,15 @@ public class BLEDataResolver {
             case BLETypeNameResolver.TYPE_FLAGS:
                 return new String[]{BLETypeNameResolver.getName(data.getType()),
                         String.valueOf(FlagsResolver.resolve(data.getValue()))};
-                case BLETypeNameResolver.TYPE_MANUFACTURER_SPECIFIC_DATA:
-                    return new String[]{BLETypeNameResolver.getName(data.getType()),
-                            String.valueOf(ManufacturerResolver.resolve(data.getValue()))};
+            case BLETypeNameResolver.TYPE_MANUFACTURER_SPECIFIC_DATA:
+                return new String[]{BLETypeNameResolver.getName(data.getType()),
+                        String.valueOf(ManufacturerResolver.resolve(data.getValue()))};
+            case BLETypeNameResolver.TYPE_COMPLETE_LOCAL_NAME:
+            case BLETypeNameResolver.TYPE_SHORTENED_LOCAL_NAME:
+                return new String[]{BLETypeNameResolver.getName(data.getType()),
+                        LocalNameResolver.resolve(data.getValue())};
         }
         return new String[]{HexTransform.byteToHexString(data.getType()),
-        HexTransform.bytesToHexString(data.getValue())};
+                HexTransform.bytesToHexString(data.getValue())};
     }
 }

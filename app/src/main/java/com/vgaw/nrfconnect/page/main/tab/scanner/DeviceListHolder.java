@@ -1,7 +1,6 @@
 package com.vgaw.nrfconnect.page.main.tab.scanner;
 
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothGattCallback;
 import android.support.annotation.StringRes;
 import android.view.View;
 import android.widget.Button;

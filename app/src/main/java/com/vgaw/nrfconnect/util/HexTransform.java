@@ -48,7 +48,13 @@ public class HexTransform {
 
 	public static String byteToHexString(byte src) {
 		int v = src & 0xFF;
-		return Integer.toHexString(v);
+		String hv = Integer.toHexString(v);
+		StringBuilder stringBuilder = new StringBuilder();
+		if (hv.length() < 2) {
+			stringBuilder.append(0);
+		}
+		stringBuilder.append(hv);
+		return stringBuilder.toString();
 	}
 
 	/**
@@ -66,7 +72,7 @@ public class HexTransform {
 	        String hv = Integer.toHexString(v);  
 	        if (hv.length() < 2) {  
 	            stringBuilder.append(0);  
-	        }  
+	        }
 	        stringBuilder.append(hv);  
 	    }  
 	    return stringBuilder.toString();  

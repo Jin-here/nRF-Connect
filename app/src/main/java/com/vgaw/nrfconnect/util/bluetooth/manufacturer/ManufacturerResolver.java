@@ -35,14 +35,13 @@ public class ManufacturerResolver {
         });
     }
 
-    public static ManufacturerValue resolve(byte[] data) {
-        // 4c0010020b00
-        byte[] manufactureId = new byte[]{data[0], data[1]};
+    public static ManufacturerValue resolve(byte[] value) {
+        byte[] manufactureId = new byte[]{value[0], value[1]};
         ByteBuffer buffer = ByteBuffer.wrap(manufactureId);
         buffer.order(ByteOrder.LITTLE_ENDIAN);
         int idInt = buffer.getShort();
-        byte[] specificData = new byte[data.length - 2];
-        System.arraycopy(data, 2, specificData, 0, specificData.length);
+        byte[] specificData = new byte[value.length - 2];
+        System.arraycopy(value, 2, specificData, 0, specificData.length);
         return new ManufacturerValue(map.get(idInt), manufactureId, specificData);
     }
 }
