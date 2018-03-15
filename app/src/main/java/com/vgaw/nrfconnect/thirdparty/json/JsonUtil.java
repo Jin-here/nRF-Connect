@@ -3,7 +3,9 @@ package com.vgaw.nrfconnect.thirdparty.json;
 import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.vgaw.nrfconnect.thirdparty.json.callback.IterationArrayCallback;
 import com.vgaw.nrfconnect.thirdparty.json.callback.IterationCallback;
 
 import java.lang.reflect.Type;
@@ -63,6 +65,14 @@ public class JsonUtil {
         while (iterator.hasNext()) {
             Map.Entry<String, Object> next = iterator.next();
             callback.onIterate(next.getKey(), next.getValue().toString());
+        }
+    }
+
+    public static void iterate(String json, IterationArrayCallback callback) {
+        JSONArray jsonArray = JSON.parseArray(json);
+        for (int i = 0;i < jsonArray.size();i++) {
+            JSONArray item = jsonArray.getJSONArray(i);
+            callback.onIterate(item.toJSONString());
         }
     }
 }

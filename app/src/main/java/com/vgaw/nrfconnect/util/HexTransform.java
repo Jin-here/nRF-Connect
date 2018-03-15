@@ -1,5 +1,7 @@
 package com.vgaw.nrfconnect.util;
 
+import java.nio.ByteBuffer;
+
 public class HexTransform {
 	/**
 	 * 字符串转换成十六进制字符串
@@ -42,6 +44,11 @@ public class HexTransform {
 			bytes[i] = (byte) (n & 0xff);
 		}
 		return new String(bytes);
+	}
+
+	public static String byteToHexString(byte src) {
+		int v = src & 0xFF;
+		return Integer.toHexString(v);
 	}
 
 	/**

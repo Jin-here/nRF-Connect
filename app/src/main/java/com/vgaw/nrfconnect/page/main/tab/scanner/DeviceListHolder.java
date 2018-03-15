@@ -23,6 +23,7 @@ public abstract class DeviceListHolder extends EasyHolder<DeviceUIBean> {
     private TextView tvMainTabScannerItemDeviceRSSI;
     private Button btnMainTabScannerItemDeviceConnect;
     private ExpansionLayout expansionLayoutMainTabScannerItemDevice;
+    private BLEDataContainerView vMainTabScannerItemDataContainer;
 
     @Override
     public View createView(int position) {
@@ -40,6 +41,7 @@ public abstract class DeviceListHolder extends EasyHolder<DeviceUIBean> {
                 DeviceListHolder.this.dataList.get(position).expanded = willExpand;
             }
         });
+        vMainTabScannerItemDataContainer = view.findViewById(R.id.vMainTabScannerItemDataContainer);
         return view;
     }
 
@@ -64,6 +66,7 @@ public abstract class DeviceListHolder extends EasyHolder<DeviceUIBean> {
         if (expansionLayoutMainTabScannerItemDevice.expanded() ^ item.expanded) {
             expansionLayoutMainTabScannerItemDevice.toggle(false);
         }
+        vMainTabScannerItemDataContainer.updateData(item.device.getType(), item.scanRecord);
     }
 
     @Override
@@ -85,20 +88,6 @@ public abstract class DeviceListHolder extends EasyHolder<DeviceUIBean> {
                 return R.string.main_tab_scanner_bond_state_bonding;
             case BluetoothDevice.BOND_BONDED:
                 return R.string.main_tab_scanner_bond_state_bonded;
-        }
-        return -1;
-    }
-
-    private @StringRes int proDeviceType(int type) {
-        switch (type) {
-            case BluetoothDevice.DEVICE_TYPE_UNKNOWN:
-                return R.string.main_tab_scanner_device_type_unknown;
-            case BluetoothDevice.DEVICE_TYPE_CLASSIC:
-                return R.string.main_tab_scanner_device_type_classic;
-            case BluetoothDevice.DEVICE_TYPE_LE:
-                return R.string.main_tab_scanner_device_type_le;
-            case BluetoothDevice.DEVICE_TYPE_DUAL:
-                return R.string.main_tab_scanner_device_type_dual;
         }
         return -1;
     }

@@ -15,6 +15,9 @@ import android.util.Log;
 
 import com.vgaw.nrfconnect.data.PreferenceManager;
 import com.vgaw.nrfconnect.util.HexTransform;
+import com.vgaw.nrfconnect.util.bluetooth.BLEDataResolver;
+
+import java.io.IOException;
 
 /**
  * Created by caojin on 2018/2/27.
@@ -104,7 +107,11 @@ public class BLEManager implements BluetoothAdapter.LeScanCallback {
 
     @Override
     public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
-        Log.d(TAG, "onLeScan: " + device.getName() + ":" + HexTransform.bytesToHexString(scanRecord));
+        try {
+            BLEDataResolver.group(scanRecord);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         notifyLeScan(device, rssi, scanRecord);
     }
 

@@ -21,7 +21,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
-                android:text="TextView"
+                android:textStyle="bold"
+                android:textColor="@color/txt_dark_1"
                 app:layout_constraintBottom_toTopOf="@+id/tvMainTabScannerItemDeviceAddress"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -32,7 +33,7 @@
                 android:id="@+id/tvMainTabScannerItemDeviceAddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView"
+                android:textColor="@color/txt_dark_1"
                 app:layout_constraintBottom_toTopOf="@+id/tvMainTabScannerItemDeviceBoundState"
                 app:layout_constraintStart_toStartOf="@+id/tvMainTabScannerItemDeviceName"
                 app:layout_constraintTop_toBottomOf="@+id/tvMainTabScannerItemDeviceName" />
@@ -41,7 +42,7 @@
                 android:id="@+id/tvMainTabScannerItemDeviceBoundState"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView"
+                android:textColor="@color/txt_dark_1"
                 android:textAllCaps="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/tvMainTabScannerItemDeviceAddress"
@@ -74,11 +75,35 @@
     <com.vgaw.nrfconnect.view.expansion.ExpansionLayout
         android:id="@+id/expansionLayoutMainTabScannerItemDevice"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:expanded="true">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hello"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.vgaw.nrfconnect.page.main.tab.scanner.BLEDataContainerView
+                android:id="@+id/vMainTabScannerItemDataContainer"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"/>
+
+            <Button
+                android:id="@+id/btnMainTabScannerItemRaw"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/vMainTabScannerItemDataContainer"
+                android:layout_toLeftOf="@id/btnMainTabScannerItemMore"
+                android:text="@string/main_tab_scanner_label_raw"/>
+
+            <Button
+                android:id="@+id/btnMainTabScannerItemMore"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/vMainTabScannerItemDataContainer"
+                android:layout_alignParentRight="true"
+                android:text="@string/main_tab_scanner_label_more"/>
+        </RelativeLayout>
     </com.vgaw.nrfconnect.view.expansion.ExpansionLayout>
 </LinearLayout>

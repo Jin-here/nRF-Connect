@@ -2,7 +2,7 @@ package com.vgaw.nrfconnect.util.bluetooth;
 
 import java.util.UUID;
 
-public class BleDefinedUUIDs {
+public class BLEDefinedUUIDs {
 	
 	public static class Service {
 		final static public UUID HEART_RATE               = UUID.fromString("0000180d-0000-1000-8000-00805f9b34fb");
