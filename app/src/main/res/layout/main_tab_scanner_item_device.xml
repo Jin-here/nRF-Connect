@@ -75,8 +75,7 @@
     <com.vgaw.nrfconnect.view.expansion.ExpansionLayout
         android:id="@+id/expansionLayoutMainTabScannerItemDevice"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:expanded="true">
+        android:layout_height="wrap_content">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -87,7 +86,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-            <Button
+            <!--<Button
                 android:id="@+id/btnMainTabScannerItemRaw"
                 style="@style/Widget.AppCompat.Button.Borderless.Colored"
                 android:layout_width="wrap_content"
@@ -103,7 +102,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/vMainTabScannerItemDataContainer"
                 android:layout_alignParentRight="true"
-                android:text="@string/main_tab_scanner_label_more"/>
+                android:text="@string/main_tab_scanner_label_more"/>-->
         </RelativeLayout>
     </com.vgaw.nrfconnect.view.expansion.ExpansionLayout>
 </LinearLayout>

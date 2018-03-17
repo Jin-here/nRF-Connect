@@ -6,6 +6,7 @@ import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import com.vgaw.nrfconnect.R;
 import com.vgaw.nrfconnect.util.bluetooth.BLEData;
 import com.vgaw.nrfconnect.util.bluetooth.BLEDataResolver;
+import com.vgaw.nrfconnect.view.MeasurableTextView;
 
 import java.io.IOException;
 import java.util.List;
@@ -32,19 +34,20 @@ public class BLEDataContainerView extends LinearLayout {
         removeAllViews();
 
         try {
-            addView(buildItem(false, "Device type", getResources().getString(proDeviceType(deviceType))));
+            addItem(false, "Device type", getResources().getString(proDeviceType(deviceType)));
             List<BLEData> group = BLEDataResolver.group(data);
             for (BLEData item : group) {
                 String[] resolve = BLEDataResolver.resolve(item);
-                addView(buildItem(true, resolve[0], resolve[1]));
+                addItem(true, resolve[0], resolve[1]);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Log.d("HELLO", "updateData: " + getMeasuredHeight());
     }
 
-    private TextView buildItem(boolean clickable, String type, String value) {
-        TextView tv = new TextView(getContext());
+    private void addItem(boolean clickable, String type, String value) {
+        TextView tv = new MeasurableTextView(getContext());
         if (clickable) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                 // If we're running on Honeycomb or newer, then we can use the Theme's
@@ -62,7 +65,8 @@ public class BLEDataContainerView extends LinearLayout {
             });
         }
         tv.setText(type + ": " + value);
-        return tv;
+
+        addView(tv, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
     }
 
     private @StringRes

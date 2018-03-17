@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -29,7 +30,7 @@ public class ExpansionLayout extends FrameLayout implements View.OnClickListener
 
     private View backgroundView;
     private boolean maskEnabled;
-    private View contentLayout;
+    private ViewGroup contentLayout;
     private boolean expanded;
 
     private ValueAnimator animator;
@@ -60,6 +61,7 @@ public class ExpansionLayout extends FrameLayout implements View.OnClickListener
     }
 
     public void toggle(boolean animate) {
+        calculateExpansionLayoutHeight();
         if (expanded) {
             collapse(animate);
         } else {
@@ -76,7 +78,7 @@ public class ExpansionLayout extends FrameLayout implements View.OnClickListener
         super.onFinishInflate();
         int childCount = getChildCount();
         if (childCount > 0) {
-            contentLayout = getChildAt( childCount - 1);
+            contentLayout = (ViewGroup) getChildAt( childCount - 1);
         }
 
         calculateExpansionLayoutHeight();
@@ -93,6 +95,7 @@ public class ExpansionLayout extends FrameLayout implements View.OnClickListener
         if (contentLayout != null) {
             contentLayout.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
             contentLayoutHeight = contentLayout.getMeasuredHeight();
+            Log.d("HELLO", "calculateExpansionLayoutHeight: " + contentLayoutHeight);
         }
     }
 
