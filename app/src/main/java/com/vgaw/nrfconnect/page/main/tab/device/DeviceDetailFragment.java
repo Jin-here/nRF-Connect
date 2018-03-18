@@ -83,6 +83,6 @@ public class DeviceDetailFragment extends MainBaseTabFragment {
     }
 
     private BluetoothDevice getBluetoothDevice() {
-        return getMainTabController().getBluetoothDeviceByFragment(this);
+        return getMainTabController().getDeviceByAddress(this.address);
     }
 }

@@ -25,6 +25,7 @@ import java.util.List;
  */
 
 public class ExpansionLayout extends FrameLayout implements View.OnClickListener {
+    protected static final long ANIMATOR_DURING = 200;
     private static final int BACKGROUND_COLLAPSE = Color.TRANSPARENT;
     private static final int BACKGROUND_EXPANDED = Color.parseColor("#55555555");
 
@@ -175,6 +176,7 @@ public class ExpansionLayout extends FrameLayout implements View.OnClickListener
                 callListener(expand);
             }
         });
+        animator.setDuration(ANIMATOR_DURING);
         animator.start();
     }
 

@@ -38,11 +38,12 @@ public class HorizontalSwipeLayout extends FrameLayout {
             @Override
             public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
                 if (velocityX > 0) {
-                    expand();
+                    startScroll(true);
                 } else {
-                    fold();
+                    startScroll(false);
                 }
-                return false;
+                reset();
+                return true;
             }
         };
         final GestureDetector gd = new GestureDetector(getContext(), gestureListener);
@@ -62,14 +63,30 @@ public class HorizontalSwipeLayout extends FrameLayout {
         this.listener = listener;
     }
 
+    public void expand(boolean animate) {
+        if (animate) {
+            startScroll(true);
+        } else {
+            HorizontalSwipeLayout.this.scrollTo(-getRightPosition(), 0);
+            setExpand(true);
+        }
+    }
+
+    public void fold(boolean animate) {
+        if (animate) {
+            startScroll(false);
+        } else {
+            HorizontalSwipeLayout.this.scrollTo(0, 0);
+            setExpand(false);
+        }
+    }
+
     public void expand() {
-        HorizontalSwipeLayout.this.scrollTo(-getRightPosition(), 0);
-        setExpand(true);
+        expand(true);
     }
 
     public void fold() {
-        HorizontalSwipeLayout.this.scrollTo(0, 0);
-        setExpand(false);
+        fold(true);
     }
 
     @Override
@@ -102,7 +119,7 @@ public class HorizontalSwipeLayout extends FrameLayout {
             case MotionEvent.ACTION_UP:
                 if (childAbsorbed != null) {
                     boolean temp = childAbsorbed;
-                    childAbsorbed = null;
+                    reset();
                     return !temp;
                 }
                 break;
@@ -120,33 +137,45 @@ public class HorizontalSwipeLayout extends FrameLayout {
                 boolean reachRight = (getScrollX() >= 0);
                 boolean canMove = ((toRight && !reachLimit) || (!toRight && !reachRight));
                 if (canMove) {
+                    int finalScrollX = getScrollX() + moveDX;
+                    if (finalScrollX > 0) {
+                        moveDX = -getScrollX();
+                    }
                     scrollBy(moveDX, 0);
                 }
                 downX = event.getRawX();
                 break;
             case MotionEvent.ACTION_UP:
-                childAbsorbed = null;
+                reset();
 
-                int dx;
-                int dy;
-                if (xLeft()) {
-                    dx = -getScrollX();
-                    dy = -0;
-
-                    setExpand(false);
-                } else {
-                    dx = -(getRightPosition() + getScrollX());
-                    dy = 0;
-
-                    setExpand(true);
-                }
-                mScroller.startScroll(getScrollX(), 0,
-                        dx, dy, DEFAULT_DURATION);
-
-                invalidate();
+                startScroll(!xLeft());
                 break;
         }
         return super.onTouchEvent(event);
+    }
+
+    private void reset() {
+        childAbsorbed = null;
+    }
+
+    private void startScroll(boolean expand) {
+        int dx;
+        int dy;
+        if (!expand) {
+            dx = -getScrollX();
+            dy = -0;
+
+            setExpand(false);
+        } else {
+            dx = -(getRightPosition() + getScrollX());
+            dy = 0;
+
+            setExpand(true);
+        }
+        mScroller.startScroll(getScrollX(), 0,
+                dx, dy, DEFAULT_DURATION);
+
+        invalidate();
     }
 
     @Override

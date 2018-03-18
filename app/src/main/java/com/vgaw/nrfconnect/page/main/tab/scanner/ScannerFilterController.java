@@ -34,7 +34,7 @@ public class ScannerFilterController implements View.OnClickListener, CompoundBu
         this.binding = binding;
     }
 
-    public void onActivityCreated() {
+    public void onCreateView() {
         binding.ivClearAll.setOnClickListener(this);
         binding.ivNameAddressMore.setOnClickListener(this);
         binding.ivNameAddressClear.setOnClickListener(this);
@@ -47,7 +47,9 @@ public class ScannerFilterController implements View.OnClickListener, CompoundBu
         binding.etNameAddress.addTextChangedListener(this);
         binding.etData.addTextChangedListener(this);
         binding.expansionLayout.addIndicatorListener(this);
+    }
 
+    public void onActivityCreated() {
         getFilterFromPreference();
         updateDescription();
     }

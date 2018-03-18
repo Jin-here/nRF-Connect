@@ -11,14 +11,9 @@ public class DeviceUIBean {
     public int rssi;
     public byte[] scanRecord;
     public boolean expanded;
+    public boolean deviceFragmentAdded;
 
     public DeviceUIBean() {}
-
-    public DeviceUIBean(BluetoothDevice device, int rssi, byte[] scanRecord) {
-        this.device = device;
-        this.rssi = rssi;
-        this.scanRecord = scanRecord;
-    }
 
     @Override
     public boolean equals(Object o) {

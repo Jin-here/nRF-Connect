@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -47,7 +46,7 @@ public class MainTabController implements DeviceDetailFragmentManager.OnDeviceDe
     }
 
     public void init() {
-        mDeviceDetailFragmentManger.setOnDeviceDetailFragmentChangedListener(this);
+        mDeviceDetailFragmentManger.addOnDeviceDetailFragmentChangedListener(this);
 
         tabList = new ArrayList<>();
         tabList.add(new MainTabBean(getString(R.string.main_tab_scanner)));
@@ -90,7 +89,8 @@ public class MainTabController implements DeviceDetailFragmentManager.OnDeviceDe
                     view.findViewById(R.id.ivMainTabClear).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            mDeviceDetailFragmentManger.removeDeviceDetailFragment(mDeviceDetailFragmentManger.getFragment(DEFAULT_TAB_COUNT - position));
+                            String deviceAddress = getTabData(position).subTitle;
+                            mDeviceDetailFragmentManger.removeDeviceDetailFragment(deviceAddress);
                         }
                     });
                 }
@@ -111,7 +111,14 @@ public class MainTabController implements DeviceDetailFragmentManager.OnDeviceDe
     }
 
     public void release() {
-        mDeviceDetailFragmentManger.setOnDeviceDetailFragmentChangedListener(null);
+        mDeviceDetailFragmentManger.removeOnDeviceDetailFragmentChangedListener(this);
+    }
+
+    public void openTab(BluetoothDevice device) {
+        int index = getTabIndexByDevice(device);
+        if (index != -1) {
+            binding.vpMain.setCurrentItem(index);
+        }
     }
 
     private void addTab(MainTabBean bean) {
@@ -123,15 +130,28 @@ public class MainTabController implements DeviceDetailFragmentManager.OnDeviceDe
     }
 
     @Override
-    public void onDeviceDetailFragmentAdd(String name, String address) {
-        addTab(new MainTabBean(name, address));
+    public void onDeviceDetailFragmentAdd(BluetoothDevice device) {
+        addTab(new MainTabBean(device.getName(), device.getAddress()));
         notifyViewPagerChanged();
+        binding.vpMain.setCurrentItem(tabList.size() - 1);
     }
 
     @Override
-    public void onDeviceDetailFragmentRemove(int index) {
-        removeTab(DEFAULT_TAB_COUNT + index);
-        notifyViewPagerChanged();
+    public void onDeviceDetailFragmentRemove(BluetoothDevice device) {
+        int index = getTabIndexByDevice(device);
+        if (index != -1) {
+            removeTab(index);
+            notifyViewPagerChanged();
+        }
+    }
+
+    private int getTabIndexByDevice(BluetoothDevice device) {
+        for (int i = DEFAULT_TAB_COUNT;i < tabList.size();i++) {
+            if (device.getAddress().equals(tabList.get(i).subTitle)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     private void notifyViewPagerChanged() {
@@ -139,15 +159,27 @@ public class MainTabController implements DeviceDetailFragmentManager.OnDeviceDe
         binding.stbMain.setViewPager(binding.vpMain);
     }
 
+    public void addOnDeviceDetailFragmentChangedListener(DeviceDetailFragmentManager.OnDeviceDetailFragmentChangedListener listener) {
+        mDeviceDetailFragmentManger.addOnDeviceDetailFragmentChangedListener(listener);
+    }
+
+    public void removeOnDeviceDetailFragmentChangedListener(DeviceDetailFragmentManager.OnDeviceDetailFragmentChangedListener listener) {
+        mDeviceDetailFragmentManger.removeOnDeviceDetailFragmentChangedListener(listener);
+    }
+
+    public boolean fragmentAdded(BluetoothDevice device) {
+        return mDeviceDetailFragmentManger.fragmentAdded(device);
+    }
+
     public void addDeviceDetailFragment(BluetoothDevice device) {
         mDeviceDetailFragmentManger.addDeviceDetailFragment(device);
     }
 
-    public void removeDeviceDetailFragment(DeviceDetailFragment fragment) {
-        mDeviceDetailFragmentManger.removeDeviceDetailFragment(fragment);
+    public void removeDeviceDetailFragment(String address) {
+        mDeviceDetailFragmentManger.removeDeviceDetailFragment(address);
     }
 
-    public BluetoothDevice getBluetoothDeviceByFragment(DeviceDetailFragment fragment) {
-        return mDeviceDetailFragmentManger.getBluetoothDeviceByFragment(fragment);
+    public BluetoothDevice getDeviceByAddress(String deviceAddress) {
+        return mDeviceDetailFragmentManger.getDeviceByAddress(deviceAddress);
     }
 }

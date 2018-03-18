@@ -56,10 +56,16 @@ public abstract class DeviceListHolder extends EasyHolder<DeviceUIBean> {
         tvMainTabScannerItemDeviceAddress.setText(item.device.getAddress());
         tvMainTabScannerItemDeviceBoundState.setText(proBondState(item.device.getBondState()));
         tvMainTabScannerItemDeviceRSSI.setText(proRSSI());
+        btnMainTabScannerItemDeviceConnect.setText(item.deviceFragmentAdded ?
+                R.string.main_tab_scanner_action_open_tab : R.string.main_tab_scanner_action_connect);
         btnMainTabScannerItemDeviceConnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                askedForConnect(item.device);
+                if (item.deviceFragmentAdded) {
+                    openTab(item.device);
+                } else {
+                    askedForConnect(item.device);
+                }
             }
         });
         vMainTabScannerItemDataContainer.updateData(item.device.getType(), item.scanRecord);
@@ -72,6 +78,8 @@ public abstract class DeviceListHolder extends EasyHolder<DeviceUIBean> {
     public int getLayout() {
         return R.layout.main_tab_scanner_item_device;
     }
+
+    protected abstract void openTab(BluetoothDevice device);
 
     protected abstract void askedForConnect(BluetoothDevice device);
 

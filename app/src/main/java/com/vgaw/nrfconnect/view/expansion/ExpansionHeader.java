@@ -155,6 +155,7 @@ public class ExpansionHeader extends FrameLayout implements ExpansionLayout.Indi
             });
 
             if (indicatorAnimator != null) {
+                indicatorAnimator.setDuration(ExpansionLayout.ANIMATOR_DURING);
                 indicatorAnimator.start();
             }
         }

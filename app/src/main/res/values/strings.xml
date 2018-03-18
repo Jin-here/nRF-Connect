@@ -34,6 +34,7 @@
 
     <string name="main_tab_scanner_action_enable">Enable</string>
     <string name="main_tab_scanner_action_connect">Connect</string>
+    <string name="main_tab_scanner_action_open_tab">Open tab</string>
     <string name="main_tab_scanner_label_raw">Raw</string>
     <string name="main_tab_scanner_label_more">More</string>
 

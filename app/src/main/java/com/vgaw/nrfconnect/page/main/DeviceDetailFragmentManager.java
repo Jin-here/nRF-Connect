@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothDevice;
 import com.vgaw.nrfconnect.page.main.tab.device.DeviceDetailFragment;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -12,7 +13,7 @@ import java.util.List;
  */
 
 public class DeviceDetailFragmentManager {
-    private OnDeviceDetailFragmentChangedListener listener;
+    private List<OnDeviceDetailFragmentChangedListener> listenerList = new ArrayList<>();
 
     /**
      * 给DeviceDetailFragment获取对应的device
@@ -23,8 +24,12 @@ public class DeviceDetailFragmentManager {
      */
     private List<DeviceDetailFragment> fragmentList = new ArrayList<>();
 
-    public void setOnDeviceDetailFragmentChangedListener(OnDeviceDetailFragmentChangedListener listener) {
-        this.listener = listener;
+    public void addOnDeviceDetailFragmentChangedListener(OnDeviceDetailFragmentChangedListener listener) {
+        this.listenerList.add(listener);
+    }
+
+    public void removeOnDeviceDetailFragmentChangedListener(OnDeviceDetailFragmentChangedListener listener) {
+        this.listenerList.remove(listener);
     }
 
     /**
@@ -49,40 +54,66 @@ public class DeviceDetailFragmentManager {
         fragmentList.add(deviceDetailFragment);
         deviceList.add(device);
 
-        callDeviceDetailFragmentAdd(name, address);
+        callDeviceDetailFragmentAdd(device);
     }
 
-    public void removeDeviceDetailFragment(DeviceDetailFragment fragment) {
-        int i = fragmentList.indexOf(fragment);
-        fragmentList.remove(i);
-        deviceList.remove(i);
+    public void removeDeviceDetailFragment(String deviceAddress) {
+        int index = getDeviceIndexByAddress(deviceAddress);
+        if (index != -1) {
+            fragmentList.remove(index);
+            BluetoothDevice device = deviceList.remove(index);
 
-        callDeviceDetailFragmentRemove(i);
+            callDeviceDetailFragmentRemove(device);
+        }
     }
 
-    public BluetoothDevice getBluetoothDeviceByFragment(DeviceDetailFragment fragment) {
-        return deviceList.get(fragmentList.indexOf(fragment));
+    /**
+     * 检测BluetoothDevice对应的framgent是否显示
+     * @param device
+     * @return
+     */
+    public boolean fragmentAdded(BluetoothDevice device) {
+        return deviceList.contains(device);
+    }
+
+    public BluetoothDevice getDeviceByAddress(String deviceAddress) {
+        int index = getDeviceIndexByAddress(deviceAddress);
+        if (index != -1) {
+            return deviceList.get(index);
+        }
+        return null;
+    }
+
+    private int getDeviceIndexByAddress(String deviceAddress) {
+        for (int i = 0;i < deviceList.size();i++) {
+            if (deviceList.get(i).getAddress().equals(deviceAddress)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     private DeviceDetailFragment buildDeviceDetailFragment(String name, String address) {
         return DeviceDetailFragment.newInstance(name, address);
     }
 
-    private void callDeviceDetailFragmentAdd(String name, String address) {
-        if (listener != null) {
-            listener.onDeviceDetailFragmentAdd(name, address);
+    private void callDeviceDetailFragmentAdd(BluetoothDevice device) {
+        Iterator<OnDeviceDetailFragmentChangedListener> iterator = listenerList.iterator();
+        while (iterator.hasNext()) {
+            iterator.next().onDeviceDetailFragmentAdd(device);
         }
     }
 
-    private void callDeviceDetailFragmentRemove(int index) {
-        if (listener != null) {
-            listener.onDeviceDetailFragmentRemove(index);
+    private void callDeviceDetailFragmentRemove(BluetoothDevice device) {
+        Iterator<OnDeviceDetailFragmentChangedListener> iterator = listenerList.iterator();
+        while (iterator.hasNext()) {
+            iterator.next().onDeviceDetailFragmentRemove(device);
         }
     }
 
     public interface OnDeviceDetailFragmentChangedListener {
-        void onDeviceDetailFragmentAdd(String name, String address);
+        void onDeviceDetailFragmentAdd(BluetoothDevice device);
 
-        void onDeviceDetailFragmentRemove(int index);
+        void onDeviceDetailFragmentRemove(BluetoothDevice device);
     }
 }

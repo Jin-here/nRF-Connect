@@ -6,6 +6,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import com.vgaw.nrfconnect.R;
 import com.vgaw.nrfconnect.common.BLEManager;
 import com.vgaw.nrfconnect.databinding.FragmentDeviceScannerBinding;
+import com.vgaw.nrfconnect.page.main.DeviceDetailFragmentManager;
 import com.vgaw.nrfconnect.page.main.MainBaseTabFragment;
 import com.vgaw.nrfconnect.page.main.MainTabController;
 import com.vgaw.nrfconnect.util.ContextUtil;
@@ -30,7 +32,7 @@ import java.util.List;
  * Created by caojin on 2018/2/27.
  */
 
-public class ScannerFragment extends MainBaseTabFragment implements BLEManager.BLEListener, SwipeRefreshLayout.OnRefreshListener, HorizontalSwipeLayout.HorizontalListener {
+public class ScannerFragment extends MainBaseTabFragment implements BLEManager.BLEListener, SwipeRefreshLayout.OnRefreshListener, HorizontalSwipeLayout.HorizontalListener, DeviceDetailFragmentManager.OnDeviceDetailFragmentChangedListener {
     public static final String TAG = "ScannerFragment";
     private FragmentDeviceScannerBinding binding;
     private ScannerFilterController mScannerFilterController;
@@ -80,7 +82,7 @@ public class ScannerFragment extends MainBaseTabFragment implements BLEManager.B
         setHasOptionsMenu(true);
         mScannerFilterController = new ScannerFilterController();
         mBLEManager = new BLEManager(this);
-        mBLEManager.setBLEListener(this);
+        getMainTabController().addOnDeviceDetailFragmentChangedListener(this);
     }
 
     @Nullable
@@ -88,13 +90,14 @@ public class ScannerFragment extends MainBaseTabFragment implements BLEManager.B
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_device_scanner, container, false);
         mScannerFilterController.setBinding(getActivity(), binding);
+        initView();
         return binding.getRoot();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        initView();
+        mScannerFilterController.onActivityCreated();
     }
 
     @Override
@@ -104,10 +107,19 @@ public class ScannerFragment extends MainBaseTabFragment implements BLEManager.B
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mBLEManager.setBLEListener(null);
+        if (mBLEManager.scanning()) {
+            mBLEManager.stopScan(mActivity);
+        }
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
+        getMainTabController().removeOnDeviceDetailFragmentChangedListener(this);
         mScannerFilterController.onDestroy();
-        mBLEManager.setBLEListener(null);
     }
 
     @Override
@@ -116,7 +128,8 @@ public class ScannerFragment extends MainBaseTabFragment implements BLEManager.B
     }
 
     private void initView() {
-        mScannerFilterController.onActivityCreated();
+        mBLEManager.setBLEListener(this);
+        mScannerFilterController.onCreateView();
 
         binding.swipeRefreshScanner.setColorSchemeResources(android.R.color.black,
                 android.R.color.holo_red_light,
@@ -129,6 +142,11 @@ public class ScannerFragment extends MainBaseTabFragment implements BLEManager.B
             @Override
             public EasyHolder<DeviceUIBean> getHolder(int type) {
                 return new DeviceListHolder() {
+                    @Override
+                    protected void openTab(BluetoothDevice device) {
+                        getMainTabController().openTab(device);
+                    }
+
                     @Override
                     protected void askedForConnect(BluetoothDevice device) {
                         getMainTabController().addDeviceDetailFragment(device);
@@ -153,20 +171,16 @@ public class ScannerFragment extends MainBaseTabFragment implements BLEManager.B
 
     @Override
     public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
-        if (!containDevice(device)) {
-            this.dataList.add(new DeviceUIBean(device, rssi, scanRecord));
+        if (getIndexByDevice(device) == -1) {
+            DeviceUIBean deviceUIBean = new DeviceUIBean();
+            deviceUIBean.device = device;
+            deviceUIBean.rssi = rssi;
+            deviceUIBean.scanRecord = scanRecord;
+            deviceUIBean.deviceFragmentAdded = getMainTabController().fragmentAdded(device);
+            this.dataList.add(deviceUIBean);
 
             notifyListViewAdapterChanged();
         }
-    }
-
-    private boolean containDevice(BluetoothDevice device) {
-        for (DeviceUIBean item : dataList) {
-            if (item.equals(device)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     @Override
@@ -191,4 +205,32 @@ public class ScannerFragment extends MainBaseTabFragment implements BLEManager.B
 
     @Override
     public void onStateChanged(boolean expand) {}
+
+    @Override
+    public void onDeviceDetailFragmentAdd(BluetoothDevice device) {
+        int i = getIndexByDevice(device);
+        if (i != -1) {
+            this.dataList.get(i).deviceFragmentAdded = true;
+            notifyListViewAdapterChanged();
+        }
+    }
+
+    @Override
+    public void onDeviceDetailFragmentRemove(BluetoothDevice device) {
+        Log.d(TAG, "onDeviceDetailFragmentRemove: ");
+        int i = getIndexByDevice(device);
+        if (i != -1) {
+            this.dataList.get(i).deviceFragmentAdded = false;
+            notifyListViewAdapterChanged();
+        }
+    }
+
+    private int getIndexByDevice(BluetoothDevice device) {
+        for (int i = 0;i < dataList.size();i++){
+            if (dataList.get(i).device.equals(device)) {
+                return i;
+            }
+        }
+        return -1;
+    }
 }
