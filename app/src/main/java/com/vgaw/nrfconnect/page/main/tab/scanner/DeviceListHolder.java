@@ -62,10 +62,10 @@ public abstract class DeviceListHolder extends EasyHolder<DeviceUIBean> {
                 askedForConnect(item.device);
             }
         });
+        vMainTabScannerItemDataContainer.updateData(item.device.getType(), item.scanRecord);
         if (expansionLayoutMainTabScannerItemDevice.expanded() ^ item.expanded) {
             expansionLayoutMainTabScannerItemDevice.toggle(false);
         }
-        vMainTabScannerItemDataContainer.updateData(item.device.getType(), item.scanRecord);
     }
 
     @Override

@@ -18,8 +18,12 @@ public class MeasurableTextView extends android.support.v7.widget.AppCompatTextV
         super(context);
     }
 
-    public MeasurableTextView(Context context, @Nullable AttributeSet attrs) {
+    public MeasurableTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
+    }
+
+    public MeasurableTextView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
     }
 
     @Override

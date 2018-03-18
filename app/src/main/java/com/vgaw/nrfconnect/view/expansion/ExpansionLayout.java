@@ -61,7 +61,6 @@ public class ExpansionLayout extends FrameLayout implements View.OnClickListener
     }
 
     public void toggle(boolean animate) {
-        calculateExpansionLayoutHeight();
         if (expanded) {
             collapse(animate);
         } else {
@@ -91,11 +90,14 @@ public class ExpansionLayout extends FrameLayout implements View.OnClickListener
         toggle(true);
     }
 
+    public void setContentLayoutHeight(int height) {
+        this.contentLayoutHeight = height;
+    }
+
     private void calculateExpansionLayoutHeight() {
         if (contentLayout != null) {
             contentLayout.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
             contentLayoutHeight = contentLayout.getMeasuredHeight();
-            Log.d("HELLO", "calculateExpansionLayoutHeight: " + contentLayoutHeight);
         }
     }
 
