@@ -3,14 +3,24 @@ package com.vgaw.nrfconnect.page.main.tab.device;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
+import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattService;
+import android.bluetooth.BluetoothProfile;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.vgaw.nrfconnect.R;
+import com.vgaw.nrfconnect.databinding.FragmentDeviceDetailBinding;
 import com.vgaw.nrfconnect.page.main.MainBaseTabFragment;
 import com.vgaw.nrfconnect.page.main.MainTabController;
+import com.vgaw.nrfconnect.util.bluetooth.BLENamesResolver;
+
+import java.util.List;
 
 /**
  * Created by caojin on 2018/3/4.
@@ -21,6 +31,7 @@ import com.vgaw.nrfconnect.page.main.MainTabController;
  */
 
 public class DeviceDetailFragment extends MainBaseTabFragment {
+    private static final String TAG = "DeviceDetailFragment";
     private String name;
     private String address;
 
@@ -48,7 +59,8 @@ public class DeviceDetailFragment extends MainBaseTabFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+        FragmentDeviceDetailBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_device_detail, container, false);
+        return binding.getRoot();
     }
 
     @Override
@@ -58,11 +70,33 @@ public class DeviceDetailFragment extends MainBaseTabFragment {
             @Override
             public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
                 super.onConnectionStateChange(gatt, status, newState);
+                if (newState == BluetoothProfile.STATE_CONNECTED) {
+                    gatt.discoverServices();
+
+                    Log.d(TAG, "Connected to GATT server.");
+                    Log.d(TAG, "Attempting to start service discovery:");
+                } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
+                    Log.d(TAG, "Disconnected from GATT server.");
+                }
             }
 
             @Override
             public void onServicesDiscovered(BluetoothGatt gatt, int status) {
                 super.onServicesDiscovered(gatt, status);
+                if (status == BluetoothGatt.GATT_SUCCESS) {
+                    Log.d(TAG, "onServicesDiscovered: ");
+                    List<BluetoothGattService> serviceList = gatt.getServices();
+                    for (BluetoothGattService service : serviceList) {
+                        String serviceUuid = service.getUuid().toString();
+                        int serviceType = service.getType();
+                        Log.d(TAG, "onServicesDiscovered: " + BLENamesResolver.resolveServiceName(serviceUuid) + ":" + serviceType);
+                        List<BluetoothGattCharacteristic> characteristicList = service.getCharacteristics();
+                        for (BluetoothGattCharacteristic characteristic : characteristicList) {
+                            String uuid = characteristic.getUuid().toString();
+                            Log.d(TAG, "onServicesDiscovered1: " + BLENamesResolver.resolveCharacteristicName(uuid));
+                        }
+                    }
+                }
             }
         });
     }
