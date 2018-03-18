@@ -6,6 +6,7 @@ import com.vgaw.nrfconnect.util.HexTransform;
 import com.vgaw.nrfconnect.util.bluetooth.flags.FlagsResolver;
 import com.vgaw.nrfconnect.util.bluetooth.localname.LocalNameResolver;
 import com.vgaw.nrfconnect.util.bluetooth.manufacturer.ManufacturerResolver;
+import com.vgaw.nrfconnect.util.bluetooth.txpower.TXPowerResolver;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -69,6 +70,9 @@ public class BLEDataResolver {
             case BLETypeNameResolver.TYPE_SHORTENED_LOCAL_NAME:
                 return new String[]{BLETypeNameResolver.getName(data.getType()),
                         LocalNameResolver.resolve(data.getValue())};
+            case BLETypeNameResolver.TYPE_TX_POWER:
+                return new String[]{BLETypeNameResolver.getName(data.getType()),
+                        TXPowerResolver.resolve(data.getValue())};
         }
         return new String[]{HexTransform.byteToHexString(data.getType()),
                 HexTransform.bytesToHexString(data.getValue())};

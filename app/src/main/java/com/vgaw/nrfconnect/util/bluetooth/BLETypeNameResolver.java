@@ -15,6 +15,7 @@ public class BLETypeNameResolver {
     public static final byte TYPE_MANUFACTURER_SPECIFIC_DATA = (byte) 0xFF;
     public static final byte TYPE_COMPLETE_LOCAL_NAME = 0x09;
     public static final byte TYPE_SHORTENED_LOCAL_NAME = 0x08;
+    public static final byte TYPE_TX_POWER = 0x0A;
 
     private static Map<Byte, String> nameMap = new HashMap<>();
 
@@ -23,6 +24,7 @@ public class BLETypeNameResolver {
         nameMap.put(TYPE_MANUFACTURER_SPECIFIC_DATA, "Manufacturer Specific Data");
         nameMap.put(TYPE_COMPLETE_LOCAL_NAME, "Complete Local Name");
         nameMap.put(TYPE_SHORTENED_LOCAL_NAME, "Shortened Local Name");
+        nameMap.put(TYPE_TX_POWER, "Tx Power Level");
     }
 
     public static String getName(byte raw) {
