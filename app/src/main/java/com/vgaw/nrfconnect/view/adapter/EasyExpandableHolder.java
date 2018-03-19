@@ -3,7 +3,8 @@ package com.vgaw.nrfconnect.view.adapter;
 import android.view.View;
 
 /**
- * Created by caojin on 2017/12/11.
+ * @author caojin
+ * @date 2017/12/11
  */
 
 public abstract class EasyExpandableHolder extends ListViewHolder {

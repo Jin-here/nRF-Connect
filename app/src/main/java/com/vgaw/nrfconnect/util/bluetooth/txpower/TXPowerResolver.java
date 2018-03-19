@@ -1,7 +1,8 @@
 package com.vgaw.nrfconnect.util.bluetooth.txpower;
 
 /**
- * Created by caojin on 2018/3/18.
+ * @author caojin
+ * @date 2018/3/18
  */
 
 public class TXPowerResolver {

@@ -10,7 +10,8 @@ import com.vgaw.nrfconnect.R;
 import com.vgaw.nrfconnect.page.main.MainBaseTabFragment;
 
 /**
- * Created by caojin on 2018/3/4.
+ * @author caojin
+ * @date 2018/3/4
  */
 
 public class AdvertiserFragment extends MainBaseTabFragment {

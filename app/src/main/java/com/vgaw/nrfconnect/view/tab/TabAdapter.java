@@ -7,7 +7,8 @@ import android.view.View;
 import java.util.List;
 
 /**
- * Created by dell on 2018/3/4.
+ * @author caojin
+ * @date 2018/3/4
  */
 
 public abstract class TabAdapter<T> {

@@ -17,7 +17,8 @@ import java.nio.ByteOrder;
 import java.util.List;
 
 /**
- * Created by dell on 2018/3/15.
+ * @author caojin
+ * @date 2018/3/15
  *
  * 数据来源：https://www.bluetooth.com/specifications/assigned-numbers/company-identifiers
  */

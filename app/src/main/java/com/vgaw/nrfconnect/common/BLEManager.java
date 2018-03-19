@@ -20,7 +20,8 @@ import com.vgaw.nrfconnect.util.bluetooth.BLEDataResolver;
 import java.io.IOException;
 
 /**
- * Created by caojin on 2018/2/27.
+ * @author caojin
+ * @date 2018/2/27
  */
 
 public class BLEManager implements BluetoothAdapter.LeScanCallback {

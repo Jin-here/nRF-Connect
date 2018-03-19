@@ -6,7 +6,8 @@ import android.text.Spanned;
 import com.vgaw.nrfconnect.util.Utils;
 
 /**
- * Created by caojin on 2018/2/28.
+ * @author caojin
+ * @date 2018/2/28
  */
 
 public class HexInputFilter implements InputFilter {

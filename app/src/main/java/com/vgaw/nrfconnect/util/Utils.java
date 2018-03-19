@@ -26,7 +26,8 @@ import java.util.TimeZone;
 import java.util.regex.Pattern;
 
 /**
- * Created by caojin on 2016/8/15.
+ * @author caojin
+ * @date 2016/8/15
  */
 public class Utils {
     public static String nullToEmpty(String raw) {

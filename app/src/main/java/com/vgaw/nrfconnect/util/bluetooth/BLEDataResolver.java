@@ -14,8 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by dell on 2018/3/15.
- * <p>
+ * @author caojin
+ * @date 2018/3/15
+ *
  * 1. 获取所有列表，可显示
  * 1. type和value
  * 2. value可以切换处理过的结果和原始数据

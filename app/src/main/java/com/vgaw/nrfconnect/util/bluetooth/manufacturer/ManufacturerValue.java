@@ -3,7 +3,8 @@ package com.vgaw.nrfconnect.util.bluetooth.manufacturer;
 import com.vgaw.nrfconnect.util.HexTransform;
 
 /**
- * Created by dell on 2018/3/15.
+ * @author caojin
+ * @date 2018/3/15
  */
 
 public class ManufacturerValue {

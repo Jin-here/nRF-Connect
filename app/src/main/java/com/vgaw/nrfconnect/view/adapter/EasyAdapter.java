@@ -7,11 +7,6 @@ import android.widget.BaseAdapter;
 
 import java.util.List;
 
-/**
- * from : Volodymyr
- * to : caojinmail@163.com
- * me : github.com/VolodymyrCj/
- */
 public abstract class EasyAdapter<T> extends BaseAdapter {
     protected Context context;
     private List<T> dataList;

@@ -12,7 +12,8 @@ import com.vgaw.nrfconnect.view.adapter.EasyHolder;
 import com.vgaw.nrfconnect.view.expansion.ExpansionLayout;
 
 /**
- * Created by caojin on 2018/3/10.
+ * @author caojin
+ * @date 2018/3/10
  */
 
 public abstract class DeviceListHolder extends EasyHolder<DeviceUIBean> {

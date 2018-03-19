@@ -7,7 +7,8 @@ import com.vgaw.nrfconnect.thirdparty.json.JsonUtil;
 import com.vgaw.nrfconnect.util.ContextUtil;
 
 /**
- * Created by dell on 2018/3/1.
+ * @author caojin
+ * @date 2018/3/1
  */
 
 public class PreferenceManager {

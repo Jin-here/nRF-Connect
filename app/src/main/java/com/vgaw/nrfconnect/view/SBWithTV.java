@@ -16,7 +16,8 @@ import android.widget.TextView;
 import com.vgaw.nrfconnect.R;
 
 /**
- * Created by caojin on 2017/1/12.
+ * @author caojin
+ * @date 2017/1/12
  */
 
 public class SBWithTV extends GridLayout implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {

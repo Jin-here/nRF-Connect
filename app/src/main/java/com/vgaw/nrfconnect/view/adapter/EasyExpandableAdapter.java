@@ -8,7 +8,8 @@ import android.widget.BaseExpandableListAdapter;
 import java.util.List;
 
 /**
- * Created by caojin on 2017/12/11.
+ * @author caojin
+ * @date 2017/12/11
  */
 
 public abstract class EasyExpandableAdapter<G, C> extends BaseExpandableListAdapter {

@@ -29,7 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by caojin on 2018/2/27.
+ * @author caojin
+ * @date 2018/2/27
  */
 
 public class ScannerFragment extends MainBaseTabFragment implements BLEManager.BLEListener, SwipeRefreshLayout.OnRefreshListener, HorizontalSwipeLayout.HorizontalListener, DeviceDetailFragmentManager.OnDeviceDetailFragmentChangedListener {

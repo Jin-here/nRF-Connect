@@ -7,7 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by dell on 2018/3/15.
+ * @author caojin
+ * @date 2018/3/15
  */
 
 public class BLETypeNameResolver {

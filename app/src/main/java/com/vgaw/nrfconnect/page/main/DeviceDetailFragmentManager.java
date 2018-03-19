@@ -9,7 +9,8 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Created by caojin on 2018/3/10.
+ * @author caojin
+ * @date 2018/3/10
  */
 
 public class DeviceDetailFragmentManager {

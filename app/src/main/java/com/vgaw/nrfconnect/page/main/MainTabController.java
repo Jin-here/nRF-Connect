@@ -22,7 +22,8 @@ import java.util.List;
 import static com.vgaw.nrfconnect.util.ContextUtil.getString;
 
 /**
- * Created by dell on 2018/3/4.
+ * @author caojin
+ * @date 2018/3/4
  */
 
 public class MainTabController implements DeviceDetailFragmentManager.OnDeviceDetailFragmentChangedListener {

@@ -21,7 +21,8 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Created by caojin on 2018/3/7.
+ * @author caojin
+ * @date 2018/3/7
  */
 
 public class ExpansionLayout extends FrameLayout implements View.OnClickListener {

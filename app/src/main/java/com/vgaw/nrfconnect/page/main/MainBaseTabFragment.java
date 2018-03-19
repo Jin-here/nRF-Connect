@@ -11,7 +11,8 @@ import android.view.MenuItem;
 import com.vgaw.nrfconnect.R;
 
 /**
- * Created by dell on 2018/3/4.
+ * @author caojin
+ * @date 2018/3/4
  */
 
 public class MainBaseTabFragment extends Fragment {

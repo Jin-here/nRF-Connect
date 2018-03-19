@@ -6,7 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 /**
- * Created by caojin on 2017/12/11.
+ * @author caojin
+ * @date 2017/12/11
  */
 
 public abstract class ListViewHolder {

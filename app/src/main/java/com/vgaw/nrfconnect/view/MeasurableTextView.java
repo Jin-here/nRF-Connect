@@ -8,7 +8,8 @@ import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
 /**
- * Created by dell on 2018/3/17.
+ * @author caojin
+ * @date 2018/3/17
  *
  * 适用于多行文字测不出来准确高度的情况
  */

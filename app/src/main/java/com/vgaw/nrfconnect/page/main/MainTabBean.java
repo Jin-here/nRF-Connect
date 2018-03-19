@@ -1,7 +1,8 @@
 package com.vgaw.nrfconnect.page.main;
 
 /**
- * Created by dell on 2018/3/4.
+ * @author caojin
+ * @date 2018/3/4
  */
 
 public class MainTabBean {

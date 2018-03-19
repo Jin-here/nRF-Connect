@@ -1,7 +1,7 @@
 package com.vgaw.nrfconnect.thirdparty.json.callback;
 
 /**
- * Created by dell on 2018/2/23.
+ * Created by caojin on 2018/2/23.
  */
 
 public interface IterationCallback {

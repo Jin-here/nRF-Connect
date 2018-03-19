@@ -24,7 +24,8 @@ import com.vgaw.nrfconnect.databinding.ActivityMainBinding;
 import com.vgaw.nrfconnect.util.ToastUtil;
 
 /**
- * Created by caojin on 2018/2/26.
+ * @author caojin
+ * @date 2018/2/26
  */
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {

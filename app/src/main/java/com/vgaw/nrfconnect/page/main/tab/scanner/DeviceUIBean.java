@@ -3,7 +3,8 @@ package com.vgaw.nrfconnect.page.main.tab.scanner;
 import android.bluetooth.BluetoothDevice;
 
 /**
- * Created by caojin on 2018/3/10.
+ * @author caojin
+ * @date 2018/3/10
  */
 
 public class DeviceUIBean {

@@ -11,7 +11,8 @@ import android.widget.FrameLayout;
 import android.widget.Scroller;
 
 /**
- * Created by dell on 2018/3/4.
+ * @author caojin
+ * @date 2018/3/4
  */
 
 public class HorizontalSwipeLayout extends FrameLayout {

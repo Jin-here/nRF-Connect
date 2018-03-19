@@ -23,7 +23,9 @@ import com.vgaw.nrfconnect.util.bluetooth.BLENamesResolver;
 import java.util.List;
 
 /**
- * Created by caojin on 2018/3/4.
+ *
+ * @author caojin
+ * @date 2018/3/4
  *
  * todo:
  * 1. notifyService.getIncludedServices();

@@ -18,7 +18,8 @@ import com.vgaw.nrfconnect.view.SBWithTV;
 import com.vgaw.nrfconnect.view.expansion.ExpansionLayout;
 
 /**
- * Created by caojin on 2018/3/2.
+ * @author caojin
+ * @date 2018/3/2
  */
 
 public class ScannerFilterController implements View.OnClickListener, CompoundButton.OnCheckedChangeListener, TextWatcher, SBWithTV.ShowValueListener, ExpansionLayout.IndicatorListener {

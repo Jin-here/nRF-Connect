@@ -4,7 +4,8 @@ import android.support.annotation.StringRes;
 import android.widget.Toast;
 
 /**
- * Created by caojin on 2017/9/16.
+ * @author caojin
+ * @date 2017/9/16
  */
 
 public class ToastUtil {

@@ -5,7 +5,8 @@ import android.app.Application;
 import com.vgaw.nrfconnect.util.ContextUtil;
 
 /**
- * Created by caojin on 2018/2/28.
+ * @author caojin
+ * @date 2018/2/28
  */
 
 public class App extends Application {
