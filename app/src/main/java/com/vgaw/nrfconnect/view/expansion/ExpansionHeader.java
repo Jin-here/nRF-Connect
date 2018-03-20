@@ -14,11 +14,11 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.vgaw.nrfconnect.R;
 
-public class ExpansionHeader extends FrameLayout implements ExpansionLayout.IndicatorListener {
+public class ExpansionHeader extends RelativeLayout implements ExpansionLayout.IndicatorListener {
     private static final int HEADER_ROTATION_EXPANDED = 180;
     private static final int HEADER_ROTATION_COLLAPSED = 0;
 

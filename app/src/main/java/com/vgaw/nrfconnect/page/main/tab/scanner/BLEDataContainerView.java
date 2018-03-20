@@ -8,7 +8,6 @@ import android.support.annotation.StringRes;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -16,7 +15,6 @@ import com.vgaw.nrfconnect.R;
 import com.vgaw.nrfconnect.util.bluetooth.BLEData;
 import com.vgaw.nrfconnect.util.bluetooth.BLEDataResolver;
 import com.vgaw.nrfconnect.view.MeasurableTextView;
-import com.vgaw.nrfconnect.view.expansion.ExpansionLayout;
 
 import java.io.IOException;
 import java.util.List;
@@ -46,9 +44,6 @@ public class BLEDataContainerView extends LinearLayout {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ViewGroup parent = (ViewGroup) getParent();
-        parent.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
-        ((ExpansionLayout) parent.getParent()).setContentLayoutHeight(parent.getMeasuredHeight());
     }
 
     private void addItem(boolean clickable, String type, String value) {
