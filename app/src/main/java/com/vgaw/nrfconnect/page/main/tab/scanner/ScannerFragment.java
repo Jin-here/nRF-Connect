@@ -3,8 +3,10 @@ package com.vgaw.nrfconnect.page.main.tab.scanner;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SlidingPaneLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,7 +23,6 @@ import com.vgaw.nrfconnect.page.main.DeviceDetailFragmentManager;
 import com.vgaw.nrfconnect.page.main.MainBaseTabFragment;
 import com.vgaw.nrfconnect.page.main.MainTabController;
 import com.vgaw.nrfconnect.util.ContextUtil;
-import com.vgaw.nrfconnect.view.HorizontalSwipeLayout;
 import com.vgaw.nrfconnect.view.adapter.EasyAdapter;
 import com.vgaw.nrfconnect.view.adapter.EasyHolder;
 
@@ -33,7 +34,7 @@ import java.util.List;
  * @date 2018/2/27
  */
 
-public class ScannerFragment extends MainBaseTabFragment implements BLEManager.BLEListener, SwipeRefreshLayout.OnRefreshListener, HorizontalSwipeLayout.HorizontalListener, DeviceDetailFragmentManager.OnDeviceDetailFragmentChangedListener {
+public class ScannerFragment extends MainBaseTabFragment implements BLEManager.BLEListener, SwipeRefreshLayout.OnRefreshListener, DeviceDetailFragmentManager.OnDeviceDetailFragmentChangedListener, SlidingPaneLayout.PanelSlideListener {
     public static final String TAG = "ScannerFragment";
     private FragmentDeviceScannerBinding binding;
     private ScannerFilterController mScannerFilterController;
@@ -67,7 +68,7 @@ public class ScannerFragment extends MainBaseTabFragment implements BLEManager.B
                 break;
             // show rssi
             case R.id.main_tab_scanner_menu_show_rssi_graph:
-                binding.horizontalSwipeLayoutScanner.expand();
+                binding.slidingPanelLayoutScanner.openPane();
                 break;
             // show legend
             case R.id.main_tab_scanner_menu_show_legend:
@@ -137,7 +138,8 @@ public class ScannerFragment extends MainBaseTabFragment implements BLEManager.B
                 android.R.color.holo_blue_dark,
                 android.R.color.holo_orange_dark);
         binding.swipeRefreshScanner.setOnRefreshListener(this);
-        binding.horizontalSwipeLayoutScanner.setHorizontalSwipeListener(this);
+        binding.slidingPanelLayoutScanner.setSliderFadeColor(Color.TRANSPARENT);
+        binding.slidingPanelLayoutScanner.setPanelSlideListener(this);
 
         mAdapter = new EasyAdapter<DeviceUIBean>(mActivity, dataList) {
             @Override
@@ -205,9 +207,6 @@ public class ScannerFragment extends MainBaseTabFragment implements BLEManager.B
     }
 
     @Override
-    public void onStateChanged(boolean expand) {}
-
-    @Override
     public void onDeviceDetailFragmentAdd(BluetoothDevice device) {
         int i = getIndexByDevice(device);
         if (i != -1) {
@@ -233,5 +232,20 @@ public class ScannerFragment extends MainBaseTabFragment implements BLEManager.B
             }
         }
         return -1;
+    }
+
+    @Override
+    public void onPanelSlide(View panel, float slideOffset) {
+
+    }
+
+    @Override
+    public void onPanelOpened(View panel) {
+
+    }
+
+    @Override
+    public void onPanelClosed(View panel) {
+
     }
 }

@@ -178,7 +178,6 @@ public class ScannerFilterController implements View.OnClickListener, CompoundBu
 
     @Override
     public void onStartedExpand(ExpansionLayout expansionLayout, boolean willExpand) {
-        binding.horizontalSwipeLayoutScanner.setHorizontalSwipeEnabled(!willExpand);
         binding.swipeRefreshScanner.setEnabled(!willExpand);
     }
 }
