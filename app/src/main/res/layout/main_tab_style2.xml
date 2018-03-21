@@ -4,16 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
+    android:paddingLeft="@dimen/space_16"
+    android:paddingRight="@dimen/space_16"
     android:background="?android:selectableItemBackground">
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_width="@dimen/space_110"
+        android:layout_height="@dimen/space_52"
+        android:orientation="vertical"
+        android:gravity="center_vertical">
 
         <TextView
             android:id="@+id/tvMainTabTitle"
-            android:layout_width="@dimen/space_90"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:lines="1"
@@ -23,12 +26,12 @@
 
         <TextView
             android:id="@+id/tvMainTabSubTitle"
-            android:layout_width="@dimen/space_90"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:lines="1"
             android:textAllCaps="true"
-            android:textSize="@dimen/txt_10" />
+            android:textSize="@dimen/txt_12" />
     </LinearLayout>
 
     <ImageButton
@@ -37,5 +40,5 @@
         android:layout_height="@dimen/space_24"
         android:layout_gravity="center_vertical"
         android:background="@android:color/transparent"
-        app:srcCompat="@drawable/ic_clear_black_24dp" />
+        app:srcCompat="@drawable/ic_clear_white_24dp" />
 </LinearLayout>

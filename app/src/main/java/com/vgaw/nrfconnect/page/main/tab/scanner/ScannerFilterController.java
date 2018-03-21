@@ -1,11 +1,13 @@
 package com.vgaw.nrfconnect.page.main.tab.scanner;
 
 import android.app.Activity;
+import android.content.Context;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
 
 import com.vgaw.nrfconnect.R;
@@ -180,5 +182,19 @@ public class ScannerFilterController implements View.OnClickListener, CompoundBu
     public void onStartedExpand(ExpansionLayout expansionLayout, boolean willExpand) {
         binding.horizontalSwipeLayoutScanner.setHorizontalSwipeEnabled(!willExpand);
         binding.swipeRefreshScanner.setEnabled(!willExpand);
+        if (willExpand) {
+            binding.etNameAddress.setFocusable(true);
+            binding.etNameAddress.requestFocus();
+        }
+        toggleSoftInput(willExpand);
+    }
+
+    private void toggleSoftInput(boolean show) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (show) {
+            imm.showSoftInput(binding.etNameAddress, 0);
+        } else {
+            imm.hideSoftInputFromWindow(binding.etNameAddress.getWindowToken(), 0);
+        }
     }
 }
