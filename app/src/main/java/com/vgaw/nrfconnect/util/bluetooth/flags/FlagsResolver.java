@@ -14,15 +14,10 @@ public class FlagsResolver {
     static {
         descriptionList.add("LE Limited Discoverable Mode");
         descriptionList.add("LE General Discoverable Mode");
-        descriptionList.add("BR/EDR Not Supported. Bit 37 of LMP\n" +
-                "Feature Mask Definitions (Page 0)");
-        descriptionList.add("Simultaneous LE and BR/EDR to Same\n" +
-                "Device Capable (Controller). Bit 49 of\n" +
-                "LMP Feature Mask Definitions (Page 0)");
-        descriptionList.add("Simultaneous LE and BR/EDR to Same\n" +
-                "Device Capable (Host). Bit 66 of LMP\n" +
-                "Feature Mask Definitions (Page 1)");
-        descriptionList.add("Reserved for future use");
+        descriptionList.add("BR/EDR Not Supported");
+        descriptionList.add("LE and BR/EDR Capable (Controller)");
+        descriptionList.add("LE and BR/EDR Capable (Host)");
+        descriptionList.add("Reserved");
     }
 
     public static FlagsValue resolve(byte[] value) {

@@ -83,7 +83,8 @@
             <com.vgaw.nrfconnect.page.main.tab.scanner.BLEDataContainerView
                 android:id="@+id/vMainTabScannerItemDataContainer"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/space_48"/>
 
             <Button
                 android:id="@+id/btnMainTabScannerItemRaw"

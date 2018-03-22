@@ -9,10 +9,9 @@ import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.vgaw.nrfconnect.R;
 
@@ -25,7 +24,7 @@ import java.util.List;
  * @date 2018/3/7
  */
 
-public class ExpansionLayout extends FrameLayout implements View.OnClickListener {
+public class ExpansionLayout extends RelativeLayout implements View.OnClickListener {
     protected static final long ANIMATOR_DURING = 200;
     private static final int BACKGROUND_COLLAPSE = Color.TRANSPARENT;
     private static final int BACKGROUND_EXPANDED = Color.parseColor("#55555555");
@@ -63,6 +62,7 @@ public class ExpansionLayout extends FrameLayout implements View.OnClickListener
     }
 
     public void toggle(boolean animate) {
+        calculateExpansionLayoutHeight();
         if (expanded) {
             collapse(animate);
         } else {
@@ -90,10 +90,6 @@ public class ExpansionLayout extends FrameLayout implements View.OnClickListener
     @Override
     public void onClick(View v) {
         toggle(true);
-    }
-
-    public void setContentLayoutHeight(int height) {
-        this.contentLayoutHeight = height;
     }
 
     private void calculateExpansionLayoutHeight() {
@@ -127,13 +123,13 @@ public class ExpansionLayout extends FrameLayout implements View.OnClickListener
         if (expand) {
             updateContentLayoutHeight(contentLayoutHeight);
             updateBackgroundColor(BACKGROUND_EXPANDED);
-            setVisibility(VISIBLE);
+            setSelfVisibility(true);
 
             expanded = true;
         } else {
             updateContentLayoutHeight(0);
             updateBackgroundColor(BACKGROUND_COLLAPSE);
-            setVisibility(GONE);
+            setSelfVisibility(false);
 
             expanded = false;
         }
@@ -162,7 +158,7 @@ public class ExpansionLayout extends FrameLayout implements View.OnClickListener
                 if (expand) {
                     expanded = true;
                 } else {
-                    ExpansionLayout.this.setVisibility(GONE);
+                    setSelfVisibility(false);
                     expanded = false;
                 }
             }
@@ -171,7 +167,7 @@ public class ExpansionLayout extends FrameLayout implements View.OnClickListener
             public void onAnimationStart(Animator animation) {
                 super.onAnimationStart(animation);
                 if (expand) {
-                    ExpansionLayout.this.setVisibility(VISIBLE);
+                    setSelfVisibility(true);
                 }
 
                 callListener(expand);
@@ -221,6 +217,12 @@ public class ExpansionLayout extends FrameLayout implements View.OnClickListener
 
     private boolean maskEnabled() {
         return this.maskEnabled;
+    }
+
+    private void setSelfVisibility(boolean visible) {
+        if (maskEnabled()) {
+            backgroundView.setVisibility(visible ? VISIBLE : GONE);
+        }
     }
 
     private void setMaskEnabled(boolean maskEnabled) {

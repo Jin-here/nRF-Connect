@@ -2,10 +2,9 @@ package com.vgaw.nrfconnect.view;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.text.Layout;
 import android.util.AttributeSet;
-import android.widget.LinearLayout;
+import android.view.ViewGroup;
 
 /**
  * @author caojin
@@ -39,13 +38,17 @@ public class MeasurableTextView extends android.support.v7.widget.AppCompatTextV
         }
     }
 
+    /**
+     * 如果文本中本来就含有\n则不能准确测出高度
+     * @param str
+     * @return
+     */
     private float getMaxLineHeight(String str) {
         float screenW = ((Activity) getContext()).getWindowManager().getDefaultDisplay().getWidth();
-        float paddingLeft = ((LinearLayout) this.getParent()).getPaddingLeft();
-        float paddingRight = ((LinearLayout) this.getParent()).getPaddingRight();
-        //这里具体this.getPaint()要注意使用，要看你的TextView在什么位置，这个是拿TextView父控件的Padding的，为了更准确的算出换行
+        float paddingLeft = ((ViewGroup) this.getParent()).getPaddingLeft();
+        float paddingRight = ((ViewGroup) this.getParent()).getPaddingRight();
         int line = (int) Math.ceil((this.getPaint().measureText(str) / (screenW - paddingLeft - paddingRight)));
-        float height = (this.getPaint().getFontMetrics().descent - this.getPaint().getFontMetrics().ascent) * line;
+        float height = (this.getPaint().getFontMetrics().bottom - this.getPaint().getFontMetrics().top) * line;
         return height;
     }
 }
