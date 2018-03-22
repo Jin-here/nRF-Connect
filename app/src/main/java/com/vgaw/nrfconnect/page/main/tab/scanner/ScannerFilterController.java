@@ -180,7 +180,7 @@ public class ScannerFilterController implements View.OnClickListener, CompoundBu
 
     @Override
     public void onStartedExpand(ExpansionLayout expansionLayout, boolean willExpand) {
-        binding.swipeRefreshScanner.setEnabled(!willExpand);
+        binding.slidingPanelLayoutScanner.setIntercept(willExpand);
         if (willExpand) {
             binding.etNameAddress.setFocusable(true);
             binding.etNameAddress.requestFocus();
