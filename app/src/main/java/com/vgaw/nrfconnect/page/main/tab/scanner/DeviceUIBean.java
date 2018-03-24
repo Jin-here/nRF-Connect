@@ -13,6 +13,8 @@ public class DeviceUIBean {
     public byte[] scanRecord;
     public boolean expanded;
     public boolean deviceFragmentAdded;
+    public boolean advertiseStopped;
+    public long period;
 
     public DeviceUIBean() {}
 

@@ -1,7 +1,11 @@
 package com.vgaw.nrfconnect.page.main.tab.scanner;
 
 import android.bluetooth.BluetoothDevice;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.StringRes;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -21,6 +25,7 @@ public abstract class DeviceListHolder extends EasyHolder<DeviceUIBean> {
     private TextView tvMainTabScannerItemDeviceAddress;
     private TextView tvMainTabScannerItemDeviceBoundState;
     private TextView tvMainTabScannerItemDeviceRSSI;
+    private TextView tvMainTabScannerItemDevicePeriod;
     private Button btnMainTabScannerItemDeviceConnect;
     private ExpansionLayout expansionLayoutMainTabScannerItemDevice;
     private BLEDataContainerView vMainTabScannerItemDataContainer;
@@ -31,6 +36,7 @@ public abstract class DeviceListHolder extends EasyHolder<DeviceUIBean> {
         tvMainTabScannerItemDeviceAddress = view.findViewById(R.id.tvMainTabScannerItemDeviceAddress);
         tvMainTabScannerItemDeviceBoundState = view.findViewById(R.id.tvMainTabScannerItemDeviceBoundState);
         tvMainTabScannerItemDeviceRSSI = view.findViewById(R.id.tvMainTabScannerItemDeviceRSSI);
+        tvMainTabScannerItemDevicePeriod = view.findViewById(R.id.tvMainTabScannerItemDevicePeriod);
         btnMainTabScannerItemDeviceConnect = view.findViewById(R.id.btnMainTabScannerItemDeviceConnect);
         expansionLayoutMainTabScannerItemDevice = view.findViewById(R.id.expansionLayoutMainTabScannerItemDevice);
         updateTag(position);
@@ -56,7 +62,8 @@ public abstract class DeviceListHolder extends EasyHolder<DeviceUIBean> {
         tvMainTabScannerItemDeviceName.setText(Utils.nullTo(item.device.getName(), context.getString(R.string.main_tab_scanner_device_name_unknown)));
         tvMainTabScannerItemDeviceAddress.setText(item.device.getAddress());
         tvMainTabScannerItemDeviceBoundState.setText(proBondState(item.device.getBondState()));
-        tvMainTabScannerItemDeviceRSSI.setText(proRSSI());
+        proRSSI(tvMainTabScannerItemDeviceRSSI, item.advertiseStopped, item.rssi);
+        proPeriod(tvMainTabScannerItemDevicePeriod, item.advertiseStopped, item.period);
         btnMainTabScannerItemDeviceConnect.setText(item.deviceFragmentAdded ?
                 R.string.main_tab_scanner_action_open_tab : R.string.main_tab_scanner_action_connect);
         btnMainTabScannerItemDeviceConnect.setOnClickListener(new View.OnClickListener() {
@@ -84,8 +91,30 @@ public abstract class DeviceListHolder extends EasyHolder<DeviceUIBean> {
 
     protected abstract void askedForConnect(BluetoothDevice device);
 
-    private String proRSSI() {
-        return null;
+    private void proPeriod(TextView tv, boolean advertiseStopped, long period) {
+        Drawable drawable = context.getResources().getDrawable(advertiseStopped ? R.drawable.ic_signal_interval_d :
+                R.drawable.ic_signal_interval_e);
+        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+        tv.setCompoundDrawables(drawable, null, null, null);
+
+        String result = (period == -1 ? "N/A" : String.valueOf(period)) + " ms";
+        SpannableString spannableString = new SpannableString(result);
+        spannableString.setSpan(new ForegroundColorSpan(context.getResources().getColor(advertiseStopped ? R.color.txt_dark_3 : R.color.txt_dark_1)),
+                0, result.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tv.setText(spannableString);
+    }
+
+    private void proRSSI(TextView tv, boolean advertiseStopped, int rssi) {
+        String result = rssi + "dBm";
+        SpannableString spannableString = new SpannableString(result);
+        spannableString.setSpan(new ForegroundColorSpan(context.getResources().getColor(advertiseStopped ? R.color.txt_dark_3 : R.color.txt_dark_1)),
+                0, result.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tv.setText(spannableString);
+
+        Drawable drawable = context.getResources().getDrawable(advertiseStopped ? R.drawable.ic_signal_d :
+                R.drawable.ic_signal_e);
+        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+        tv.setCompoundDrawables(drawable, null, null, null);
     }
 
     private @StringRes int proBondState(int state) {

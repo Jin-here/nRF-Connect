@@ -6,6 +6,8 @@ import com.vgaw.nrfconnect.util.HexTransform;
 import com.vgaw.nrfconnect.util.bluetooth.flags.FlagsResolver;
 import com.vgaw.nrfconnect.util.bluetooth.localname.LocalNameResolver;
 import com.vgaw.nrfconnect.util.bluetooth.manufacturer.ManufacturerResolver;
+import com.vgaw.nrfconnect.util.bluetooth.servicedata.ServiceDataResolver;
+import com.vgaw.nrfconnect.util.bluetooth.serviceuuids.ServiceUUIDSResolver;
 import com.vgaw.nrfconnect.util.bluetooth.txpower.TXPowerResolver;
 
 import java.io.ByteArrayInputStream;
@@ -16,7 +18,7 @@ import java.util.List;
 /**
  * @author caojin
  * @date 2018/3/15
- *
+ * <p>
  * 1. 获取所有列表，可显示
  * 1. type和value
  * 2. value可以切换处理过的结果和原始数据
@@ -73,7 +75,16 @@ public class BLEDataResolver {
                         LocalNameResolver.resolve(data.getValue())};
             case BLETypeNameResolver.TYPE_TX_POWER:
                 return new String[]{BLETypeNameResolver.getName(data.getType()),
-                        TXPowerResolver.resolve(data.getValue())};
+                        String.valueOf(TXPowerResolver.resolve(data.getValue()))};
+            case BLETypeNameResolver.TYPE_COMPLETE_SERVICE_UUIDS_16:
+            case BLETypeNameResolver.TYPE_COMPLETE_SERVICE_UUIDS_32:
+                return new String[]{BLETypeNameResolver.getName(data.getType()),
+                        String.valueOf(ServiceUUIDSResolver.resolve(data.getValue()))};
+            case BLETypeNameResolver.TYPE_SERVICE_DATA_UUID_16:
+            case BLETypeNameResolver.TYPE_SERVICE_DATA_UUID_32:
+            case BLETypeNameResolver.TYPE_SERVICE_DATA_UUID_128:
+                return new String[]{BLETypeNameResolver.getName(data.getType()),
+                        String.valueOf(ServiceDataResolver.resolve(data.getType(), data.getValue()))};
         }
         return new String[]{HexTransform.byteToHexString(data.getType()),
                 HexTransform.bytesToHexString(data.getValue())};

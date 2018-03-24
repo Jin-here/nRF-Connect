@@ -2,9 +2,19 @@ package com.vgaw.nrfconnect.page.main.tab.scanner;
 
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.ScaleXSpan;
+import android.text.style.StyleSpan;
+import android.text.style.TypefaceSpan;
+import android.text.style.URLSpan;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
@@ -64,7 +74,11 @@ public class BLEDataContainerView extends LinearLayout {
                 }
             });
         }
-        tv.setText(type + ": " + value);
+        String result = type + ": " + value;
+        SpannableString spannableString = new SpannableString(result);
+        spannableString.setSpan(new ForegroundColorSpan(getResources().getColor(clickable ? R.color.colorAccent : R.color.txt_dark_2)), 0, type.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.txt_dark_1)), type.length() + 1, result.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tv.setText(spannableString);
 
         addView(tv, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
     }

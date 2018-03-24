@@ -30,6 +30,10 @@ import java.util.regex.Pattern;
  * @date 2016/8/15
  */
 public class Utils {
+    public static String toUpperCase(String raw) {
+        return nullToEmpty(raw).toUpperCase();
+    }
+
     public static String nullToEmpty(String raw) {
         return raw == null ? "" : raw;
     }

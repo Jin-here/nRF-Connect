@@ -1,6 +1,7 @@
 package com.vgaw.nrfconnect.util.bluetooth.manufacturer;
 
 import com.vgaw.nrfconnect.util.HexTransform;
+import com.vgaw.nrfconnect.util.Utils;
 
 /**
  * @author caojin
@@ -46,8 +47,9 @@ public class ManufacturerValue {
 
     @Override
     public String toString() {
-        return manufactureName +
-                "<0x" + HexTransform.byteToHexString(manufactureId[1]) + HexTransform.byteToHexString(manufactureId[0]) + "> 0x" +
-                HexTransform.bytesToHexString(specificData);
+        return Utils.nullTo(manufactureName, "Reserved ID") +
+                "<0x" + Utils.toUpperCase(HexTransform.byteToHexString(manufactureId[1])) +
+                Utils.toUpperCase(HexTransform.byteToHexString(manufactureId[0])) + "> 0x" +
+                Utils.toUpperCase(HexTransform.bytesToHexString(specificData));
     }
 }

@@ -6,8 +6,8 @@ package com.vgaw.nrfconnect.util.bluetooth.txpower;
  */
 
 public class TXPowerResolver {
-    public static String resolve(byte[] value) {
+    public static TXPowerValue resolve(byte[] value) {
         byte b = value[0];
-        return String.valueOf(b);
+        return new TXPowerValue(b);
     }
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -14,27 +15,35 @@
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:paddingTop="@dimen/space_16"
+            android:paddingBottom="@dimen/space_16">
+
+            <ImageButton
+                android:id="@+id/imageButton"
+                android:layout_width="@dimen/space_48"
+                android:layout_height="@dimen/space_48"
+                android:layout_marginStart="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:src="@drawable/ic_device_other"
+                android:background="@drawable/bg_circle_accent"/>
 
             <TextView
                 android:id="@+id/tvMainTabScannerItemDeviceName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
-                android:textStyle="bold"
                 android:textColor="@color/txt_dark_1"
-                app:layout_constraintBottom_toTopOf="@+id/tvMainTabScannerItemDeviceAddress"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_chainStyle="packed" />
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/imageButton"
+                app:layout_constraintTop_toTopOf="@+id/imageButton" />
 
             <TextView
                 android:id="@+id/tvMainTabScannerItemDeviceAddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/txt_dark_1"
-                app:layout_constraintBottom_toTopOf="@+id/tvMainTabScannerItemDeviceBoundState"
                 app:layout_constraintStart_toStartOf="@+id/tvMainTabScannerItemDeviceName"
                 app:layout_constraintTop_toBottomOf="@+id/tvMainTabScannerItemDeviceName" />
 
@@ -42,9 +51,8 @@
                 android:id="@+id/tvMainTabScannerItemDeviceBoundState"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/txt_dark_1"
                 android:textAllCaps="true"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:textColor="@color/txt_dark_1"
                 app:layout_constraintStart_toStartOf="@+id/tvMainTabScannerItemDeviceAddress"
                 app:layout_constraintTop_toBottomOf="@+id/tvMainTabScannerItemDeviceAddress" />
 
@@ -52,7 +60,8 @@
                 android:id="@+id/btnMainTabScannerItemDeviceConnect"
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/space_42"
+                android:gravity="center"
                 android:layout_marginEnd="8dp"
                 app:layout_constraintBottom_toTopOf="@+id/tvMainTabScannerItemDeviceBoundState"
                 app:layout_constraintEnd_toEndOf="parent" />
@@ -61,12 +70,17 @@
                 android:id="@+id/tvMainTabScannerItemDeviceRSSI"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
                 android:text="TextView"
-                app:layout_constraintEnd_toEndOf="@+id/btnMainTabScannerItemDeviceConnect"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/tvMainTabScannerItemDeviceBoundState"
+                app:layout_constraintEnd_toStartOf="@+id/btnMainTabScannerItemDeviceConnect"
+                app:layout_constraintTop_toBottomOf="@+id/btnMainTabScannerItemDeviceConnect" />
+
+            <TextView
+                android:id="@+id/tvMainTabScannerItemDevicePeriod"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:layout_marginStart="@dimen/space_10"
+                app:layout_constraintStart_toStartOf="@id/btnMainTabScannerItemDeviceConnect"
                 app:layout_constraintTop_toBottomOf="@+id/btnMainTabScannerItemDeviceConnect" />
         </android.support.constraint.ConstraintLayout>
     </com.vgaw.nrfconnect.view.expansion.ExpansionHeader>
