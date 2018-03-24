@@ -1,7 +1,6 @@
 package com.vgaw.nrfconnect.page.main;
 
 import android.bluetooth.BluetoothDevice;
-import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -12,9 +11,9 @@ import com.vgaw.nrfconnect.R;
 import com.vgaw.nrfconnect.databinding.ActivityMainBinding;
 import com.vgaw.nrfconnect.page.main.tab.advertiser.AdvertiserFragment;
 import com.vgaw.nrfconnect.page.main.tab.bonded.BondedFragment;
-import com.vgaw.nrfconnect.page.main.tab.device.DeviceDetailFragment;
 import com.vgaw.nrfconnect.page.main.tab.scanner.ScannerFragment;
-import com.vgaw.nrfconnect.view.tab.TabAdapter;
+import com.vgaw.nrfconnect.view.tab.CustomTabAdapter;
+import com.vgaw.nrfconnect.view.tab.ProxyViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,10 +33,11 @@ public class MainTabController implements DeviceDetailFragmentManager.OnDeviceDe
     private ActivityMainBinding binding;
 
     private List<MainTabBean> tabList;
-    private List<MainBaseTabFragment> fragmentList;
+    private List<MainTabBaseFragment> fragmentList;
     private FragmentPagerAdapter fragmentPagerAdapter;
 
     private DeviceDetailFragmentManager mDeviceDetailFragmentManger;
+    private ProxyViewPager mProxyViewPager;
 
     public MainTabController(MainActivity activity, ActivityMainBinding binding) {
         this.activity = activity;
@@ -47,6 +47,7 @@ public class MainTabController implements DeviceDetailFragmentManager.OnDeviceDe
     }
 
     public void init() {
+        mProxyViewPager = new ProxyViewPager(binding.vpMain);
         mDeviceDetailFragmentManger.addOnDeviceDetailFragmentChangedListener(this);
 
         tabList = new ArrayList<>();
@@ -74,11 +75,10 @@ public class MainTabController implements DeviceDetailFragmentManager.OnDeviceDe
         };
         binding.vpMain.setAdapter(fragmentPagerAdapter);
 
-        binding.stbMain.setSelectedIndicatorColors(Color.WHITE);
         binding.stbMain.setDividerColors(Color.TRANSPARENT);
-        binding.stbMain.setTabAdapter(new TabAdapter<MainTabBean>(tabList) {
+        binding.stbMain.setTabAdapter(new CustomTabAdapter<MainTabBean>(activity, tabList) {
             @Override
-            protected View getTabView(Context context, final int position, int type, MainTabBean item) {
+            protected View getView(final int position, int type, MainTabBean item) {
                 View view = null;
                 if (getItemViewType(position) == 0) {
                     view = View.inflate(context, R.layout.main_tab_style1, null);
@@ -90,7 +90,7 @@ public class MainTabController implements DeviceDetailFragmentManager.OnDeviceDe
                     view.findViewById(R.id.ivMainTabClear).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            String deviceAddress = getTabData(position).subTitle;
+                            String deviceAddress = getItem(position).subTitle;
                             mDeviceDetailFragmentManger.removeDeviceDetailFragment(deviceAddress);
                         }
                     });
@@ -104,11 +104,11 @@ public class MainTabController implements DeviceDetailFragmentManager.OnDeviceDe
             }
 
             private boolean device(int position) {
-                MainTabBean tabData = getTabData(position);
+                MainTabBean tabData = getItem(position);
                 return tabData != null && tabData.subTitle != null;
             }
         });
-        binding.stbMain.setViewPager(binding.vpMain);
+        binding.stbMain.setViewPager(mProxyViewPager);
     }
 
     public void release() {
@@ -157,7 +157,7 @@ public class MainTabController implements DeviceDetailFragmentManager.OnDeviceDe
 
     private void notifyViewPagerChanged() {
         fragmentPagerAdapter.notifyDataSetChanged();
-        binding.stbMain.setViewPager(binding.vpMain);
+        binding.stbMain.setViewPager(mProxyViewPager);
     }
 
     public void addOnDeviceDetailFragmentChangedListener(DeviceDetailFragmentManager.OnDeviceDetailFragmentChangedListener listener) {

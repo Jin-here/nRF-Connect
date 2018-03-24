@@ -7,14 +7,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.vgaw.nrfconnect.R;
-import com.vgaw.nrfconnect.page.main.MainBaseTabFragment;
+import com.vgaw.nrfconnect.page.main.MainTabBaseFragment;
 
 /**
  * @author caojin
  * @date 2018/3/4
  */
 
-public class AdvertiserFragment extends MainBaseTabFragment {
+public class AdvertiserFragment extends MainTabBaseFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);

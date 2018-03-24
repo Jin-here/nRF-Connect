@@ -15,7 +15,7 @@ import com.vgaw.nrfconnect.R;
  * @date 2018/3/4
  */
 
-public class MainBaseTabFragment extends Fragment {
+public class MainTabBaseFragment extends Fragment {
     protected MainActivity mActivity;
 
     @Override

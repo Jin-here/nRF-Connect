@@ -20,7 +20,7 @@ import com.vgaw.nrfconnect.R;
  * @date 2017/1/12
  */
 
-public class SBWithTV extends GridLayout implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
+public class FineTuneSeekBar extends GridLayout implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
     private TextView tv_value;
     private TextView tv_label;
     private SeekBar sb;
@@ -31,7 +31,7 @@ public class SBWithTV extends GridLayout implements View.OnClickListener, SeekBa
 
     private float currentValue;
 
-    public SBWithTV(Context context, AttributeSet attrs) {
+    public FineTuneSeekBar(Context context, AttributeSet attrs) {
         super(context, attrs);
         setOrientation(HORIZONTAL);
         setColumnCount(2);
@@ -131,7 +131,7 @@ public class SBWithTV extends GridLayout implements View.OnClickListener, SeekBa
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         currentValue = minValue + (float) progress * interval;
         showValue();
-        listener.onProgressChanged(SBWithTV.this, currentValue, fromUser);
+        listener.onProgressChanged(FineTuneSeekBar.this, currentValue, fromUser);
     }
 
     @Override

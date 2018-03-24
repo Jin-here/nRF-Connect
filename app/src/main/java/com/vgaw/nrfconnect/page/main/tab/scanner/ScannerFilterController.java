@@ -16,7 +16,7 @@ import com.vgaw.nrfconnect.data.PreferenceManager;
 import com.vgaw.nrfconnect.databinding.FragmentDeviceScannerBinding;
 import com.vgaw.nrfconnect.util.Utils;
 import com.vgaw.nrfconnect.view.HexInputFilter;
-import com.vgaw.nrfconnect.view.SBWithTV;
+import com.vgaw.nrfconnect.view.FineTuneSeekBar;
 import com.vgaw.nrfconnect.view.expansion.ExpansionLayout;
 
 /**
@@ -24,7 +24,7 @@ import com.vgaw.nrfconnect.view.expansion.ExpansionLayout;
  * @date 2018/3/2
  */
 
-public class ScannerFilterController implements View.OnClickListener, CompoundButton.OnCheckedChangeListener, TextWatcher, SBWithTV.ShowValueListener, ExpansionLayout.IndicatorListener {
+public class ScannerFilterController implements View.OnClickListener, CompoundButton.OnCheckedChangeListener, TextWatcher, FineTuneSeekBar.ShowValueListener, ExpansionLayout.IndicatorListener {
     private static final String TAG = "ScannerFilterController";
     private static final int RSSI_MIN = -100;
     private static final int RSSI_MAX = -40;

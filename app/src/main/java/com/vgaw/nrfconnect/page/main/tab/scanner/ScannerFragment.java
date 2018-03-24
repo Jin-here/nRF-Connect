@@ -20,7 +20,7 @@ import com.vgaw.nrfconnect.R;
 import com.vgaw.nrfconnect.common.BLEManager;
 import com.vgaw.nrfconnect.databinding.FragmentDeviceScannerBinding;
 import com.vgaw.nrfconnect.page.main.DeviceDetailFragmentManager;
-import com.vgaw.nrfconnect.page.main.MainBaseTabFragment;
+import com.vgaw.nrfconnect.page.main.MainTabBaseFragment;
 import com.vgaw.nrfconnect.page.main.MainTabController;
 import com.vgaw.nrfconnect.util.ContextUtil;
 import com.vgaw.nrfconnect.view.adapter.EasyAdapter;
@@ -34,7 +34,7 @@ import java.util.List;
  * @date 2018/2/27
  */
 
-public class ScannerFragment extends MainBaseTabFragment implements BLEManager.BLEListener, SwipeRefreshLayout.OnRefreshListener, DeviceDetailFragmentManager.OnDeviceDetailFragmentChangedListener, SlidingPaneLayout.PanelSlideListener {
+public class ScannerFragment extends MainTabBaseFragment implements BLEManager.BLEListener, SwipeRefreshLayout.OnRefreshListener, DeviceDetailFragmentManager.OnDeviceDetailFragmentChangedListener, SlidingPaneLayout.PanelSlideListener {
     public static final String TAG = "ScannerFragment";
     private FragmentDeviceScannerBinding binding;
     private ScannerFilterController mScannerFilterController;

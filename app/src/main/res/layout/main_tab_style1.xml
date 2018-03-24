@@ -9,4 +9,5 @@
     android:paddingLeft="@dimen/space_16"
     android:paddingRight="@dimen/space_16"
     android:textAllCaps="true"
+    android:textColor="@color/txt_light_1"
     android:background="?android:selectableItemBackground"/>

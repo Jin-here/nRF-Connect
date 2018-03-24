@@ -35,7 +35,8 @@
                     android:paddingLeft="@dimen/space_10"
                     android:paddingRight="@dimen/space_10"
                     android:gravity="center_vertical"
-                    android:animateLayoutChanges="true">
+                    android:animateLayoutChanges="true"
+                    android:background="?attr/selectableItemBackground">
 
                     <TextView
                         android:id="@+id/tvDescription"
@@ -185,7 +186,7 @@
                                 app:srcCompat="@drawable/ic_signal_wifi_3_bar_black_24dp"
                                 android:layout_marginRight="@dimen/space_10"/>
 
-                            <com.vgaw.nrfconnect.view.SBWithTV
+                            <com.vgaw.nrfconnect.view.FineTuneSeekBar
                                 android:id="@+id/sbRSSI"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"/>

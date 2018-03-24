@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 
 import com.vgaw.nrfconnect.R;
 import com.vgaw.nrfconnect.databinding.FragmentDeviceDetailBinding;
-import com.vgaw.nrfconnect.page.main.MainBaseTabFragment;
+import com.vgaw.nrfconnect.page.main.MainTabBaseFragment;
 import com.vgaw.nrfconnect.page.main.MainTabController;
 import com.vgaw.nrfconnect.util.bluetooth.BLENamesResolver;
 
@@ -32,7 +32,7 @@ import java.util.List;
  * 2. notifyService.getInstanceId();
  */
 
-public class DeviceDetailFragment extends MainBaseTabFragment {
+public class DeviceDetailFragment extends MainTabBaseFragment {
     private static final String TAG = "DeviceDetailFragment";
     private String name;
     private String address;

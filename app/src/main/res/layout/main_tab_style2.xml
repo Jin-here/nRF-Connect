@@ -22,6 +22,7 @@
             android:lines="1"
             android:textAllCaps="true"
             android:textSize="@dimen/txt_14"
+            android:textColor="@color/txt_light_1"
             android:textStyle="bold" />
 
         <TextView
@@ -31,7 +32,8 @@
             android:ellipsize="end"
             android:lines="1"
             android:textAllCaps="true"
-            android:textSize="@dimen/txt_12" />
+            android:textSize="@dimen/txt_12"
+            android:textColor="@color/txt_light_2"/>
     </LinearLayout>
 
     <ImageButton
