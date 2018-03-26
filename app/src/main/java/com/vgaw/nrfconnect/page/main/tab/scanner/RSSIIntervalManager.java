@@ -1,7 +1,6 @@
 package com.vgaw.nrfconnect.page.main.tab.scanner;
 
 import android.bluetooth.BluetoothDevice;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,7 +38,6 @@ public class RSSIIntervalManager {
     private void callGetRSSI(BluetoothDevice device, int rssi, long period) {
         if (mListener != null) {
             mListener.onGetRSSI(device, rssi, period);
-            Log.d("HELLO", "callGetRSSI: " + rssi + ":" + period);
         }
     }
 

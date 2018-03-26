@@ -16,19 +16,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.vgaw.nrfconnect.App;
 import com.vgaw.nrfconnect.R;
 import com.vgaw.nrfconnect.common.BLEManager;
+import com.vgaw.nrfconnect.data.DeviceFavorite;
+import com.vgaw.nrfconnect.data.DeviceFavorite_;
 import com.vgaw.nrfconnect.databinding.FragmentDeviceScannerBinding;
 import com.vgaw.nrfconnect.page.main.DeviceDetailFragmentManager;
 import com.vgaw.nrfconnect.page.main.MainTabBaseFragment;
 import com.vgaw.nrfconnect.page.main.MainTabController;
 import com.vgaw.nrfconnect.util.ContextUtil;
+import com.vgaw.nrfconnect.util.Utils;
 import com.vgaw.nrfconnect.view.adapter.EasyAdapter;
 import com.vgaw.nrfconnect.view.adapter.EasyHolder;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import io.objectbox.Box;
 
 /**
  * @author caojin
@@ -110,6 +116,7 @@ public class ScannerFragment extends MainTabBaseFragment implements BLEManager.B
     @Override
     public void onStop() {
         super.onStop();
+        synchronizeDeviceFavorite();
         mScannerFilterController.onStop();
     }
 
@@ -190,6 +197,7 @@ public class ScannerFragment extends MainTabBaseFragment implements BLEManager.B
             deviceUIBean.rssi = rssi;
             deviceUIBean.scanRecord = scanRecord;
             deviceUIBean.deviceFragmentAdded = getMainTabController().fragmentAdded(device);
+            deviceUIBean.favorite = checkDeviceFavorite(device.getAddress());
             this.dataList.add(deviceUIBean);
 
             notifyListViewAdapterChanged();
@@ -290,5 +298,52 @@ public class ScannerFragment extends MainTabBaseFragment implements BLEManager.B
     @Override
     public void onGetRSSI(BluetoothDevice device, int rssi, long period) {
         proRSSIPeriodChanged(device, rssi, period);
+    }
+
+    private boolean checkDeviceFavorite(String address) {
+        List<DeviceFavorite> deviceFavoriteList = getDeviceFavoriteByAddress(getDeviceFavoriteBox(), address);
+        if (deviceFavoriteList != null && deviceFavoriteList.size() > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    private void synchronizeDeviceFavorite() {
+        Iterator<DeviceUIBean> iterator = this.dataList.iterator();
+        Box<DeviceFavorite> deviceFavoriteBox = getDeviceFavoriteBox();
+        while (iterator.hasNext()) {
+            DeviceUIBean next = iterator.next();
+            List<DeviceFavorite> deviceFavoriteByAddress = getDeviceFavoriteByAddress(deviceFavoriteBox, next.device.getAddress());
+            // 之前是否favorite
+            boolean lstFavorite = (deviceFavoriteByAddress != null && deviceFavoriteByAddress.size() > 0);
+            String currentTime = Utils.getTime("yyyy/M/dd");
+            if (lstFavorite) {
+                DeviceFavorite deviceFavoriteStored = deviceFavoriteByAddress.get(0);
+                if (!next.favorite) {
+                    deviceFavoriteBox.remove(deviceFavoriteStored.getId());
+                } else {
+                    // 更新时间
+                    deviceFavoriteStored.setLastSeenTime(currentTime);
+                    deviceFavoriteBox.put(deviceFavoriteStored);
+                }
+            } else {
+                if (next.favorite) {
+                    DeviceFavorite deviceFavorite = new DeviceFavorite();
+                    deviceFavorite.setName(next.device.getName());
+                    deviceFavorite.setAddress(next.device.getAddress());
+                    deviceFavorite.setAddedTime(currentTime);
+                    deviceFavorite.setLastSeenTime(currentTime);
+                    deviceFavoriteBox.put(deviceFavorite);
+                }
+            }
+        }
+    }
+
+    private List<DeviceFavorite> getDeviceFavoriteByAddress(Box<DeviceFavorite> deviceFavoriteBox, String address) {
+        return deviceFavoriteBox.find(DeviceFavorite_.address, address);
+    }
+
+    private Box<DeviceFavorite> getDeviceFavoriteBox() {
+        return ((App) mActivity.getApplicationContext()).getBoxStore().boxFor(DeviceFavorite.class);
     }
 }

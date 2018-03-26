@@ -6,11 +6,16 @@ import android.support.annotation.StringRes;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewPropertyAnimator;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.vgaw.nrfconnect.R;
+import com.vgaw.nrfconnect.util.DensityUtil;
 import com.vgaw.nrfconnect.util.Utils;
 import com.vgaw.nrfconnect.view.adapter.EasyHolder;
 import com.vgaw.nrfconnect.view.expansion.ExpansionLayout;
@@ -21,6 +26,8 @@ import com.vgaw.nrfconnect.view.expansion.ExpansionLayout;
  */
 
 public abstract class DeviceListHolder extends EasyHolder<DeviceUIBean> {
+    private ImageButton ibMainTabScannerItemDeviceIcon;
+    private ImageView ivMainTabScannerItemDeviceFavorite;
     private TextView tvMainTabScannerItemDeviceName;
     private TextView tvMainTabScannerItemDeviceAddress;
     private TextView tvMainTabScannerItemDeviceBoundState;
@@ -32,6 +39,8 @@ public abstract class DeviceListHolder extends EasyHolder<DeviceUIBean> {
 
     @Override
     public View createView(int position) {
+        ibMainTabScannerItemDeviceIcon = view.findViewById(R.id.ibMainTabScannerItemDeviceIcon);
+        ivMainTabScannerItemDeviceFavorite = view.findViewById(R.id.ivMainTabScannerItemDeviceFavorite);
         tvMainTabScannerItemDeviceName = view.findViewById(R.id.tvMainTabScannerItemDeviceName);
         tvMainTabScannerItemDeviceAddress = view.findViewById(R.id.tvMainTabScannerItemDeviceAddress);
         tvMainTabScannerItemDeviceBoundState = view.findViewById(R.id.tvMainTabScannerItemDeviceBoundState);
@@ -80,6 +89,30 @@ public abstract class DeviceListHolder extends EasyHolder<DeviceUIBean> {
         if (expansionLayoutMainTabScannerItemDevice.expanded() ^ item.expanded) {
             expansionLayoutMainTabScannerItemDevice.toggle(false);
         }
+        Object tag0 = ivMainTabScannerItemDeviceFavorite.getTag();
+        if (tag0 == null || (((boolean) tag0) ^ item.favorite)) {
+            Log.d("HELLO", "refreshView: " + item.favorite);
+            ivMainTabScannerItemDeviceFavorite.setTag(item.favorite);
+            markFavorite(item.favorite);
+            Object tag = ibMainTabScannerItemDeviceIcon.getTag();
+            if (tag != null) {
+                ((ViewPropertyAnimator) tag).cancel();
+            }
+        }
+        ibMainTabScannerItemDeviceIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                item.favorite = !item.favorite;
+
+                Object tag = ibMainTabScannerItemDeviceIcon.getTag();
+                if (tag != null) {
+                    ((ViewPropertyAnimator) tag).cancel();
+                    animateFavorite(item.favorite);
+                } else {
+                    ibMainTabScannerItemDeviceIcon.setTag(animateFavorite(item.favorite));
+                }
+            }
+        });
     }
 
     @Override
@@ -90,6 +123,20 @@ public abstract class DeviceListHolder extends EasyHolder<DeviceUIBean> {
     protected abstract void openTab(BluetoothDevice device);
 
     protected abstract void askedForConnect(BluetoothDevice device);
+
+    private ViewPropertyAnimator animateFavorite(boolean favorite) {
+        float offset = (favorite ? context.getResources().getDimensionPixelOffset(R.dimen.space_20) : 0);
+        ViewPropertyAnimator animator = ivMainTabScannerItemDeviceFavorite
+                .animate()
+                .translationY(offset);
+        animator.start();
+        return animator;
+    }
+
+    private void markFavorite(boolean favorite) {
+        float offset = (favorite ? context.getResources().getDimensionPixelOffset(R.dimen.space_20) : 0);
+        ivMainTabScannerItemDeviceFavorite.setTranslationY(offset);
+    }
 
     private void proPeriod(TextView tv, boolean advertiseStopped, long period) {
         Drawable drawable = context.getResources().getDrawable(advertiseStopped ? R.drawable.ic_signal_interval_d :

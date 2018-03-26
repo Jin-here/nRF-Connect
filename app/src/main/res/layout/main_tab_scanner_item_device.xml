@@ -20,14 +20,25 @@
             android:paddingBottom="@dimen/space_16">
 
             <ImageButton
-                android:id="@+id/imageButton"
-                android:layout_width="@dimen/space_48"
-                android:layout_height="@dimen/space_48"
+                android:id="@+id/ibMainTabScannerItemDeviceIcon"
+                android:layout_width="@dimen/space_32"
+                android:layout_height="@dimen/space_32"
                 android:layout_marginStart="8dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:src="@drawable/ic_device_other"
                 android:background="@drawable/bg_circle_accent"/>
+
+            <ImageView
+                android:id="@+id/ivMainTabScannerItemDeviceFavorite"
+                android:layout_width="@dimen/space_18"
+                android:layout_height="@dimen/space_14"
+                android:layout_marginTop="@dimen/space_10"
+                app:layout_constraintStart_toStartOf="@id/ibMainTabScannerItemDeviceIcon"
+                app:layout_constraintEnd_toEndOf="@id/ibMainTabScannerItemDeviceIcon"
+                app:layout_constraintTop_toTopOf="parent"
+                android:src="@drawable/ic_favorite"
+                android:translationZ="-1dp"/>
 
             <TextView
                 android:id="@+id/tvMainTabScannerItemDeviceName"
@@ -36,8 +47,8 @@
                 android:layout_marginLeft="16dp"
                 android:textColor="@color/txt_dark_1"
                 android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/imageButton"
-                app:layout_constraintTop_toTopOf="@+id/imageButton" />
+                app:layout_constraintStart_toEndOf="@+id/ibMainTabScannerItemDeviceIcon"
+                app:layout_constraintTop_toTopOf="@+id/ibMainTabScannerItemDeviceIcon" />
 
             <TextView
                 android:id="@+id/tvMainTabScannerItemDeviceAddress"

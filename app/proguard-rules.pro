@@ -24,3 +24,5 @@
 -dontwarn com.alibaba.fastjson.**
 -keepattributes Singature
 -keepattributes *Annotation
+
+# todo objectbox

@@ -15,6 +15,7 @@ public class DeviceUIBean {
     public boolean deviceFragmentAdded;
     public boolean advertiseStopped;
     public long period;
+    public boolean favorite;
 
     public DeviceUIBean() {}
 
