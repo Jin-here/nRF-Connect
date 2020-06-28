@@ -30,6 +30,11 @@ import java.util.regex.Pattern;
  * @date 2016/8/15
  */
 public class Utils {
+    public static PackageInfo getPackageInfo(Context context) throws PackageManager.NameNotFoundException {
+        PackageManager packageManager = context.getPackageManager();
+        return packageManager.getPackageInfo(context.getPackageName(), 0);
+    }
+
     public static String toUpperCase(String raw) {
         return nullToEmpty(raw).toUpperCase();
     }

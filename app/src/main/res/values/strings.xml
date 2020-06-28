@@ -1,5 +1,11 @@
 <resources>
+    <!--bugly-->
+    <string name="bugly_appid">1a08f2eb4e</string>
+
     <string name="app_name">nRF Connect</string>
+
+    <string name="upgrade_dialog_title">New Version: v%1$s</string>
+    <string name="upgrade_dialog_size">Size：%1$dM</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

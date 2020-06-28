@@ -8,8 +8,9 @@ import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Handler;
-import androidx.fragment.app.Fragment;
+
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 import com.vgaw.nrfconnect.data.PreferenceManager;
 import com.vgaw.nrfconnect.util.bluetooth.BLEDataResolver;
