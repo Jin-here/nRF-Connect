@@ -200,20 +200,26 @@ public class ScannerFragment extends MainTabBaseFragment implements BLEManager.B
     public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
         int index = -1;
         if ((index = getIndexByDevice(device)) == -1) {
-            DeviceUIBean deviceUIBean = new DeviceUIBean();
-            deviceUIBean.device = device;
-            deviceUIBean.rssi = rssi;
-            deviceUIBean.scanRecord = scanRecord;
-            deviceUIBean.deviceFragmentAdded = getMainTabController().fragmentAdded(device);
-            deviceUIBean.favorite = checkDeviceFavorite(device.getAddress());
-            this.dataList.add(deviceUIBean);
+            if (deviceValid(rssi)) {
+                DeviceUIBean deviceUIBean = new DeviceUIBean();
+                deviceUIBean.device = device;
+                deviceUIBean.rssi = rssi;
+                deviceUIBean.scanRecord = scanRecord;
+                deviceUIBean.deviceFragmentAdded = getMainTabController().fragmentAdded(device);
+                deviceUIBean.favorite = checkDeviceFavorite(device.getAddress());
+                this.dataList.add(deviceUIBean);
 
-            notifyListViewAdapterChanged();
+                notifyListViewAdapterChanged();
+            }
         } else {
-            DeviceUIBean deviceUIBean = this.dataList.get(index);
-            deviceUIBean.rssi = rssi;
-            deviceUIBean.scanRecord = scanRecord;
+            if (deviceValid(rssi)) {
+                DeviceUIBean deviceUIBean = this.dataList.get(index);
+                deviceUIBean.rssi = rssi;
+                deviceUIBean.scanRecord = scanRecord;
 
+            } else {
+                this.dataList.remove(index);
+            }
             notifyListViewAdapterChanged();
         }
         mRssiIntervalManager.hit(device, rssi);
@@ -223,6 +229,10 @@ public class ScannerFragment extends MainTabBaseFragment implements BLEManager.B
     public void onRefresh() {
         binding.swipeRefreshScanner.setRefreshing(false);
         mBLEManager.startScan(mActivity);
+    }
+
+    private boolean deviceValid(int rssi) {
+        return (rssi > 0);
     }
 
     private void proScanStoppedState(boolean stopped) {
