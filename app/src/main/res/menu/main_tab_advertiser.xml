@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/main_tab_advertiser_menu_edit"
+        android:title="@string/main_tab_advertiser_menu_switch_all_off"
+        android:icon="@drawable/ic_edit_white_24dp"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/main_tab_advertiser_menu_switch_all_off"
+        android:title="@string/main_tab_advertiser_menu_switch_all_off"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/main_tab_advertiser_menu_restore_timeout_dialog"
+        android:title="@string/main_tab_advertiser_menu_restore_timeout_dialog"
+        app:showAsAction="never" />
+</menu>

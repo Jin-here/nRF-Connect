@@ -1,6 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <!--500-->
+    <color name="colorPrimary">#03A9F4</color>
+    <!--700-->
+    <color name="colorPrimaryDark">#0288D1</color>
+    <!--A200 or whatever-->
+    <color name="colorAccent">#0288D1</color>
+
+    <!--Primary text-->
+    <color name="txt_dark_1">#DE000000</color>
+    <!--Secondary text-->
+    <color name="txt_dark_2">#8A000000</color>
+    <!--Disabled text, hint text-->
+    <color name="txt_dark_3">#61000000</color>
+    <!--Dividers-->
+    <color name="txt_dark_4">#1F000000</color>
+
+    <!--Active + focused-->
+    <color name="icon_dark_1">@color/txt_dark_1</color>
+    <!--Active + unfocused-->
+    <color name="icon_dark_2">@color/txt_dark_2</color>
+    <!--Inactive-->
+    <color name="icon_dark_3">@color/txt_dark_3</color>
+
+    <color name="bg_dark_transparent">#80000000</color>
+    <color name="bg_dark">#111111</color>
+
+    <color name="txt_light_1">#FFFFFF</color>
+    <color name="txt_light_2">#B3FFFFFF</color>
+    <color name="txt_light_3">#80FFFFFF</color>
+    <color name="txt_light_4">#1FFFFFFF</color>
+    <color name="icon_light_1">@color/txt_light_1</color>
+    <color name="icon_light_2">@color/txt_light_2</color>
+    <color name="icon_light_3">@color/txt_light_3</color>
+    <color name="bg_light_transparent">#80ffffff</color>
+    <color name="bg_light">#EEEEEE</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="white1">#FAFAFA</color>
+    <!--60%-->
+    <color name="white2">#99FFFFFF</color>
+    <!--38%-->
+    <color name="white3">#61FFFFFF</color>
+    <color name="white4">#D8D8D8</color>
+    <color name="white5">#E0E0E0</color>
+
+    <color name="black">#000000</color>
+    <color name="black1">#66000000</color>
+    <color name="black2">#979797</color>
+    <!--dialog bg-->
+    <color name="black3">#99191919</color>
+    <!--54%-->
+    <color name="black4">#8A000000</color>
+    <!--60%-->
+    <color name="black5">#99000000</color>
+    <!--87%-->
+    <color name="black6">#DE000000</color>
+    <!--38%-->
+    <color name="black7">#61000000</color>
+    <!--20%-->
+    <color name="black8">#33000000</color>
+    <color name="black9">#99191919</color>
 </resources>

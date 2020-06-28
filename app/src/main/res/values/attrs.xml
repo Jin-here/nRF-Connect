@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ExpansionHeader">
+        <attr name="headerIndicatorId" format="reference"/>
+        <attr name="expansionLayoutId" format="reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="ExpansionLayout">
+        <attr name="expanded" format="boolean"/>
+        <attr name="maskEnabled" format="boolean"/>
+    </declare-styleable>
+</resources>

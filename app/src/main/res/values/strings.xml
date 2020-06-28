@@ -1,3 +1,58 @@
 <resources>
+    <!--bugly-->
+    <string name="bugly_appid">1a08f2eb4e</string>
+
     <string name="app_name">nRF Connect</string>
+
+    <string name="upgrade_dialog_title">New Version: v%1$s</string>
+    <string name="upgrade_dialog_size">Size：%1$dM</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="nav_device">Devices</string>
+    <string name="nav_manage_favorite">Manage favorites</string>
+    <string name="nav_definition">Definitions</string>
+    <string name="nav_device_information">Device information</string>
+    <string name="nav_setting">Settings</string>
+
+    <string name="scanner_filter_rssi">RSSI:</string>
+    <string name="scanner_filter_only_favorite">Only favorites</string>
+    <string name="scanner_filter_no_filter">No filter</string>
+    <string name="scanner_filter_name_hint">Filter by name or address</string>
+    <string name="scanner_filter_data_hint">Filter by raw advertising data</string>
+
+    <string name="main_tab_scanner">Scanner</string>
+    <string name="main_tab_bonded">Bonded</string>
+    <string name="main_tab_advertiser">Advertiser</string>
+
+    <string name="main_tab_scanner_menu_start_scan">Scan</string>
+    <string name="main_tab_scanner_menu_stop_scan">Stop Scanning</string>
+    <string name="main_tab_scanner_menu_refresh">Refresh</string>
+    <string name="main_tab_scanner_menu_show_rssi_graph">Show RSSI graph</string>
+    <string name="main_tab_scanner_menu_show_legend">Show legend</string>
+
+    <string name="main_tab_advertiser_menu_switch_all_off">Switch all OFF</string>
+    <string name="main_tab_advertiser_menu_restore_timeout_dialog">Restore timeout dialogs</string>
+
+    <string name="main_permission_bluetooth_disabled">Bluetooth adapter is disabled.</string>
+    <string name="main_hint_bluetooth_not_supported">No Bluetooth Adapter Found</string>
+    <string name="main_hint_bluetooth_gps_not_open">Please open gps first</string>
+
+    <string name="main_tab_scanner_action_enable">Enable</string>
+    <string name="main_tab_scanner_action_connect">Connect</string>
+    <string name="main_tab_scanner_action_open_tab">Open tab</string>
+    <string name="main_tab_scanner_label_raw">Raw</string>
+    <string name="main_tab_scanner_label_more">More</string>
+
+    <string name="main_tab_scanner_bond_state_none">Not Bonded</string>
+    <string name="main_tab_scanner_bond_state_bonding">Bonding</string>
+    <string name="main_tab_scanner_bond_state_bonded">Bonded</string>
+
+    <string name="main_tab_scanner_device_type_unknown">Unknown</string>
+    <string name="main_tab_scanner_device_type_classic">Classic</string>
+    <string name="main_tab_scanner_device_type_le">LE</string>
+    <string name="main_tab_scanner_device_type_dual">Dual</string>
+
+    <string name="main_tab_scanner_device_name_unknown">N/A</string>
 </resources>
