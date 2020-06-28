@@ -2,14 +2,8 @@ package com.vgaw.nrfconnect.page.main.tab.scanner;
 
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
-
-import androidx.annotation.NonNull;
-import androidx.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.slidingpanelayout.widget.SlidingPaneLayout;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,6 +11,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.slidingpanelayout.widget.SlidingPaneLayout;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.vgaw.nrfconnect.App;
 import com.vgaw.nrfconnect.R;
@@ -51,7 +51,7 @@ public class ScannerFragment extends MainTabBaseFragment implements BLEManager.B
     private RSSIIntervalManager mRssiIntervalManager;
 
     private EasyAdapter mAdapter;
-    private List<DeviceUIBean> dataList = new ArrayList<DeviceUIBean>();
+    private List<DeviceUIBean> dataList = new ArrayList<>();
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -221,9 +221,8 @@ public class ScannerFragment extends MainTabBaseFragment implements BLEManager.B
 
     @Override
     public void onRefresh() {
-        if (!mBLEManager.startScan(mActivity)) {
-            binding.swipeRefreshScanner.setRefreshing(false);
-        }
+        binding.swipeRefreshScanner.setRefreshing(false);
+        mBLEManager.startScan(mActivity);
     }
 
     private void proScanStoppedState(boolean stopped) {
@@ -282,10 +281,10 @@ public class ScannerFragment extends MainTabBaseFragment implements BLEManager.B
         while (iterator.hasNext()) {
             index++;
             if (iterator.next().device.equals(device)) {
-                break;
+                return index;
             }
         }
-        return index;
+        return -1;
     }
 
     @Override

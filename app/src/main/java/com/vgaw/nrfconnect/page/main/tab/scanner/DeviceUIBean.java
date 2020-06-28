@@ -18,26 +18,4 @@ public class DeviceUIBean {
     public boolean favorite;
 
     public DeviceUIBean() {}
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || (getClass() != o.getClass()) && o.getClass() != BluetoothDevice.class) {
-            return false;
-        }
-
-        if (o.getClass() == BluetoothDevice.class) {
-            return device.equals(o);
-        }
-        DeviceUIBean that = (DeviceUIBean) o;
-
-        return device.equals(that.device);
-    }
-
-    @Override
-    public int hashCode() {
-        return device.hashCode();
-    }
 }
