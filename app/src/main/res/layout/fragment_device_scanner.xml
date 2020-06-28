@@ -68,7 +68,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <android.support.v4.widget.SwipeRefreshLayout
+                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                     android:id="@+id/swipeRefreshScanner"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -78,7 +78,7 @@
                         android:id="@+id/lvScanner"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"></ListView>
-                </android.support.v4.widget.SwipeRefreshLayout>
+                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
                 <com.vgaw.nrfconnect.view.expansion.ExpansionLayout
                     android:id="@+id/expansionLayout"

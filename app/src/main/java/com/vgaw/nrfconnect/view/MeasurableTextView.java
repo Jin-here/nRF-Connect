@@ -13,7 +13,7 @@ import android.view.ViewGroup;
  * 适用于多行文字测不出来准确高度的情况
  */
 
-public class MeasurableTextView extends android.support.v7.widget.AppCompatTextView {
+public class MeasurableTextView extends androidx.appcompat.widget.AppCompatTextView {
     public MeasurableTextView(Context context) {
         super(context);
     }

@@ -1,7 +1,7 @@
 package com.vgaw.nrfconnect.view.tab;
 
 import android.content.Context;
-import android.support.v4.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentPagerAdapter;
 import android.view.View;
 
 import java.util.List;

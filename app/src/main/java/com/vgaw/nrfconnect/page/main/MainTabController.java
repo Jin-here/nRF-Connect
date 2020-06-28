@@ -2,8 +2,8 @@ package com.vgaw.nrfconnect.page.main;
 
 import android.bluetooth.BluetoothDevice;
 import android.graphics.Color;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentPagerAdapter;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentPagerAdapter;
 import android.view.View;
 import android.widget.TextView;
 

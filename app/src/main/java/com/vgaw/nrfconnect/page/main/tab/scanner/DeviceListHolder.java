@@ -2,7 +2,7 @@ package com.vgaw.nrfconnect.page.main.tab.scanner;
 
 import android.bluetooth.BluetoothDevice;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.StringRes;
+import androidx.annotation.StringRes;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.vgaw.nrfconnect.R;
-import com.vgaw.nrfconnect.util.DensityUtil;
 import com.vgaw.nrfconnect.util.Utils;
 import com.vgaw.nrfconnect.view.adapter.EasyHolder;
 import com.vgaw.nrfconnect.view.expansion.ExpansionLayout;

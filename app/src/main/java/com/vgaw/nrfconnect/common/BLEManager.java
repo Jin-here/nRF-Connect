@@ -3,18 +3,15 @@ package com.vgaw.nrfconnect.common;
 import android.Manifest;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothClass;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
+import androidx.fragment.app.Fragment;
+import androidx.core.content.ContextCompat;
 
 import com.vgaw.nrfconnect.data.PreferenceManager;
-import com.vgaw.nrfconnect.util.HexTransform;
 import com.vgaw.nrfconnect.util.bluetooth.BLEDataResolver;
 
 import java.io.IOException;

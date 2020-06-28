@@ -1,7 +1,7 @@
 package com.vgaw.nrfconnect.page.main.tab.advertiser;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;

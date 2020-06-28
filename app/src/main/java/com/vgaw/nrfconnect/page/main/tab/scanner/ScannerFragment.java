@@ -2,12 +2,12 @@ package com.vgaw.nrfconnect.page.main.tab.scanner;
 
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.widget.SlidingPaneLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
+import androidx.annotation.Nullable;
+import androidx.slidingpanelayout.widget.SlidingPaneLayout;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -340,7 +340,10 @@ public class ScannerFragment extends MainTabBaseFragment implements BLEManager.B
     }
 
     private List<DeviceFavorite> getDeviceFavoriteByAddress(Box<DeviceFavorite> deviceFavoriteBox, String address) {
-        return deviceFavoriteBox.find(DeviceFavorite_.address, address);
+        return deviceFavoriteBox.query()
+                .equal(DeviceFavorite_.address, address)
+                .build()
+                .find();
     }
 
     private Box<DeviceFavorite> getDeviceFavoriteBox() {
