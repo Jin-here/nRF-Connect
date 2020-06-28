@@ -6,13 +6,20 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Handler;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.vgaw.nrfconnect.App;
+import com.vgaw.nrfconnect.R;
 import com.vgaw.nrfconnect.data.PreferenceManager;
+import com.vgaw.nrfconnect.util.ToastUtil;
 import com.vgaw.nrfconnect.util.bluetooth.BLEDataResolver;
 
 import java.io.IOException;
@@ -61,6 +68,9 @@ public class BLEManager implements BluetoothAdapter.LeScanCallback {
 
     public boolean startScan(Context context) {
         if (checkPermission()) {
+            if (!gpsValid()) {
+                return false;
+            }
             final BluetoothManager bluetoothManager =
                     (BluetoothManager) context.getSystemService(Context.BLUETOOTH_SERVICE);
             mBluetoothAdapter = bluetoothManager.getAdapter();
@@ -104,6 +114,14 @@ public class BLEManager implements BluetoothAdapter.LeScanCallback {
 
     }
 
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_CODE_PERMISSION) {
+            if (checkPermission()) {
+                startScan(mActivity);
+            }
+        }
+    }
+
     @Override
     public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
         try {
@@ -114,10 +132,29 @@ public class BLEManager implements BluetoothAdapter.LeScanCallback {
         notifyLeScan(device, rssi, scanRecord);
     }
 
+    private boolean gpsValid() {
+        // TODO: 2020/6/28
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P){
+            LocationManager alm = (LocationManager) mActivity.getSystemService(Context.LOCATION_SERVICE);
+            if (!alm.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)){
+                ToastUtil.show(R.string.main_hint_bluetooth_gps_not_open);
+                return false;
+            }
+        }
+        return true;
+    }
+
     private boolean checkPermission() {
-        boolean gotPermission = ContextCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        // TODO: 2020/6/28
+        String permissionNeed = null;
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+            permissionNeed = Manifest.permission.ACCESS_COARSE_LOCATION;
+        } else {
+            permissionNeed = Manifest.permission.ACCESS_FINE_LOCATION;
+        }
+        boolean gotPermission = (ContextCompat.checkSelfPermission(mActivity, permissionNeed) == PackageManager.PERMISSION_GRANTED);
         if (!gotPermission) {
-            mFragment.requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_CODE_PERMISSION);
+            mFragment.requestPermissions(new String[]{permissionNeed}, REQUEST_CODE_PERMISSION);
         }
         return gotPermission;
     }

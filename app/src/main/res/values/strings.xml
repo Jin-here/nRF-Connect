@@ -37,6 +37,7 @@
 
     <string name="main_permission_bluetooth_disabled">Bluetooth adapter is disabled.</string>
     <string name="main_hint_bluetooth_not_supported">No Bluetooth Adapter Found</string>
+    <string name="main_hint_bluetooth_gps_not_open">Please open gps first</string>
 
     <string name="main_tab_scanner_action_enable">Enable</string>
     <string name="main_tab_scanner_action_connect">Connect</string>

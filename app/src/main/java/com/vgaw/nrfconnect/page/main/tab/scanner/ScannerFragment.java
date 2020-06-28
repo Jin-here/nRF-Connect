@@ -2,6 +2,8 @@ package com.vgaw.nrfconnect.page.main.tab.scanner;
 
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
+
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -139,6 +141,12 @@ public class ScannerFragment extends MainTabBaseFragment implements BLEManager.B
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        mBLEManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     private void initView() {
