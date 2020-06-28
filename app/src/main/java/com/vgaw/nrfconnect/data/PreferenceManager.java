@@ -25,7 +25,7 @@ public class PreferenceManager {
     }
 
     public static int getScannerPeriod() {
-        return getDefault().getInt("scanner_period", 5000);
+        return getDefault().getInt("scanner_period", -1);
     }
 
     public static void setScannerPeriod(int period) {

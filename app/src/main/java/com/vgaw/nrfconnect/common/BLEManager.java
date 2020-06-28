@@ -6,7 +6,6 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Build;
@@ -16,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import com.vgaw.nrfconnect.App;
 import com.vgaw.nrfconnect.R;
 import com.vgaw.nrfconnect.data.PreferenceManager;
 import com.vgaw.nrfconnect.util.ToastUtil;
@@ -78,13 +76,15 @@ public class BLEManager implements BluetoothAdapter.LeScanCallback {
                 if (!mBluetoothAdapter.isDiscovering()) {
                     boolean started = mBluetoothAdapter.startLeScan(this);
                     if (started) {
-                        int scanPeriod = PreferenceManager.getScannerPeriod();
-                        mHandler.removeCallbacks(scanRunnable);
-                        if (scanPeriod != -1) {
-                            mHandler.postDelayed(scanRunnable, scanPeriod);
-                        }
-
                         notifyScanStarted();
+
+                        int scanPeriod = PreferenceManager.getScannerPeriod();
+                        if (scanPeriod != -1) {
+                            mHandler.removeCallbacks(stopScanRunnable);
+                            if (scanPeriod != -1) {
+                                mHandler.postDelayed(stopScanRunnable, scanPeriod);
+                            }
+                        }
                     }
                     return started;
                 }
@@ -98,7 +98,7 @@ public class BLEManager implements BluetoothAdapter.LeScanCallback {
                 (BluetoothManager) context.getSystemService(Context.BLUETOOTH_SERVICE);
         mBluetoothAdapter = bluetoothManager.getAdapter();
         if (mBluetoothAdapter != null && mBluetoothAdapter.isEnabled()) {
-            mHandler.removeCallbacks(scanRunnable);
+            mHandler.removeCallbacks(stopScanRunnable);
 
             mBluetoothAdapter.stopLeScan(this);
 
@@ -179,7 +179,7 @@ public class BLEManager implements BluetoothAdapter.LeScanCallback {
         }
     }
 
-    private Runnable scanRunnable = new Runnable() {
+    private Runnable stopScanRunnable = new Runnable() {
         @Override
         public void run() {
             stopScan(mActivity);

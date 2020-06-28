@@ -1,6 +1,6 @@
 <resources>
     <!--bugly-->
-    <string name="bugly_appid">1a08f2eb4e</string>
+    <string name="bugly_appid">016bd6b429</string>
 
     <string name="app_name">nRF Connect</string>
 
