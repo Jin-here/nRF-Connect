@@ -1,5 +1,12 @@
 package com.vgaw.nrfconnect.bean;
 
+import android.bluetooth.BluetoothDevice;
+import android.text.TextUtils;
+import android.util.Log;
+
+import com.vgaw.nrfconnect.page.main.tab.scanner.DeviceUIBean;
+import com.vgaw.nrfconnect.util.HexTransform;
+
 /**
  * @author caojin
  * @date 2018/3/1
@@ -10,6 +17,24 @@ public class ScannerFilter {
     private String data;
     private int rssi;
     private boolean favorite;
+
+    public static boolean deviceValid(ScannerFilter scannerFilter, DeviceUIBean deviceUIBean) {
+        if (scannerFilter == null) {
+            return true;
+        }
+        BluetoothDevice device = deviceUIBean.device;
+        String deviceName = device.getName();
+        boolean deviceFavorite = deviceUIBean.favorite;
+        byte[] deviceScanRecord = deviceUIBean.scanRecord;
+        int deviceRssi = deviceUIBean.rssi;
+        return contain(deviceName, scannerFilter.nameAddress) &&
+                contain(HexTransform.bytesToHexString(deviceScanRecord), scannerFilter.data) &&
+                scannerFilter.favorite == deviceFavorite && scannerFilter.rssi <= deviceRssi;
+    }
+
+    private static boolean contain(String one, String filter) {
+        return TextUtils.isEmpty(filter) || (one != null && one.contains(filter));
+    }
 
     public ScannerFilter() {}
 

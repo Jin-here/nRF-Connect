@@ -39,6 +39,10 @@ public class Utils {
         return nullToEmpty(raw).toUpperCase();
     }
 
+    public static boolean equalNonNull(Object one, Object other) {
+        return (one != null && other != null && one.equals(other));
+    }
+
     public static String nullToEmpty(String raw) {
         return raw == null ? "" : raw;
     }
