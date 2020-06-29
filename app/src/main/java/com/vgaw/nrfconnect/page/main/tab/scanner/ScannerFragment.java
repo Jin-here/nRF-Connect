@@ -4,6 +4,8 @@ import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,14 +22,15 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.vgaw.nrfconnect.App;
 import com.vgaw.nrfconnect.R;
+import com.vgaw.nrfconnect.bean.ScannerFilter;
 import com.vgaw.nrfconnect.common.BLEManager;
+import com.vgaw.nrfconnect.data.BLEConstant;
 import com.vgaw.nrfconnect.data.DeviceFavorite;
 import com.vgaw.nrfconnect.data.DeviceFavorite_;
 import com.vgaw.nrfconnect.databinding.FragmentDeviceScannerBinding;
 import com.vgaw.nrfconnect.page.main.DeviceDetailFragmentManager;
 import com.vgaw.nrfconnect.page.main.MainTabBaseFragment;
 import com.vgaw.nrfconnect.page.main.MainTabController;
-import com.vgaw.nrfconnect.util.ContextUtil;
 import com.vgaw.nrfconnect.util.Utils;
 import com.vgaw.nrfconnect.view.adapter.EasyAdapter;
 import com.vgaw.nrfconnect.view.adapter.EasyHolder;
@@ -44,13 +47,16 @@ import io.objectbox.Box;
  */
 
 public class ScannerFragment extends MainTabBaseFragment implements BLEManager.BLEListener, SwipeRefreshLayout.OnRefreshListener, DeviceDetailFragmentManager.OnDeviceDetailFragmentChangedListener, SlidingPaneLayout.PanelSlideListener, RSSIIntervalManager.RSSIIntervalListener {
+    private static final long MIN_REFRESH_DELAY = 300;
     public static final String TAG = "ScannerFragment";
     private FragmentDeviceScannerBinding binding;
     private ScannerFilterController mScannerFilterController;
+    private ScannerFilter mScannerFilter;
     private BLEManager mBLEManager;
     private RSSIIntervalManager mRssiIntervalManager;
 
     private EasyAdapter mAdapter;
+    private List<DeviceUIBean> rawList = new ArrayList<>();
     private List<DeviceUIBean> dataList = new ArrayList<>();
 
     @Override
@@ -93,6 +99,10 @@ public class ScannerFragment extends MainTabBaseFragment implements BLEManager.B
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         mScannerFilterController = new ScannerFilterController();
+        mScannerFilterController.setOnScannerFilterChangeListener(scannerFilter -> {
+            mScannerFilter = scannerFilter;
+            notifyListViewAdapterChanged();
+        });
         mBLEManager = new BLEManager(this);
         getMainTabController().addOnDeviceDetailFragmentChangedListener(this);
 
@@ -118,6 +128,7 @@ public class ScannerFragment extends MainTabBaseFragment implements BLEManager.B
     @Override
     public void onStop() {
         super.onStop();
+        mHandler.removeCallbacksAndMessages(null);
         synchronizeDeviceFavorite();
         mScannerFilterController.onStop();
     }
@@ -200,20 +211,26 @@ public class ScannerFragment extends MainTabBaseFragment implements BLEManager.B
     public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
         int index = -1;
         if ((index = getIndexByDevice(device)) == -1) {
-            DeviceUIBean deviceUIBean = new DeviceUIBean();
-            deviceUIBean.device = device;
-            deviceUIBean.rssi = rssi;
-            deviceUIBean.scanRecord = scanRecord;
-            deviceUIBean.deviceFragmentAdded = getMainTabController().fragmentAdded(device);
-            deviceUIBean.favorite = checkDeviceFavorite(device.getAddress());
-            this.dataList.add(deviceUIBean);
+            if (deviceValid(rssi)) {
+                DeviceUIBean deviceUIBean = new DeviceUIBean();
+                deviceUIBean.device = device;
+                deviceUIBean.rssi = rssi;
+                deviceUIBean.scanRecord = scanRecord;
+                deviceUIBean.deviceFragmentAdded = getMainTabController().fragmentAdded(device);
+                deviceUIBean.favorite = checkDeviceFavorite(device.getAddress());
+                this.rawList.add(deviceUIBean);
 
-            notifyListViewAdapterChanged();
+                notifyListViewAdapterChanged();
+            }
         } else {
-            DeviceUIBean deviceUIBean = this.dataList.get(index);
-            deviceUIBean.rssi = rssi;
-            deviceUIBean.scanRecord = scanRecord;
+            if (deviceValid(rssi)) {
+                DeviceUIBean deviceUIBean = this.rawList.get(index);
+                deviceUIBean.rssi = rssi;
+                deviceUIBean.scanRecord = scanRecord;
 
+            } else {
+                this.rawList.remove(index);
+            }
             notifyListViewAdapterChanged();
         }
         mRssiIntervalManager.hit(device, rssi);
@@ -225,8 +242,12 @@ public class ScannerFragment extends MainTabBaseFragment implements BLEManager.B
         mBLEManager.startScan(mActivity);
     }
 
+    private boolean deviceValid(int rssi) {
+        return (rssi >= BLEConstant.RSSI_MIN && rssi <= BLEConstant.RSSI_MAX);
+    }
+
     private void proScanStoppedState(boolean stopped) {
-        Iterator<DeviceUIBean> iterator = this.dataList.iterator();
+        Iterator<DeviceUIBean> iterator = this.rawList.iterator();
         while (iterator.hasNext()) {
             iterator.next().advertiseStopped = stopped;
         }
@@ -236,20 +257,49 @@ public class ScannerFragment extends MainTabBaseFragment implements BLEManager.B
     private void proRSSIPeriodChanged(BluetoothDevice device, int rssi, long period) {
         int index = getIndexByDevice(device);
         if (index != -1) {
-            this.dataList.get(index).rssi = rssi;
-            this.dataList.get(index).period = period;
+            this.rawList.get(index).rssi = rssi;
+            this.rawList.get(index).period = period;
 
             notifyListViewAdapterChanged();
         }
     }
 
-    private void notifyListViewAdapterChanged() {
-        ContextUtil.getHandler().post(new Runnable() {
-            @Override
-            public void run() {
-                mAdapter.notifyDataSetChanged();
+    private static final int WHAT_REFRESH = 1;
+    private long mLstRefreshTime;
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == WHAT_REFRESH) {
+                actualRefresh();
             }
-        });
+        }
+    };
+
+    private void notifyListViewAdapterChanged() {
+        long crtTime = System.currentTimeMillis();
+        if (!mHandler.hasMessages(WHAT_REFRESH)) {
+            long offset;
+            if ((offset = crtTime - mLstRefreshTime) > MIN_REFRESH_DELAY) {
+                mHandler.sendEmptyMessage(WHAT_REFRESH);
+            } else {
+                mHandler.sendEmptyMessageDelayed(WHAT_REFRESH, MIN_REFRESH_DELAY - offset);
+            }
+        }
+    }
+
+    private void actualRefresh() {
+        mLstRefreshTime = System.currentTimeMillis();
+
+        dataList.clear();
+        Iterator<DeviceUIBean> iterator = rawList.iterator();
+        while (iterator.hasNext()) {
+            DeviceUIBean item = iterator.next();
+            if (ScannerFilter.deviceValid(mScannerFilter, item)) {
+                dataList.add(item);
+            }
+        }
+        mAdapter.notifyDataSetChanged();
     }
 
     private MainTabController getMainTabController() {
@@ -260,7 +310,7 @@ public class ScannerFragment extends MainTabBaseFragment implements BLEManager.B
     public void onDeviceDetailFragmentAdd(BluetoothDevice device) {
         int i = getIndexByDevice(device);
         if (i != -1) {
-            this.dataList.get(i).deviceFragmentAdded = true;
+            this.rawList.get(i).deviceFragmentAdded = true;
             notifyListViewAdapterChanged();
         }
     }
@@ -270,13 +320,13 @@ public class ScannerFragment extends MainTabBaseFragment implements BLEManager.B
         Log.d(TAG, "onDeviceDetailFragmentRemove: ");
         int i = getIndexByDevice(device);
         if (i != -1) {
-            this.dataList.get(i).deviceFragmentAdded = false;
+            this.rawList.get(i).deviceFragmentAdded = false;
             notifyListViewAdapterChanged();
         }
     }
 
     private int getIndexByDevice(BluetoothDevice device) {
-        Iterator<DeviceUIBean> iterator = this.dataList.iterator();
+        Iterator<DeviceUIBean> iterator = this.rawList.iterator();
         int index = -1;
         while (iterator.hasNext()) {
             index++;
@@ -316,7 +366,7 @@ public class ScannerFragment extends MainTabBaseFragment implements BLEManager.B
     }
 
     private void synchronizeDeviceFavorite() {
-        Iterator<DeviceUIBean> iterator = this.dataList.iterator();
+        Iterator<DeviceUIBean> iterator = this.rawList.iterator();
         Box<DeviceFavorite> deviceFavoriteBox = getDeviceFavoriteBox();
         while (iterator.hasNext()) {
             DeviceUIBean next = iterator.next();

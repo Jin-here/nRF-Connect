@@ -12,11 +12,12 @@ import android.widget.CompoundButton;
 
 import com.vgaw.nrfconnect.R;
 import com.vgaw.nrfconnect.bean.ScannerFilter;
+import com.vgaw.nrfconnect.data.BLEConstant;
 import com.vgaw.nrfconnect.data.PreferenceManager;
 import com.vgaw.nrfconnect.databinding.FragmentDeviceScannerBinding;
 import com.vgaw.nrfconnect.util.Utils;
-import com.vgaw.nrfconnect.view.HexInputFilter;
 import com.vgaw.nrfconnect.view.FineTuneSeekBar;
+import com.vgaw.nrfconnect.view.HexInputFilter;
 import com.vgaw.nrfconnect.view.expansion.ExpansionLayout;
 
 /**
@@ -26,11 +27,10 @@ import com.vgaw.nrfconnect.view.expansion.ExpansionLayout;
 
 public class ScannerFilterController implements View.OnClickListener, CompoundButton.OnCheckedChangeListener, TextWatcher, FineTuneSeekBar.ShowValueListener, ExpansionLayout.IndicatorListener {
     private static final String TAG = "ScannerFilterController";
-    private static final int RSSI_MIN = -100;
-    private static final int RSSI_MAX = -40;
 
     private Activity activity;
     private FragmentDeviceScannerBinding binding;
+    private ScannerFilterChangeListener mListener;
 
     public void setBinding(Activity activity, FragmentDeviceScannerBinding binding) {
         this.activity = activity;
@@ -44,7 +44,7 @@ public class ScannerFilterController implements View.OnClickListener, CompoundBu
         binding.ivDataMore.setOnClickListener(this);
         binding.ivDataClear.setOnClickListener(this);
         binding.sbRSSI.setShowValueListener(this);
-        binding.sbRSSI.init(activity.getString(R.string.scanner_filter_rssi), RSSI_MIN, RSSI_MAX, 1);
+        binding.sbRSSI.init(activity.getString(R.string.scanner_filter_rssi), BLEConstant.RSSI_MIN, BLEConstant.RSSI_MAX, 1);
         binding.cbFavorite.setOnCheckedChangeListener(this);
         binding.etData.setFilters(new InputFilter[]{new HexInputFilter()});
         binding.etNameAddress.addTextChangedListener(this);
@@ -70,7 +70,7 @@ public class ScannerFilterController implements View.OnClickListener, CompoundBu
     }
 
     private void clearRSSI() {
-        binding.sbRSSI.setProgress(RSSI_MIN);
+        binding.sbRSSI.setProgress(BLEConstant.RSSI_MIN);
     }
 
     private void clearNameAddress() {
@@ -123,8 +123,9 @@ public class ScannerFilterController implements View.OnClickListener, CompoundBu
         String nameAddress = binding.etNameAddress.getText().toString();
         String data = binding.etData.getText().toString();
         int currentRSSI = (int) binding.sbRSSI.getProgress();
-        String rssi = (currentRSSI == RSSI_MIN ? null : String.valueOf(currentRSSI));
-        String favorite = binding.cbFavorite.isChecked() ? activity.getString(R.string.scanner_filter_only_favorite) : null;
+        String rssi = (currentRSSI == BLEConstant.RSSI_MIN ? null : String.valueOf(currentRSSI));
+        boolean favorite = binding.cbFavorite.isChecked();
+        String favoriteDes = favorite ? activity.getString(R.string.scanner_filter_only_favorite) : null;
         StringBuilder sb = new StringBuilder();
         if (!TextUtils.isEmpty(nameAddress)) {
             sb.append(nameAddress).append(",");
@@ -135,15 +136,27 @@ public class ScannerFilterController implements View.OnClickListener, CompoundBu
         if (!TextUtils.isEmpty(rssi)) {
             sb.append(rssi).append(",");
         }
-        if (!TextUtils.isEmpty(favorite)) {
-            sb.append(favorite).append(",");
+        if (!TextUtils.isEmpty(favoriteDes)) {
+            sb.append(favoriteDes).append(",");
         }
+        String resultStr = null;
         if (TextUtils.isEmpty(sb)) {
-            binding.tvDescription.setText(R.string.scanner_filter_no_filter);
+            resultStr = activity.getString(R.string.scanner_filter_no_filter);
             binding.ivClearAll.setVisibility(View.GONE);
         } else {
-            binding.tvDescription.setText(sb.substring(0, sb.length() - 1));
+            resultStr = sb.substring(0, sb.length() - 1);
             binding.ivClearAll.setVisibility(View.VISIBLE);
+        }
+        boolean paramChanged = !resultStr.equals(binding.tvDescription.getText().toString());
+        binding.tvDescription.setText(resultStr);
+
+        if (paramChanged) {
+            ScannerFilter scannerFilter = new ScannerFilter();
+            scannerFilter.setData(data);
+            scannerFilter.setNameAddress(nameAddress);
+            scannerFilter.setRssi(currentRSSI);
+            scannerFilter.setFavorite(favorite);
+            callFilterParamChange(scannerFilter);
         }
     }
 
@@ -195,5 +208,19 @@ public class ScannerFilterController implements View.OnClickListener, CompoundBu
         } else {
             imm.hideSoftInputFromWindow(binding.etNameAddress.getWindowToken(), 0);
         }
+    }
+
+    private void callFilterParamChange(ScannerFilter scannerFilter) {
+        if (mListener != null) {
+            mListener.onScannerFilterChanged(scannerFilter);
+        }
+    }
+
+    public void setOnScannerFilterChangeListener(ScannerFilterChangeListener listener) {
+        mListener = listener;
+    }
+
+    public interface ScannerFilterChangeListener {
+        void onScannerFilterChanged(ScannerFilter scannerFilter);
     }
 }

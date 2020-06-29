@@ -11,6 +11,7 @@ import java.util.List;
  * @date 2018/3/24
  */
 public class RSSIIntervalManager {
+    private static final int MAX_HIT_LENGTH = 100;
     private RSSIIntervalListener mListener;
     private HashMap<BluetoothDevice, List<RSSIBean>> map = new HashMap<>();
 
@@ -29,6 +30,9 @@ public class RSSIIntervalManager {
         long period = -1;
         if (rssiBeanList.size() > 0) {
             period = currentTime - rssiBeanList.get(rssiBeanList.size() - 1).hitTime;
+        }
+        if (rssiBeanList.size() > MAX_HIT_LENGTH) {
+            rssiBeanList.remove(0);
         }
         rssiBeanList.add(rssiBean);
 
